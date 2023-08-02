@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "434763010194",
+    "project_id": "wb-work-day-23917",
+    "storage_bucket": "wb-work-day-23917.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434763010194:android:0e8d97616115b0d693564b",
+        "android_client_info": {
+          "package_name": "com.seventhcomputing.winbrother_hr_app_uat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434763010194-vi0tmq2ue60ga6arkn206gi09o4tggu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa4DVv15EP6ukj0vRwN0kPayrW4xUKJes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434763010194-vi0tmq2ue60ga6arkn206gi09o4tggu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
