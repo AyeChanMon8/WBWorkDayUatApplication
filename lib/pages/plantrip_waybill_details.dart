@@ -169,9 +169,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                             primaryColor: textFieldTapColor,
                           ),
                           child: controller.plantrip_with_waybill_list[controller.arg_index.value].routePlanIds[index1].endActualDate!=null ? Text(AppUtils.changeDateAndTimeFormat(
-                controller.plantrip_with_waybill_list[controller.arg_index.value].routePlanIds[index1].endActualDate)): Expanded(child: Container(
-                            margin: EdgeInsets.only(right: 10),
-                          )),
+                controller.plantrip_with_waybill_list[controller.arg_index.value].routePlanIds[index1].endActualDate)): SizedBox()
                         )),
                   ),
                   controller.plantrip_with_waybill_list[controller.arg_index.value].routePlanIds[index1].status!=null ?Expanded(
@@ -180,11 +178,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                       margin: EdgeInsets.only(left: 10, right: 10),
                       child:  Text(controller.plantrip_with_waybill_list[controller.arg_index.value].routePlanIds[index1].status),
                     ),
-                  ): Expanded(
-                    flex: 3,
-                    child: Container(
-                    margin: EdgeInsets.only(left: 10, right: 10),
-                  )),
+                  ): SizedBox()
                   ],
                 ),
               ),
