@@ -138,4 +138,5 @@ abstract class Routes {
   static const PURCHASE_ORDER_DETAIL = '/purchase_order_detail';
   static const APPROVAL_SUSPENSION_DETAILS = '/approval_suspension_details';
   static const APPROVED_SUSPENSION_DETAILS = '/approved_suspension_details';
+  static const APPROVEDMAINTENANCEDETAILPAGE = '/approved_maintenance_detail_page';
 }

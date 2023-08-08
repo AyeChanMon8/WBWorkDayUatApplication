@@ -8,6 +8,8 @@ import 'package:winbrother_hr_app/localization.dart';
 import 'package:winbrother_hr_app/my_class/my_style.dart';
 import 'package:winbrother_hr_app/pages/maintenance_list.dart';
 
+import 'approved_maintenance_list_page.dart';
+
 class MaintenanceTabBar extends StatefulWidget {
 
 
@@ -22,7 +24,7 @@ class _StatePlanTripTabBar extends State<MaintenanceTabBar> {
   List arrayList = [];
   List doneList = [];
   List data = [];
-  int tabbar = 3;
+  int tabbar = 4;
   String role = '';
   @override
   void initState() {
@@ -59,10 +61,13 @@ class _StatePlanTripTabBar extends State<MaintenanceTabBar> {
                   controller.getMaintenanceList('planned');
                 }else if(index==1){
                   controller.getMaintenanceList('maintenance');
-                }else{
+                }else if(index==2){
                   controller.getMaintenanceList('done');
+                }else{
+                  controller.getMaintenanceList('approved');
                 }
               },
+              labelPadding: EdgeInsets.all(0),
               labelColor: Colors.white,
               indicatorColor: Color.fromRGBO(216, 181, 0, 1),
               indicatorWeight: 5,
@@ -72,6 +77,7 @@ class _StatePlanTripTabBar extends State<MaintenanceTabBar> {
                 ),
                 Tab(text: labels.maintenance),
                 Tab(text: labels.done),
+                Tab(text: labels.approved,)
               ],
             )
         ),
@@ -119,7 +125,8 @@ class _StatePlanTripTabBar extends State<MaintenanceTabBar> {
           children: [
             MaintenanceListPage('planned'),
             MaintenanceListPage('maintenance'),
-            MaintenanceListPage('done')
+            MaintenanceListPage('done'),
+            ApprovedMaintenanceListPage('approved')
           ],
         ),
 

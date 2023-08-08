@@ -34,6 +34,7 @@ import 'package:winbrother_hr_app/pages/approved_employee_change_details.dart';
 import 'package:winbrother_hr_app/pages/approved_employee_change_list.dart';
 import 'package:winbrother_hr_app/pages/approved_leave_details.dart';
 import 'package:winbrother_hr_app/pages/approved_loan_details.dart';
+import 'package:winbrother_hr_app/pages/approved_manintenance_detail_page.dart';
 import 'package:winbrother_hr_app/pages/approved_resignation_details.dart';
 import 'package:winbrother_hr_app/pages/approved_route_details.dart';
 import 'package:winbrother_hr_app/pages/approved_suspension_details.dart';
@@ -420,6 +421,9 @@ class AppPages {
     GetPage(
         name: Routes.APPROVED_SUSPENSION_DETAILS,
         page: () => ApprovedSuspensionDetails()),
+    GetPage(
+        name: Routes.APPROVEDMAINTENANCEDETAILPAGE,
+        page: () => ApprovedMaintenanceDetailPage()),
 
 
   ];
