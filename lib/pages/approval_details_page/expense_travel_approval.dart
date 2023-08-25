@@ -85,7 +85,7 @@ class _TravelExpenseDetailsState extends State<TravelExpenseApproval> {
                   )),
               ],),
               ),
-              Obx(()=> controller.showDetails.value? Column(
+              Obx(()=> controller.showDetails.value? controller.travelExpenseList.length > 0 ?Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(controller.travelExpenseList.value[index].number,style: TextStyle(fontSize: 20),),
@@ -93,7 +93,7 @@ class _TravelExpenseDetailsState extends State<TravelExpenseApproval> {
                 SizedBox(
                   height: 15,
                 ),
-              ]):SizedBox(),),
+              ]):SizedBox():SizedBox(),),
                 travelExpenseLineWidget(context, index),
                 SizedBox(
                   height: 5,
@@ -117,8 +117,8 @@ class _TravelExpenseDetailsState extends State<TravelExpenseApproval> {
                 SizedBox(
                   height: 10,
                 ),
-                Obx(()=>controller.travelExpenseList.value[index].state!='approve'?
-                approveButton(context) : new Container(),),
+                Obx(()=>controller.travelExpenseList.length > 0 ? (controller.travelExpenseList.value[index].state!='approve'?
+                approveButton(context) : new Container()): SizedBox()),
             ],
           ),
         ));
