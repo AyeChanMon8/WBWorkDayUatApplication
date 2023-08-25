@@ -49,10 +49,10 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text(
+                  child: controller.suspensionApprovedList.length>0 && controller.suspensionApprovedList.value[index].name !=null ? Text(
                     controller.suspensionApprovedList.value[index].name,
                     style: subtitleStyle(),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(height: 15,),
                 Container(
@@ -68,10 +68,10 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                       ),
                       Obx(
                             () => Container(
-                          child: Text(
+                          child: controller.suspensionApprovedList.length > 0 && controller.suspensionApprovedList.value[index].employeeId !=null ? Text(
                             controller.suspensionApprovedList.value[index].employeeId.name,
                             style: subtitleStyle(),
-                          ),
+                          ):SizedBox(),
                         ),
                       ),
                     ],
@@ -142,10 +142,10 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                         Expanded(
                           flex:1,
                           child: Container(
-                            child: Text(
+                            child: controller.suspensionApprovedList.length > 0 && controller.suspensionApprovedList.value[index].company_id!=null ? Text(
                               AppUtils.removeNullString(controller.suspensionApprovedList.value[index].company_id.name),
                               style: subtitleStyle(),
-                            ),
+                            ):SizedBox(),
                           ),
                         ),
                         Expanded(
@@ -155,10 +155,10 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                             child: Container(
                               child: Padding(
                                 padding: const EdgeInsets.only(left:50.0),
-                                child: Text(
+                                child: controller.suspensionApprovedList.length > 0 && controller.suspensionApprovedList.value[index].branch_id !=null ? Text(
                                   AppUtils.removeNullString(controller.suspensionApprovedList.value[index].branch_id.name),
                                   style: subtitleStyle(),
-                                ),
+                                ):SizedBox(),
                               ),
                             ),
                           ),
@@ -190,7 +190,7 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                       ),
                       Obx(
                             () => Container(
-                          child: controller.suspensionApprovedList.value[index].departmentId !=
+                          child: controller.suspensionApprovedList.length > 0 && controller.suspensionApprovedList.value[index].departmentId !=
                               null
                               ? Text(
                             controller.suspensionApprovedList.value[index].departmentId.name,
@@ -240,10 +240,10 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                         Expanded(
                           flex:1,
                           child: Container(
-                            child: Text(
+                            child: controller.suspensionApprovedList.length > 0 && controller.suspensionApprovedList.value[index].job_id != null? Text(
                               AppUtils.removeNullString(controller.suspensionApprovedList.value[index].job_id.name),
                               style: subtitleStyle(),
-                            ),
+                            ):SizedBox(),
                           ),
                         ),
                         Expanded(

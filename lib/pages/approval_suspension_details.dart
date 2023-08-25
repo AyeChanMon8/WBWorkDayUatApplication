@@ -51,10 +51,10 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text(AppUtils.removeNullString(controller.suspensionApprovalList.value[index].name)
+                  child: controller.suspensionApprovalList.length>0 && controller.suspensionApprovalList.value[index].name!=null ? Text(AppUtils.removeNullString(controller.suspensionApprovalList.value[index].name)
                     ,
                     style: subtitleStyle(),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(height: 15,),
                 Container(
@@ -67,14 +67,11 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                           // ("employee_name"),
                           style: datalistStyle(),
                         ),
-                      ),
-                      Obx(
-                            () => Container(
-                          child: controller.suspensionApprovalList.length > 0 ?Text(AppUtils.removeNullString(controller.suspensionApprovalList.value[index].employeeId.name),
+                      ),Container(
+                          child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].employeeId!=null ?Text(AppUtils.removeNullString(controller.suspensionApprovalList.value[index].employeeId.name),
                             style: subtitleStyle(),
                           ):SizedBox(),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -134,8 +131,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                     ],
                   ),
                 ),
-                Obx(
-                      () => Container(
+                Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +139,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                         Expanded(
                           flex:1,
                           child: Container(
-                            child: controller.suspensionApprovalList.length > 0 ?Text(
+                            child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].company_id != null?Text(
                               AppUtils.removeNullString(controller.suspensionApprovalList.value[index].company_id.name),
                               style: subtitleStyle(),
                             ):SizedBox(),
@@ -156,7 +152,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                             child: Container(
                               child: Padding(
                                 padding: const EdgeInsets.only(left:50.0),
-                                child: controller.suspensionApprovalList.length > 0 ? Text(
+                                child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].branch_id != null? Text(
                                   AppUtils.removeNullString(controller.suspensionApprovalList.value[index].branch_id.name),
                                   style: subtitleStyle(),
                                 ): SizedBox(),
@@ -167,7 +163,6 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                       ],
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -189,9 +184,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                           // ("position"),
                           style: datalistStyle(),
                         ),
-                      ),
-                      Obx(
-                            () => Container(
+                      ),Container(
                           child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].departmentId !=
                               null
                               ? Text(AppUtils.removeNullString(controller.suspensionApprovalList.value[index].departmentId.name)
@@ -200,7 +193,6 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                           )
                               : Text('-'),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -303,8 +295,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                     ],
                   ),
                 ),
-                Obx(
-                      () => Container(
+                Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -340,7 +331,6 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                       ],
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -370,20 +360,19 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                     ],
                   ),
                 ),
-                Obx(
-                      () => Container(
+                Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: controller.suspensionApprovalList.length > 0 ?Text(
+                          child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].joinedDate != null?Text(
                             AppUtils.changeDateFormat(controller.suspensionApprovalList.value[index].joinedDate),
                             style: subtitleStyle(),
                           ):SizedBox(),
                         ),
                         Container(
-                          child: controller.suspensionApprovalList.length > 0 ? Text(
+                          child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].suspension_submit_date != null? Text(
                             AppUtils.changeDateFormat(controller.suspensionApprovalList.value[index].suspension_submit_date),
                             style: subtitleStyle(),
                           ):SizedBox(),
@@ -391,7 +380,6 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                       ],
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -422,8 +410,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                     ],
                   ),
                 ),
-                Obx(
-                      () => Container(
+                Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -435,7 +422,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                         //   ),
                         // ),
                         Container(
-                          child: controller.suspensionApprovalList.length > 0 ? Text(
+                          child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].approvedRevealingDate!=null ? Text(
                               AppUtils.changeDateFormat(controller.suspensionApprovalList.value[index].approvedRevealingDate.toString()),
                             style: subtitleStyle(),
                           ): SizedBox(),
@@ -443,7 +430,6 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                       ],
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -464,8 +450,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                           ),
                         ),
                       ),
-                      Obx(
-                            () => Expanded(
+                      Expanded(
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: Container(
@@ -482,7 +467,6 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                         ),
                               ),
                             ),
-                      ),
                     ],
                   ),
                 ),
