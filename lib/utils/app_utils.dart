@@ -331,6 +331,13 @@ class AppUtils {
       final endIndex = errorMessage.indexOf(end, startIndex + start.length);
       error_message = errorMessage.substring(startIndex + start.length, endIndex); // brown fox jumps
       AppUtils.showDialog('Warning', error_message);
+    }else if(errorMessage.contains('ERROR: ValidationError(\\"') && errorMessage.contains('\\",')){
+      const start = 'ERROR: ValidationError(\\"';
+      const end = '\\",';
+      final startIndex = errorMessage.indexOf(start);
+      final endIndex = errorMessage.indexOf(end, startIndex + start.length);
+      error_message = errorMessage.substring(startIndex + start.length, endIndex); // brown fox jumps
+      AppUtils.showDialog('Warning', error_message);
     }else if(errorMessage.contains('ERROR: ValidationError(\\"') && errorMessage.contains("!")){
       const start = 'ERROR: ValidationError(\\"';
       const end = "!";

@@ -12,21 +12,18 @@ import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:winbrother_hr_app/controllers/day_trip_expense_controller.dart';
 import 'package:winbrother_hr_app/controllers/daytrip_plantrip_fuel_advance_controller.dart';
 import 'package:winbrother_hr_app/controllers/plan_trip_controller.dart';
 import 'package:winbrother_hr_app/localization.dart';
 import 'package:winbrother_hr_app/models/base_route.dart';
-import 'package:winbrother_hr_app/models/daytrip_expense.dart';
-import 'package:winbrother_hr_app/models/plan_trip_product.dart';
 import 'package:winbrother_hr_app/models/plantrip_waybill.dart';
 import 'package:winbrother_hr_app/models/travel_expense/list/travel_line_list_model.dart';
 import 'package:winbrother_hr_app/my_class/my_app_bar.dart';
 import 'package:winbrother_hr_app/my_class/my_style.dart';
 import 'package:winbrother_hr_app/pages/add_advance_page.dart';
-import 'package:winbrother_hr_app/pages/add_fuel_page.dart';
-import 'package:winbrother_hr_app/routes/app_pages.dart';
 import 'package:winbrother_hr_app/utils/app_utils.dart';
+
+import 'add_fuel_waybill_page.dart';
 
 class PlanTripWayBillDetails extends StatefulWidget {
   @override
@@ -48,11 +45,13 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
   var next_route_id = 0;
   var plantrip_waybill_list_lines = [];
   var to_date;
-
+  var isIncharge = false;
+  var employee_id;
   @override
   void initState() {
     if(Get.arguments!=null){
       isDriver = box.read("is_driver");
+      employee_id = box.read('emp_id');
       if(box.read('real_role_category').toString().contains('branch manager')){
         print('contains#');
         is_branch_manager = true;
@@ -73,7 +72,12 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
         controller.selectedWayBillRoute = controller.plantrip_with_waybill_list.value[controller.arg_index.value].consumptionIds[0];
       }
       controller.waybill_expense_list.value = controller.plantrip_with_waybill_list.value[controller.arg_index.value].expenseIds;
-
+      if(controller
+              .plantrip_with_waybill_list.value[controller.arg_index.value].vehicleId.inchargeId!=null && controller
+              .plantrip_with_waybill_list.value[controller.arg_index.value].vehicleId.inchargeId.id == int.parse(employee_id)){
+                isIncharge = true;
+      }
+     
     }
     controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='open'?
     _tabController = TabController(length: 3, vsync: this):
@@ -107,7 +111,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
           padding: const EdgeInsets.only(top: 2,right: 0,left: 0),
           child: Divider(height: 1,thickness: 1,color: backgroundIconColor,),
         ),
-        controller.plantrip_with_waybill_list.value[controller.arg_index.value].state == 'running' && isDriver ? Padding(
+        controller.plantrip_with_waybill_list.value[controller.arg_index.value].state == 'running' && (controller.plantrip_with_waybill_list[controller.arg_index.value].driverId.id == int.parse(employee_id)) ? Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: routeListWidget(context),
         ): SizedBox(),
@@ -607,11 +611,11 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                 child: fuelInListWidget(context),
               ),
             ),
-            controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='running'&&isDriver==true||is_spare==true&&is_branch_manager==false?
+            (controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='running'&&isDriver==true||is_spare==true&&is_branch_manager==false)?
             Align(
               alignment:Alignment.topRight,
               child: FloatingActionButton(onPressed: (){
-                Get.to(AddFuelPage("PLanTripWaybill",controller.plantrip_waybill_id,controller.plantrip_with_waybill_list.value[controller.arg_index.value].fromDatetime,controller.plantrip_with_waybill_list.value[controller.arg_index.value].toDatetime)).then((value) {
+                Get.to(AddFuelWayBillPage("PLanTripWaybill",controller.plantrip_waybill_id,controller.plantrip_with_waybill_list.value[controller.arg_index.value].fromDatetime,controller.plantrip_with_waybill_list.value[controller.arg_index.value].toDatetime,null)).then((value) {
                   if(value!=null){
                     DayTripPlanTripGeneralController general_controller = Get.find();
                     controller.plantrip_with_waybill_list.value[controller.arg_index.value].fuelinIds.add(WayBill_Fuelin_ids(id:value,date: general_controller.dateTextController.text,
@@ -620,7 +624,8 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                         slipNo: general_controller.slipNoTextController.text,
                         liter: double.tryParse(general_controller.qtyController.text),
                         priceUnit: double.tryParse(general_controller.priceController.text),
-                        amount: double.tryParse(general_controller.totalFuelInAmtController.text)),
+                        amount: double.tryParse(general_controller.totalFuelInAmtController.text),
+                        location_id: Location_id(id:general_controller.selectedLocation.id,name: general_controller.selectedLocation.name)),
                     );
                   }
                 });
@@ -878,7 +883,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                 child: fuelConsumptionsListWidget(context),
               ),
             ),
-            controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='running'&&(isDriver==true||is_spare==true)&&is_branch_manager==false?
+            (controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='running'&&(isDriver==true||is_spare==true)&&is_branch_manager==false)?
             Align(
               alignment: Alignment.topRight,
               child: FloatingActionButton(onPressed: (){
@@ -967,7 +972,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
               ],
               ),
           ),
-          Obx(()=>controller.showDetails.value?  Column(
+          Obx(()=>controller.plantrip_with_waybill_list.length > 0 ? controller.showDetails.value?  Column(
               children: [
                 Container(
                   margin:EdgeInsets.only(right:60),
@@ -1053,9 +1058,9 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                 SizedBox(height:10),
                 controller.plantrip_with_waybill_list.value[controller.arg_index.value].state == 'running' ?routeContainer(context): SizedBox(),
               ],
-            ):SizedBox()),
+            ):SizedBox() : SizedBox()),
             
-            Container(
+            controller.plantrip_with_waybill_list.value.length > 0 ?Container(
               height: 30,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
@@ -1156,8 +1161,8 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                   ),
                 ],
               ),
-            ),
-            Container(
+            ):SizedBox(),
+            controller.plantrip_with_waybill_list.value.length > 0 ?Container(
               height: 350,
               child: controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='open'?
               TabBarView(
@@ -1212,17 +1217,32 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
             
                 ],
               ),
-            ),
-            controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='open'||controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='running'?
-            isDriver==false&&is_spare==false?
+            ):SizedBox(),
+            controller.plantrip_with_waybill_list.value.length > 0 && controller.plantrip_with_waybill_list.value[controller.arg_index.value].state == 'advance_withdraw'  && isIncharge ?
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+              child: GFButton(
+                color: textFieldTapColor,
+                onPressed: () {
+                  controller.clickstartPlanTripWayBill(controller.plantrip_with_waybill_list.value[controller.arg_index.value].id);
+                },
+                text: 'Start Trip',
+                blockButton: true,
+                size: GFSize.LARGE,
+              ),
+            )
+                : SizedBox(),
+            controller.plantrip_with_waybill_list.value.length > 0 ? 
+            controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='running'?
+            isIncharge?
             Padding(
               padding: const EdgeInsets.only(left:15.0,bottom: 15),
               child: GFButton(
                 color: textFieldTapColor,
                 onPressed: () {
-                  controller.endPlanTripWayBill();
+                  controller.clickendPlanTripWayBill(controller.plantrip_with_waybill_list.value[controller.arg_index.value].id);
                 },
-                text: labels.save,
+                text: 'End Trip',
                 blockButton: true,
                 size: GFSize.LARGE,
               ),
@@ -1262,7 +1282,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                 ),
               ],
             )
-                :new Container(),
+                :new Container(): SizedBox(),
             SizedBox(height: 20,),
         ],
       ),
@@ -1506,7 +1526,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                         });
                       },
                       type: GFButtonType.outline,
-                      text: 'Click',
+                      text: plantrip_waybill_list_lines[index].status == '' || plantrip_waybill_list_lines[index].status == null ? 'Start' : plantrip_waybill_list_lines[index].status == 'running' ? 'End' : '',
                       textColor: textFieldTapColor,
                       blockButton: true,
                       size: GFSize.SMALL,
@@ -1538,7 +1558,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
     int fields;
     return Container(
       // margin: EdgeInsets.only(left: 10, right: 10),
-      child: Obx(()=>ListView.builder(
+      child: Obx(()=>controller.plantrip_with_waybill_list.length > 0 ?ListView.builder(
         shrinkWrap: true,
         //physics: NeverScrollableScrollPhysics(),
         itemCount: controller.plantrip_with_waybill_list[controller.arg_index.value].consumptionIds.length,
@@ -1576,7 +1596,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                       child: Container(
                         // width: 80,
                           child: Text(
-                              NumberFormat('#,###').format(double.tryParse(controller.plantrip_with_waybill_list[controller.arg_index.value].consumptionIds[index].consumedLiter.toString())).toString(),style: TextStyle(fontSize: 11))
+                              NumberFormat('#,###.##').format(double.tryParse(controller.plantrip_with_waybill_list[controller.arg_index.value].consumptionIds[index].consumedLiter.toString())).toString(),style: TextStyle(fontSize: 11))
                       ),
                     ),
                     Expanded(
@@ -1587,7 +1607,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                             ,style: TextStyle(fontSize: 11)),
                       ),
                     ),
-                    controller.plantrip_with_waybill_list[controller.arg_index.value].state=="expense_claim"||  controller.plantrip_with_waybill_list[controller.arg_index.value].state=="close"?SizedBox():isDriver==true||is_spare==true&&is_branch_manager==false?
+                    controller.plantrip_with_waybill_list[controller.arg_index.value].state=="close"?SizedBox():(controller.plantrip_with_waybill_list[controller.arg_index.value].state=='running' && isDriver==true||is_spare==true&&is_branch_manager==false)?
                     Expanded(
                         child: IconButton(
                           icon: Icon(Icons.delete),
@@ -1595,7 +1615,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                             controller.deletePlantripWaybillConsumptionLine(controller.plantrip_with_waybill_list[controller.arg_index.value].consumptionIds[index].id,controller.plantrip_with_waybill_list[controller.arg_index.value].id);
                           },
                         )):SizedBox(),
-                    controller.plantrip_with_waybill_list[controller.arg_index.value].state=='running'&&isDriver==true||is_spare==true&&is_branch_manager==false? Expanded(
+                    (controller.plantrip_with_waybill_list[controller.arg_index.value].state=='running'&&isDriver==true||is_spare==true&&is_branch_manager==false)? Expanded(
                       flex: 1,
                       child: Padding(
                         padding: const EdgeInsets.only(left:12.0),
@@ -1629,14 +1649,14 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
             ],
           );
         },
-      )),
+      ):SizedBox()),
     );
   }
   Widget wayBillListWidget(BuildContext context) {
     int fields;
     return Container(
       // margin: EdgeInsets.only(left: 10, right: 10),
-      child: Obx(()=>ListView.builder(
+      child: Obx(()=>controller.plantrip_with_waybill_list.length > 0 ?ListView.builder(
         shrinkWrap: true,
         //physics: NeverScrollableScrollPhysics(),
         itemCount: controller.plantrip_with_waybill_list[controller.arg_index.value].waybillIds.length,
@@ -1709,7 +1729,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
             ],
           );
         },
-      )),
+      ):SizedBox()),
     );
   }
   Widget fuelInListWidget(BuildContext context) {
@@ -1786,8 +1806,21 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
                             )
                         ),
                       ),
-                      controller.plantrip_with_waybill_list[controller.arg_index.value].state=="expense_claim"||  controller.plantrip_with_waybill_list[controller.arg_index.value].state=="close"?SizedBox():
-                      controller.plantrip_with_waybill_list[controller.arg_index.value].fuelinIds[index].add_from_office==null&&isDriver==true||is_spare==true&&is_branch_manager==false?
+                      controller.plantrip_with_waybill_list[controller.arg_index.value].state=="close"?SizedBox():
+                      (controller.plantrip_with_waybill_list[controller.arg_index.value].state=='running' && controller.plantrip_with_waybill_list[controller.arg_index.value].fuelinIds[index].add_from_office==null&&(isDriver==true||is_spare==true)&&is_branch_manager==false)?
+                      Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              Get.to(AddFuelWayBillPage("PLanTripWaybill",controller.plantrip_waybill_id,controller.plantrip_with_waybill_list.value[controller.arg_index.value].fromDatetime,controller.plantrip_with_waybill_list.value[controller.arg_index.value].toDatetime,controller.plantrip_with_waybill_list.value[controller.arg_index.value].fuelinIds[index])).then((value) {
+                                if(value!=null){
+                                  controller.getPlantripWithWayBillList(controller.current_page.value);
+                                }
+                              });
+                            },
+                          )):Expanded(flex:1,child: SizedBox()),
+                      controller.plantrip_with_waybill_list[controller.arg_index.value].state=="close"?SizedBox():
+                      (controller.plantrip_with_waybill_list[controller.arg_index.value].state=='running' && controller.plantrip_with_waybill_list[controller.arg_index.value].fuelinIds[index].add_from_office==null&&(isDriver==true||is_spare==true)&&is_branch_manager==false)?
                       Expanded(
                           child: IconButton(
                             icon: Icon(Icons.delete),
@@ -2078,7 +2111,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
   void showFuelAddDialog(int lineID,Consumption_ids consumption) {
     if(consumption!=null){
       controller.selectedBaseRoute = BaseRoute(id:consumption.routeId.id,name:consumption.routeId.name,fuel_liter: consumption.standardLiter);
-      //controller.actualAmountTextController.text = consumption.consumedLiter.toString();
+      controller.actualAmountTextController.text = consumption.consumedLiter.toString();
       controller.descriptionTextController.text = consumption.description;
     }else{
       controller.selectedBaseRoute = controller.base_route_list.value[0];

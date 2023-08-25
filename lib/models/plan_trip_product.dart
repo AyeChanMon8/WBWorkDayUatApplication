@@ -1,5 +1,10 @@
 // @dart=2.9
 
+import 'package:winbrother_hr_app/models/fleet_model.dart';
+
+import 'daytrip_expense.dart';
+import 'stock_location.dart';
+
 class Plan_trip_product {
   int _id;
   String _name;
@@ -525,7 +530,7 @@ class Fuelin_ids {
   double _liter;
   double _priceUnit;
   double _amount;
-  Location_id _location_id;
+  Stock_location _location_id;
   int _id;
   bool _add_from_office;
 
@@ -536,7 +541,7 @@ class Fuelin_ids {
   double get liter => _liter;
   double get priceUnit => _priceUnit;
   double get amount => _amount;
-  Location_id get location_id => _location_id;
+  Stock_location get location_id => _location_id;
   int get id => _id;
   bool get add_from_office => _add_from_office;
 
@@ -547,7 +552,8 @@ class Fuelin_ids {
       dynamic slipNo, 
       double liter, 
       double priceUnit, 
-      double amount,int id}){
+      double amount,int id,
+      Stock_location location_id}){
     _date = date;
     _shop = shop;
     _productId = productId;
@@ -556,6 +562,7 @@ class Fuelin_ids {
     _priceUnit = priceUnit;
     _amount = amount;
     _id = id;
+    _location_id= location_id;
 }
 
   Fuelin_ids.fromJson(dynamic json) {
@@ -566,7 +573,7 @@ class Fuelin_ids {
     _liter = json["liter"];
     _priceUnit = json["price_unit"];
     _amount = json["amount"];
-    _location_id = json["location_id"]!= null ? Location_id.fromJson(json["location_id"]) : null;
+    _location_id = json["location_id"]!= null ? Stock_location.fromJson(json["location_id"]) : null;
     _id = json["id"];
     _add_from_office = json["add_from_office"];
   }
@@ -577,6 +584,9 @@ class Fuelin_ids {
     map["shop"] = _shop;
     if (_productId != null) {
       map["product_id"] = _productId.toJson();
+    }
+    if (_location_id != null) {
+      map["location_id"] = _location_id.toJson();
     }
     map["slip_no"] = _slipNo;
     map["liter"] = _liter;
@@ -880,26 +890,34 @@ class Driver_id {
 class Vehicle_id {
   int _id;
   String _name;
+  dynamic _inchargeId;
 
   int get id => _id;
   String get name => _name;
+  dynamic get inchargeId => _inchargeId;
 
   Vehicle_id({
       int id, 
-      String name}){
+      String name,
+      dynamic inchargeId}){
     _id = id;
     _name = name;
+    _inchargeId = inchargeId;
 }
 
   Vehicle_id.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
+    _inchargeId = json["incharge_id"] != null ? Incharge_id.fromJson(json["incharge_id"]) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["id"] = _id;
     map["name"] = _name;
+    if (_inchargeId != null) {
+      map["incharge_id"] = _inchargeId.toJson();
+    }
     return map;
   }
 

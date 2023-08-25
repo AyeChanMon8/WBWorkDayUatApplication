@@ -1,5 +1,8 @@
 // @dart=2.9
 
+
+import 'fleet_model.dart';
+
 class Plantrip_waybill {
   int _id;
   dynamic _name;
@@ -387,7 +390,8 @@ class WayBill_Fuelin_ids {
       String slipNo, 
       double liter, 
       double priceUnit, 
-      double amount,int id}){
+      double amount,int id,
+      Location_id location_id}){
     _date = date;
     _shop = shop;
     _productId = productId;
@@ -396,6 +400,7 @@ class WayBill_Fuelin_ids {
     _priceUnit = priceUnit;
     _amount = amount;
     _id = id;
+    _location_id = location_id;
 }
 
   WayBill_Fuelin_ids.fromJson(dynamic json) {
@@ -417,6 +422,9 @@ class WayBill_Fuelin_ids {
     map["shop"] = _shop;
     if (_productId != null) {
       map["product_id"] = _productId.toJson();
+    }
+    if (_location_id != null) {
+      map["location_id"] = _location_id.toJson();
     }
     map["slip_no"] = _slipNo;
     map["liter"] = _liter;
@@ -999,26 +1007,34 @@ class Create_uid {
 class Vehicle_id {
   int _id;
   String _name;
+  Incharge_id _inchargeId;
 
   int get id => _id;
   String get name => _name;
+  Incharge_id get inchargeId => _inchargeId;
 
   Vehicle_id({
       int id, 
-      String name}){
+      String name,
+      Incharge_id inchargeId}){
     _id = id;
     _name = name;
+    _inchargeId = inchargeId;
 }
 
   Vehicle_id.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
+    _inchargeId = json["incharge_id"] != null ? Incharge_id.fromJson(json["incharge_id"]) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["id"] = _id;
     map["name"] = _name;
+    if (_inchargeId != null) {
+      map["incharge_id"] = _inchargeId.toJson();
+    }
     return map;
   }
 

@@ -1411,13 +1411,13 @@ AppUtils.showConfirmDialog('Information', 'Successfully Approved!',() async {
             Get.back();
              Get.back();
               AppUtils.showConfirmDialog('Information', 'Successfully Approved!',() async {
+                Get.back();
+                Get.back();
                 var employee_id = box.read('emp_id');
                 suspened_approval_count.value =  await travelRequestService.getSuspensionToApproveCount(employee_id);
                 offset.value = 0;
                 getSuspensionApprovalList();
                 getSuspensionApprovedList();
-                Get.back();
-                Get.back();
               });
           }
         });

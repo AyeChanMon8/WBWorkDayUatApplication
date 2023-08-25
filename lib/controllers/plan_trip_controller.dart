@@ -316,13 +316,15 @@ class PlanTripController extends GetxController {
     }
     if (valid) {
       var endTrip;
+      var employee_id = box.read('emp_id');
       if (lineID == 0) {
         endTrip = Plantrip_fuel_consumption(
             planTripId: plantrip_id,
             consumedLiter: double.parse(actualAmountTextController.text),
             description: descriptionTextController.text,
             route_id: this.selectedBaseRoute.id,
-            date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()));
+            date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),
+            employeeId: int.parse(employee_id));
       } else {
         endTrip = Plantrip_fuel_consumption(
             planTripId: plantrip_id,
@@ -330,7 +332,8 @@ class PlanTripController extends GetxController {
             description: descriptionTextController.text,
             route_id: this.selectedBaseRoute.id,
             date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),
-            line_id: lineID);
+            line_id: lineID,
+            employeeId: int.parse(employee_id));
       }
       AppUtils.showConfirmCancelDialog('Warning', 'Are you sure?', () async {
         // var endTrip  = Plantrip_fuel_consumption(planTripId: plantrip_id,consumedLiter: double.parse(actualAmountTextController.text),description:descriptionTextController.text,route_id: this.selectedRoute.routeId.id,date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()));
@@ -387,13 +390,15 @@ class PlanTripController extends GetxController {
     }
     if (valid) {
       var endTrip;
+      var employee_id = box.read('emp_id');
       if (lineID == 0) {
         endTrip = Plantrip_fuel_consumption(
             planTripId: planTripWayBill.id,
             consumedLiter: double.parse(actualAmountTextController.text),
             description: descriptionTextController.text,
             route_id: this.selectedBaseRoute.id,
-            date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()));
+            date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),
+            employeeId: int.parse(employee_id));
         ;
       } else {
         endTrip = Plantrip_fuel_consumption(
@@ -402,7 +407,8 @@ class PlanTripController extends GetxController {
             description: descriptionTextController.text,
             route_id: this.selectedBaseRoute.id,
             date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),
-            line_id: lineID);
+            line_id: lineID,
+            employeeId: int.parse(employee_id));
       }
       AppUtils.showConfirmCancelDialog('Warning', 'Are you sure?', () async {
         print("DateTime");
@@ -1190,6 +1196,102 @@ class PlanTripController extends GetxController {
         //calculateTotalExpense(plantrip_with_waybill_list[arg_index.value].expenseIds);
        }
       Get.back();
+    });
+  }
+
+  void clickstartPlanTripProduct(int id) async{
+    Future.delayed(
+      Duration.zero,
+          () => Get.dialog(
+          Center(
+              child: SpinKitWave(
+                color: Color.fromRGBO(63, 51, 128, 1),
+                size: 30.0,
+              )),
+          barrierDismissible: false));
+  var employee_id = box.read('emp_id');
+  await planTripServie
+        .startPlanTripProductTrip(id.toString())
+        .then((data) {
+      if (data != 0) {
+        AppUtils.showConfirmDialog('Information', 'Successfully Started!', () {
+          Get.back();
+          Get.back();
+          Get.back(result: true);
+        });
+      }
+    });
+  }
+
+  void clickendPlanTripProduct(int id) async{
+    Future.delayed(
+      Duration.zero,
+          () => Get.dialog(
+          Center(
+              child: SpinKitWave(
+                color: Color.fromRGBO(63, 51, 128, 1),
+                size: 30.0,
+              )),
+          barrierDismissible: false));
+  var employee_id = box.read('emp_id');
+  await planTripServie
+        .endPlanTripProductTrip(id.toString())
+        .then((data) {
+      if (data != 0) {
+        AppUtils.showConfirmDialog('Information', 'Successfully Ended!', () {
+          Get.back();
+          Get.back();
+          Get.back(result: true);
+        });
+      }
+    });
+  }
+
+  void clickstartPlanTripWayBill(int id) async{
+    Future.delayed(
+      Duration.zero,
+          () => Get.dialog(
+          Center(
+              child: SpinKitWave(
+                color: Color.fromRGBO(63, 51, 128, 1),
+                size: 30.0,
+              )),
+          barrierDismissible: false));
+  var employee_id = box.read('emp_id');
+  await planTripServie
+        .startPlanTripWaybillTrip(id.toString())
+        .then((data) {
+      if (data != 0) {
+        AppUtils.showConfirmDialog('Information', 'Successfully Started!', () {
+          Get.back();
+          Get.back();
+          Get.back(result: true);
+        });
+      }
+    });
+  }
+
+  void clickendPlanTripWayBill(int id) async{
+    Future.delayed(
+      Duration.zero,
+          () => Get.dialog(
+          Center(
+              child: SpinKitWave(
+                color: Color.fromRGBO(63, 51, 128, 1),
+                size: 30.0,
+              )),
+          barrierDismissible: false));
+  var employee_id = box.read('emp_id');
+  await planTripServie
+        .endPlanTripWaybillTrip(id.toString())
+        .then((data) {
+      if (data != 0) {
+        AppUtils.showConfirmDialog('Information', 'Successfully Ended!', () {
+          Get.back();
+          Get.back();
+          Get.back(result: true);
+        });
+      }
     });
   }
 

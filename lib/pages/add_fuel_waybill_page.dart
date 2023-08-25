@@ -10,10 +10,11 @@ import 'package:winbrother_hr_app/controllers/day_trip_expense_controller.dart';
 import 'package:winbrother_hr_app/controllers/daytrip_plantrip_fuel_advance_controller.dart';
 import 'package:winbrother_hr_app/models/daytrip_expense.dart';
 import 'package:winbrother_hr_app/models/plan_trip_product.dart';
+import 'package:winbrother_hr_app/models/plantrip_waybill.dart';
 import 'package:winbrother_hr_app/models/stock_location.dart';
 import 'package:winbrother_hr_app/my_class/my_app_bar.dart';
 import 'package:winbrother_hr_app/my_class/my_style.dart';
-class AddFuelPage extends StatelessWidget {
+class AddFuelWayBillPage extends StatelessWidget {
   //final DayTripExpenseController day_trip_controller = Get.find();
   DayTripPlanTripGeneralController day_trip_controller = Get.put(DayTripPlanTripGeneralController());
   var arg_id = 0;
@@ -21,7 +22,7 @@ class AddFuelPage extends StatelessWidget {
   var from_date = "";
   var to_date = "";
   var line_id = 0;
-  AddFuelPage(String from,int daytrip_id, String fromDatetime,String toDateTime,Fuelin_ids fuelInId){
+  AddFuelWayBillPage(String from,int daytrip_id, String fromDatetime,String toDateTime,WayBill_Fuelin_ids fuelInId){
     day_trip_controller.getProductForFuelTab();
     day_trip_controller.getAddFuelLocation();
     arg_id = daytrip_id;

@@ -25,6 +25,7 @@ import 'package:winbrother_hr_app/pages/add_advance_page.dart';
 import 'package:winbrother_hr_app/pages/add_fuel_page.dart';
 import 'package:winbrother_hr_app/utils/app_utils.dart';
 
+import 'add_fuel_daytrip_page.dart';
 import 'leave_detail.dart';
 
 class CreateDayTrip extends StatefulWidget {
@@ -44,12 +45,15 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
   var isDriver = false;
   var is_branch_manager = false;
   var is_spare = false;
+  var employee_id;
+  var isIncharge =  false;
   @override
   void initState() {
     if(Get.arguments!=null){
       arg_index = Get.arguments;
     }
     isDriver = box.read("is_driver");
+    employee_id = box.read('emp_id');
     if(box.read('real_role_category').toString().contains('branch manager')){;
       is_branch_manager = true;
     }else{
@@ -89,7 +93,9 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
       controller.product_ids_list.value = daytrip_controller.dayTripList[arg_index].product_lines;
       controller.advance_ids_list.value = daytrip_controller.dayTripList[arg_index].advance_lines;
       controller.consumption_ids_list.value = daytrip_controller.dayTripList[arg_index].consumption_ids;
-
+      if(daytrip_controller.dayTripList[arg_index].vehicleId.inchargeId !=null && daytrip_controller.dayTripList[arg_index].vehicleId.inchargeId.id == int.parse(employee_id)){
+                isIncharge = true;
+      }
     }
     dayTripModel = daytrip_controller.dayTripList[arg_index];
     final labels = AppLocalizations.of(context);
@@ -420,20 +426,35 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                 ],
               ),
             ),
-            daytrip_controller.dayTripList[arg_index].state=='running'?
-            isDriver==false&&is_spare==false?
+            daytrip_controller.dayTripList[arg_index].state == 'advance_withdraw'  && isIncharge ?
             Padding(
-              padding: const EdgeInsets.only(left:15.0,bottom: 15),
+              padding: const EdgeInsets.only(left: 15.0, bottom: 15),
               child: GFButton(
                 color: textFieldTapColor,
                 onPressed: () {
-                  controller.endTrip(context);
+                  controller.clickstartDayTrip(daytrip_controller.dayTripList[arg_index].id);
                 },
-                text: labels.save,
+                text: 'Start Trip',
                 blockButton: true,
                 size: GFSize.LARGE,
               ),
-            ):SizedBox():
+            )
+                : SizedBox(),
+            daytrip_controller.dayTripList[arg_index].state == 'running'
+                && isIncharge
+                ? Padding(
+              padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+              child: GFButton(
+                color: textFieldTapColor,
+                onPressed: () {
+                  controller.clickendDayTrip(daytrip_controller.dayTripList[arg_index].id);
+                },
+                text: 'End Trip',
+                blockButton: true,
+                size: GFSize.LARGE,
+              ),
+            )
+                : SizedBox(),
             daytrip_controller.dayTripList[arg_index].state=='submit'? Row(
               children: [
                 Expanded(
@@ -820,7 +841,19 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                         ),
                       ),
                       daytrip_controller.dayTripList[arg_index].state=="close"?SizedBox():
-                      daytrip_controller.dayTripList[arg_index].fuelInIds[index].add_from_office==null&&isDriver==true||is_spare==true&&is_branch_manager==false?
+                      (daytrip_controller.dayTripList[arg_index].state=='running'&&daytrip_controller.dayTripList[arg_index].fuelInIds[index].add_from_office==null&&(isDriver==true||is_spare==true)&&is_branch_manager==false)?
+                          Expanded(
+                            flex: 1,
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                   Get.to(AddFuelDaytripPage("DayTrip",controller.daytrip_id,daytrip_controller.dayTripList[arg_index].fromDatetime,daytrip_controller.dayTripList[arg_index].toDatetime,daytrip_controller.dayTripList[arg_index].fuelInIds[index])).then((value) {
+                                      daytrip_controller.getDayTripList(daytrip_controller.current_page.value);
+                                    });
+                                },
+                              )):Expanded(flex:1,child: SizedBox()),
+                      daytrip_controller.dayTripList[arg_index].state=="close"?SizedBox():
+                      (daytrip_controller.dayTripList[arg_index].state=='running'&&daytrip_controller.dayTripList[arg_index].fuelInIds[index].add_from_office==null&&isDriver==true||is_spare==true&&is_branch_manager==false)?
                           Expanded(
                             flex: 1,
                               child: IconButton(
@@ -1104,7 +1137,7 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                           )),
                       Expanded(
                           child: Text(
-                              NumberFormat('#,###').format(double.tryParse(consumption_ids.consumed_liter.toString())).toString()))
+                              NumberFormat('#,###.##').format(double.tryParse(consumption_ids.consumed_liter.toString())).toString()))
                     ],
                   ),
                   SizedBox(
@@ -1151,7 +1184,7 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
           current_odometer = NumberFormat('#,###').format(double.tryParse(daytrip_controller.dayTripList[arg_index].consumption_ids[index].current_odometer.toString()));
           last_odometer = NumberFormat('#,###').format(double.tryParse(daytrip_controller.dayTripList[arg_index].consumption_ids[index].last_odometer.toString()));
           avg_calculation = NumberFormat('#,###').format(double.tryParse(daytrip_controller.dayTripList[arg_index].consumption_ids[index].avg_calculation.toString()));
-          consumed_liter = NumberFormat('#,###').format(double.tryParse(daytrip_controller.dayTripList[arg_index].consumption_ids[index].consumed_liter.toString()));
+          consumed_liter = NumberFormat('#,###.##').format(double.tryParse(daytrip_controller.dayTripList[arg_index].consumption_ids[index].consumed_liter.toString()));
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1220,7 +1253,26 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                             ),),
                         ),
                       ),
-                      daytrip_controller.dayTripList[arg_index].state =="expense_claim"|| daytrip_controller.dayTripList[arg_index].state=="close"?SizedBox():isDriver==true||is_spare==true&&is_branch_manager==false?Expanded(
+                      (daytrip_controller.dayTripList[arg_index].state=='running'&&isDriver==true||is_spare==true&&is_branch_manager==false)? Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:12.0),
+                        child: InkWell(
+                          onTap: (){
+                            showFuelAddDialog(daytrip_controller.dayTripList[arg_index].consumption_ids[index].id,daytrip_controller.dayTripList[arg_index].consumption_ids[index]);
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.edit,
+                              size: 20,
+                              color: Color.fromRGBO(60, 47, 126, 0.5),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ): new Container(),
+                      daytrip_controller.dayTripList[arg_index].state=="close"?
+                      SizedBox():(daytrip_controller.dayTripList[arg_index].state=="running" && (isDriver==true||is_spare==true) &&is_branch_manager==false)?Expanded(
                           child: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
@@ -1730,11 +1782,11 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                 child: consumptionListWidget(context),
               ),
             ),
-            daytrip_controller.dayTripList[arg_index].state == 'running'&& (isDriver==true||is_spare==true)&&is_branch_manager==false?
+            (daytrip_controller.dayTripList[arg_index].state == 'running'&& (isDriver==true||is_spare==true)&&is_branch_manager==false)?
             Align(
               alignment:Alignment.topRight,
               child: FloatingActionButton(onPressed: (){
-                showFuelAddDialog();
+                showFuelAddDialog(0,null);
               },
                 mini: true,
                 child: Icon(Icons.add),
@@ -1802,12 +1854,12 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                 ),
               ),
               
-              daytrip_controller.dayTripList[arg_index].state == 'decline'||daytrip_controller.dayTripList[arg_index].state == 'close' || daytrip_controller.dayTripList[arg_index].state == 'submit'||isDriver==false&&is_spare==false||is_branch_manager==true?
+              daytrip_controller.dayTripList[arg_index].state == 'decline'||daytrip_controller.dayTripList[arg_index].state == 'close' || daytrip_controller.dayTripList[arg_index].state == 'submit'?
               SizedBox():
-              Align(
+              ((daytrip_controller.dayTripList[arg_index].state == 'running' || isDriver==false&&is_spare==false||is_branch_manager==true)) ?Align(
                 alignment:Alignment.topRight,
                 child: FloatingActionButton(onPressed: (){
-                  Get.to(AddFuelPage("DayTrip",controller.daytrip_id,daytrip_controller.dayTripList[arg_index].fromDatetime,daytrip_controller.dayTripList[arg_index].toDatetime)).then((value) {
+                  Get.to(AddFuelDaytripPage("DayTrip",controller.daytrip_id,daytrip_controller.dayTripList[arg_index].fromDatetime,daytrip_controller.dayTripList[arg_index].toDatetime,null)).then((value) {
                     daytrip_controller.getDayTripList(daytrip_controller.current_page.value);
 
                   });
@@ -1815,7 +1867,7 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                   mini: true,
                   child: Icon(Icons.add),
                 ),
-              ),
+              ):SizedBox(),
             ],
           ),
         )
@@ -1864,16 +1916,129 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
     );
   }
 
-  void showFuelAddDialog() {
+//   void showFuelAddDialog() {
 
+//     showDialog(
+//         context: context,
+//         builder: (BuildContext context) {
+//           var labels = AppLocalizations.of(context);
+//           controller
+//               .actualFuelLiterTextController.clear();
+//           controller
+//               .descriptionTextController.clear();
+//           return AlertDialog(
+//             content: Stack(
+//               overflow: Overflow.visible,
+//               children: <Widget>[
+//                 Positioned(
+//                   right: -40.0,
+//                   top: -40.0,
+//                   child: InkResponse(
+//                     onTap: () {
+//                       Navigator.of(context).pop();
+//                     },
+//                     child: CircleAvatar(
+//                       child: Icon(Icons.close),
+//                       backgroundColor: Colors.red,
+//                     ),
+//                   ),
+//                 ),
+//                 SingleChildScrollView(
+//                   child: Column(
+//                     children: [
+
+//                       Text(labels.fuelConsumption,style: TextStyle(color: backgroundIconColor,fontSize: 18)),
+
+//                       Row(
+//                         children: [
+//                           Expanded(
+//                             child: Container(
+//                                 margin: EdgeInsets.only(
+//                                     top: 20),
+//                                 child: Theme(
+//                                   data: new ThemeData(
+//                                     primaryColor:
+//                                     textFieldTapColor,
+//                                   ),
+//                                   child: TextField(
+//                                     keyboardType: TextInputType.number,
+//                                     controller: controller
+//                                         .actualFuelLiterTextController,
+//                                     decoration:
+//                                     InputDecoration(
+//                                       border:
+//                                       OutlineInputBorder(),
+//                                       hintText: labels.actualConsum,
+//                                     ),
+//                                     onChanged:
+//                                         (text) {
+
+//                                     },
+//                                   ),
+//                                 )),
+//                           ),
+
+//                         ],
+//                       ),
+
+//                       Padding(
+//                         padding: const EdgeInsets.only(top:20.0),
+//                         child: Container(
+//                           child: TextField(
+//                             controller: controller
+//                                 .descriptionTextController,
+//                             enabled: true,
+//                             style: TextStyle(
+//                                 color: Colors.black
+//                             ),
+//                             decoration: InputDecoration(
+//                               border: OutlineInputBorder(),
+//                               hintText: ((labels.description)),
+//                             ),
+//                             onChanged: (text) {},
+//                           ),
+//                         ),
+//                       ),
+//                       Padding(
+//                         padding: const EdgeInsets.only(
+//                             top: 20.0),
+//                         child: GFButton(
+//                           onPressed: () {
+//                             controller.addFuelConsumption(dayTripModel);
+
+//                           },
+//                           text: labels.save,
+//                           blockButton: true,
+//                           size: GFSize.LARGE,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           );
+//         }).then((value) {
+//           if(value!=null){
+//             daytrip_controller.getDayTripList(daytrip_controller.current_page.value);
+//           }
+
+//     });
+//   }
+// }
+
+void showFuelAddDialog(int lineID,Consumption_ids consumption) {
+    if(consumption!=null){
+      controller.actualFuelLiterTextController.text = consumption.consumed_liter.toString();
+      controller.descriptionTextController.text = consumption.description!= null ? consumption.description.toString() : "";
+    }else{
+      controller.actualFuelLiterTextController.text = "";
+      controller.descriptionTextController.text = "";
+    }
     showDialog(
         context: context,
         builder: (BuildContext context) {
           var labels = AppLocalizations.of(context);
-          controller
-              .actualFuelLiterTextController.clear();
-          controller
-              .descriptionTextController.clear();
           return AlertDialog(
             content: Stack(
               overflow: Overflow.visible,
@@ -1894,9 +2059,7 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                 SingleChildScrollView(
                   child: Column(
                     children: [
-
                       Text(labels.fuelConsumption,style: TextStyle(color: backgroundIconColor,fontSize: 18)),
-
                       Row(
                         children: [
                           Expanded(
@@ -1952,10 +2115,9 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
                             top: 20.0),
                         child: GFButton(
                           onPressed: () {
-                            controller.addFuelConsumption(dayTripModel);
-
+                            controller.addFuelConsumption(dayTripModel,lineID);
                           },
-                          text: labels.save,
+                          text: "Save",
                           blockButton: true,
                           size: GFSize.LARGE,
                         ),
@@ -1967,9 +2129,9 @@ class _CreateDayTripState extends State<CreateDayTrip> with SingleTickerProvider
             ),
           );
         }).then((value) {
-          if(value!=null){
-            daytrip_controller.getDayTripList(daytrip_controller.current_page.value);
-          }
+      if(value!=null){
+        daytrip_controller.getDayTripList(daytrip_controller.current_page.value);
+      }
 
     });
   }

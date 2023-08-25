@@ -114,9 +114,11 @@ class _DayTripListPageState extends State<DayTripListPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AutoSizeText(
-                                  dayTripModel.vehicleId.name,
-                                  style: subtitleStyle(),
+                                Expanded(
+                                  child: AutoSizeText(
+                                    dayTripModel.vehicleId.name,
+                                    style: subtitleStyle(),
+                                  ),
                                 ),
                                 dayTripModel.state=='open'?
                                 dayTripModel.driverId.id==emp_id?AutoSizeText(

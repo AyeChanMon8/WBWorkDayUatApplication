@@ -299,12 +299,13 @@ class DayTripExpenseController extends GetxController{
     }
 
   }
-  addFuelConsumption(DayTripModel dayTripModel) async {
+  addFuelConsumption(DayTripModel dayTripModel,int lineId) async {
     if(actualFuelLiterTextController.text.isEmpty){
       Get.snackbar('Warning', "Fill Required Data!", snackPosition: SnackPosition.BOTTOM);
     }else{
       AppUtils.showConfirmCancelDialog('Warning', 'Are you sure?', () async {
-        var data  = Daytrip_fuel_consumption(dayTripId: daytrip_id,consumedLiter: double.parse(actualFuelLiterTextController.text),description:descriptionTextController.text,date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()));
+        var employee_id = box.read('emp_id');
+        var data  = Daytrip_fuel_consumption(dayTripId: daytrip_id,consumedLiter: double.parse(actualFuelLiterTextController.text),description:descriptionTextController.text,date: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),employeeId: int.parse(employee_id),lineId: lineId);
         await dayTripServie.addDayTripFuelConsumption(data).then((data) {
           if (data != 0) {
             Get.back();
@@ -433,6 +434,53 @@ class DayTripExpenseController extends GetxController{
       Get.back();
       if (data != 0) {
         AppUtils.showConfirmDialog('Information', 'Successfully Declined!',(){
+          Get.back();
+          Get.back(result: true);
+        });
+      }
+    });
+  }
+
+  void clickstartDayTrip(int id) async{
+    Future.delayed(
+      Duration.zero,
+          () => Get.dialog(
+          Center(
+              child: SpinKitWave(
+                color: Color.fromRGBO(63, 51, 128, 1),
+                size: 30.0,
+              )),
+          barrierDismissible: false));
+  var employee_id = box.read('emp_id');
+  await dayTripServie
+        .startDayTrip(id.toString())
+        .then((data) {
+      if (data != 0) {
+        AppUtils.showConfirmDialog('Information', 'Successfully Started!', () {
+          Get.back();
+          Get.back();
+          Get.back(result: true);
+        });
+      }
+    });
+  }
+  void clickendDayTrip(int id) async{
+    Future.delayed(
+      Duration.zero,
+          () => Get.dialog(
+          Center(
+              child: SpinKitWave(
+                color: Color.fromRGBO(63, 51, 128, 1),
+                size: 30.0,
+              )),
+          barrierDismissible: false));
+  var employee_id = box.read('emp_id');
+  await dayTripServie
+        .endDayTrip(id.toString())
+        .then((data) {
+      if (data != 0) {
+        AppUtils.showConfirmDialog('Information', 'Successfully Ended!', () {
+          Get.back();
           Get.back();
           Get.back(result: true);
         });

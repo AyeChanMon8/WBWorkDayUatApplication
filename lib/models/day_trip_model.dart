@@ -1,5 +1,7 @@
 // @dart=2.9
 
+import 'fleet_model.dart';
+
 /// id : 2
 /// name : "Ygn - Mdy"
 /// state : "draft"
@@ -485,26 +487,34 @@ class Driver_id {
 class Vehicle_id {
   int _id;
   String _name;
+  Incharge_id _inchargeId;
 
   int get id => _id;
   String get name => _name;
+  dynamic get inchargeId => _inchargeId;
 
   Vehicle_id({
       int id,
-      String name}){
+      String name,
+      dynamic inchargeId}){
     _id = id;
     _name = name;
+    _inchargeId = inchargeId;
 }
 
   Vehicle_id.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
+    _inchargeId = json["incharge_id"] != null ? Incharge_id.fromJson(json["incharge_id"]) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["id"] = _id;
     map["name"] = _name;
+    if (_inchargeId != null) {
+      map["incharge_id"] = _inchargeId.toJson();
+    }
     return map;
   }
 
@@ -517,6 +527,7 @@ class Consumption_ids {
   int _standard_liter;
   double _consumed_liter;
   double _avg_calculation;
+  dynamic _description;
   int _id;
 
   double get last_odometer => _last_odometer;
@@ -525,6 +536,7 @@ class Consumption_ids {
   int get standard_liter => _standard_liter;
   double get consumed_liter => _consumed_liter;
   double get avg_calculation => _avg_calculation;
+  dynamic get description => _description;
   int get id => _id;
 
   Consumption_ids.fromJson(dynamic json) {
@@ -534,6 +546,7 @@ class Consumption_ids {
     _standard_liter = json["standard_liter"];
     _consumed_liter = json["consumed_liter"];
     _avg_calculation = json["avg_calculation"];
+    _description = json["description"];
     _id = json["id"];
   }
 

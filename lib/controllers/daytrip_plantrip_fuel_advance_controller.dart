@@ -58,6 +58,8 @@ class DayTripPlanTripGeneralController extends GetxController{
   final is_show_expense = true.obs;
   var daytrip_id = 0;
   DayTripModel dayTripModel;
+  var selectedProductId = 0;
+  var selectedLocationId = 0;
 
   Rx<Daytrip_expense> _selectedExpenseType = Daytrip_expense().obs;
   Daytrip_expense get selectedExpenseType => _selectedExpenseType.value;
@@ -178,17 +180,62 @@ class DayTripPlanTripGeneralController extends GetxController{
     await dayTripServie.getStockLocationList().then((data){
       data.insert(
           0, Stock_location(id: 0, name: 'Location'));
-      this.selectedLocation = data[0];
+      //this.selectedLocation = data[0];
       location_list.value = data;
+      if(selectedLocationId!=0){
+        for(var i=0;i< location_list.length;i++){
+          if(selectedLocationId==location_list.value[i].id){
+            this.selectedLocation = location_list.value[i];
+            break;
+          }
+        }
+      }else{
+          this.selectedLocation = data[0];
+      }
     });
+  }
+
+  getAddFuelLocationID(int id) async{
+    if(id!=0){
+        for(var i=0;i< location_list.value.length;i++){
+          if(id==location_list.value[i].id){
+            this.selectedLocation = location_list.value[i];
+            break;
+          }
+        }
+      }else{
+          this.selectedLocation = location_list[0];
+      }
+  }
+  getProductForFuelTabId(int id) async {
+    if(id!=0){
+        for(var i=0;i< product_list.length;i++){
+          if(id==product_list.value[i].id){
+            this.selectedProduct = product_list.value[i];
+            break;
+          }
+        }
+      }else{
+          this.selectedProduct = product_list.value[0];
+      }
   }
   getProductForFuelTab() async {
     var company_id = box.read('emp_company');
     await dayTripServie.getDayTripProductListForFuelTab(company_id).then((data){
       data.insert(
           0, Daytrip_expense(id: 0, name: 'Product'));
-      this.selectedProduct = data[0];
+      
       product_list.value = data;
+      if(selectedProductId!=0){
+        for(var i=0;i< product_list.length;i++){
+          if(selectedProductId==product_list.value[i].id){
+            this.selectedProduct = product_list.value[i];
+            break;
+          }
+        }
+      }else{
+          this.selectedProduct = data[0];
+      }
     });
   }
 
@@ -265,7 +312,7 @@ class DayTripPlanTripGeneralController extends GetxController{
     return valid;
   }
 
-  addFuel(String arg, int trip_id) async {
+  addFuel(String arg, int trip_id,int line_id) async {
     print("addFuel#");
     print(qtyController.text);
     bool valid =false;
@@ -298,19 +345,24 @@ class DayTripPlanTripGeneralController extends GetxController{
                       size: 30.0,
                     )),
                 barrierDismissible: false));
-        var location_id = 0;
-        if(this.selectedLocation!=null){
+        var location_id = null;
+        var product_id = null;
+        if(this.selectedLocation!=null && this.selectedLocation.id != 0){
           location_id = this.selectedLocation.id;
         }
+        if(this.selectedProduct!=null && this.selectedProduct.id != 0){
+          product_id = this.selectedProduct.id;
+        }
         var fuelin;
+        var employee_id = box.read('emp_id');
         if(arg=="DayTrip"){
-           fuelin  = Fuelin_line(date:dateTextController.text,shop:shopNameTextController.text,productId: this.selectedProduct.id,locationId: location_id,slipNo:slipNoTextController.text,liter:double.tryParse(qtyController.text),priceUnit:int.tryParse(priceController.text),dayTripId: trip_id,status: 'day_trip');
+           fuelin  = Fuelin_line(date:dateTextController.text,shop:shopNameTextController.text,productId: product_id,locationId: location_id,slipNo:slipNoTextController.text,liter:double.tryParse(qtyController.text),priceUnit:double.tryParse(priceController.text),dayTripId: trip_id,status: 'day_trip',employeeId: int.parse(employee_id), lineId: line_id);
         }
         else if(arg=="PlanTripProduct"){
-           fuelin  = Fuelin_line(date:dateTextController.text,shop:shopNameTextController.text,productId: this.selectedProduct.id,locationId: location_id,slipNo:slipNoTextController.text,liter:double.tryParse(qtyController.text),priceUnit:int.tryParse(priceController.text),dayTripId: trip_id,status: 'plantrip_product');
+           fuelin  = Fuelin_line(date:dateTextController.text,shop:shopNameTextController.text,productId: product_id,locationId: location_id,slipNo:slipNoTextController.text,liter:double.tryParse(qtyController.text),priceUnit:double.tryParse(priceController.text),dayTripId: trip_id,status: 'plantrip_product',employeeId: int.parse(employee_id), lineId: line_id);
         }
         else{
-           fuelin  = Fuelin_line(date:dateTextController.text,shop:shopNameTextController.text,productId: this.selectedProduct.id,locationId: location_id,slipNo:slipNoTextController.text,liter:double.tryParse(qtyController.text),priceUnit:int.tryParse(priceController.text),dayTripId: trip_id,status: 'plantrip_waybill');
+           fuelin  = Fuelin_line(date:dateTextController.text,shop:shopNameTextController.text,productId: product_id,locationId: location_id,slipNo:slipNoTextController.text,liter:double.tryParse(qtyController.text),priceUnit:double.tryParse(priceController.text),dayTripId: trip_id,status: 'plantrip_waybill',employeeId: int.parse(employee_id), lineId: line_id);
 
         }
       await dayTripServie.addFuelIn(fuelin).then((data) {

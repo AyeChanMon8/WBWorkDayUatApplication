@@ -19,11 +19,13 @@ import 'package:winbrother_hr_app/localization.dart';
 import 'package:winbrother_hr_app/models/base_route.dart';
 import 'package:winbrother_hr_app/models/daytrip_expense.dart';
 import 'package:winbrother_hr_app/models/plan_trip_product.dart';
+import 'package:winbrother_hr_app/models/stock_location.dart';
 import 'package:winbrother_hr_app/models/travel_expense/list/travel_line_list_model.dart';
 import 'package:winbrother_hr_app/my_class/my_app_bar.dart';
 import 'package:winbrother_hr_app/my_class/my_style.dart';
 import 'package:winbrother_hr_app/pages/add_advance_page.dart';
 import 'package:winbrother_hr_app/pages/add_fuel_page.dart';
+import 'package:winbrother_hr_app/routes/app_pages.dart';
 import 'package:winbrother_hr_app/utils/app_utils.dart';
 
 class PlanTripDetails extends StatefulWidget {
@@ -44,9 +46,12 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
   var is_branch_manager = false;
   var plantrip_product_list_lines = [];
   var next_route_id = 0;
+  var isIncharge = false;
+  var employee_id;
   @override
   void initState() {
     isDriver = box.read("is_driver");
+    employee_id = box.read('emp_id');
     if (box.read('real_role_category').toString().contains('branch manager')) {
       is_branch_manager = true;
     } else {
@@ -72,6 +77,11 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
           0) {
         controller.selectedRoute =
             controller.plantrip_with_product_list[arg_index].consumptionIds[0];
+      }
+      if(controller
+              .plantrip_with_product_list[arg_index].vehicleId.inchargeId !=null && controller
+              .plantrip_with_product_list[arg_index].vehicleId.inchargeId.id == int.parse(employee_id)){
+                isIncharge = true;
       }
     }
     controller.plantrip_with_product_list[arg_index].state == 'open'
@@ -122,7 +132,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
         //   padding: const EdgeInsets.only(top: 20),
         //   child: routeListWidget(context),
         // ),
-        controller.plantrip_with_product_list.value[controller.arg_index.value].state == 'running' && isDriver ? Padding(
+        controller.plantrip_with_product_list.value[controller.arg_index.value].state == 'running' && (controller.plantrip_with_product_list[arg_index].driverId.id == int.parse(employee_id)) ? Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: routeListWidget(context),
         ): SizedBox(),
@@ -624,9 +634,9 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
         child: fuelInListWidget(context),
       ),
     ),
-    controller.plantrip_with_product_list[arg_index].state == 'running' &&
+    (controller.plantrip_with_product_list[arg_index].state == 'running' &&
             isDriver == true ||is_spare == true&&
-            is_branch_manager == false
+            is_branch_manager == false)
         ? Align(
           alignment:Alignment.topRight,
           child: FloatingActionButton(
@@ -637,7 +647,8 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                       controller.plantrip_with_product_list[arg_index]
                           .fromDatetime,
                       controller.plantrip_with_product_list[arg_index]
-                          .toDatetime))
+                          .toDatetime,
+                      null))
                   .then((value) {
                 if (value != null) {
                   DayTripPlanTripGeneralController general_controller =
@@ -654,6 +665,10 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                             id: general_controller.selectedProduct.id,
                             name:
                                 general_controller.selectedProduct.name),
+                        location_id: Stock_location(
+                            id: general_controller.selectedLocation.id,
+                            name:
+                                general_controller.selectedLocation.name),
                         slipNo:
                             general_controller.slipNoTextController.text,
                         liter: double.tryParse(
@@ -665,7 +680,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                   );
                 }
               });
-            },
+          },
             mini: true,
             child: Icon(Icons.add),
           ),
@@ -741,10 +756,10 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
         child: consumptionListWidget(context),
       ),
     ),
-    controller.plantrip_with_product_list.value[arg_index].state ==
+    (controller.plantrip_with_product_list.value[arg_index].state ==
                 'running' &&
             isDriver == true ||is_spare == true&&
-            is_branch_manager == false
+            is_branch_manager == false)
         ? Align(
          alignment: Alignment.topRight,
           child: FloatingActionButton(
@@ -895,10 +910,10 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                             SizedBox(
                               width: 10,
                             ),
-                            AutoSizeText(
+                            controller.plantrip_with_product_list.length > 0 ?AutoSizeText(
                               '${controller.plantrip_with_product_list[arg_index].name}',
                               style: maintitleStyle(),
-                            )
+                            ):SizedBox(),
                           ],
                         ),
                       ),
@@ -938,7 +953,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  AutoSizeText(controller.plantrip_with_product_list[controller.arg_index.value].toDatetime,style: maintitleStyle(),)
+                                  controller.plantrip_with_product_list.length > 0 ?AutoSizeText(controller.plantrip_with_product_list[controller.arg_index.value].toDatetime,style: maintitleStyle(),): SizedBox()
                                 ],
                               )),
                         ],
@@ -959,10 +974,10 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  AutoSizeText(
+                                  controller.plantrip_with_product_list.length > 0 ? AutoSizeText(
                                     '${controller.plantrip_with_product_list[arg_index].vehicleId.name}',
                                     style: maintitleStyle(),
-                                  )
+                                  ):SizedBox()
                                 ],
                               )),
                           SizedBox(
@@ -979,10 +994,10 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  AutoSizeText(
+                                  controller.plantrip_with_product_list.length > 0 ?AutoSizeText(
                                     '${controller.plantrip_with_product_list[arg_index].driverId.name}',
                                     style: maintitleStyle(),
-                                  )
+                                  ):SizedBox()
                                 ],
                               )),
                         ],
@@ -1047,10 +1062,10 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  AutoSizeText(
+                                  controller.plantrip_with_product_list.length > 0 ?AutoSizeText(
                                     '${AppUtils.addThousnadSperator(controller.plantrip_with_product_list.value[arg_index].totalAdvance)}',
                                     style: maintitleStyle(),
-                                  )
+                                  ):SizedBox()
                                 ],
                               )),
                           SizedBox(
@@ -1077,6 +1092,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                       ),
                       //Divider(thickness: 1,),
                       SizedBox(height: 15),
+                      controller.plantrip_with_product_list.length > 0 &&
                       controller.plantrip_with_product_list.value[controller.arg_index.value].state == 'running' ?routeContainer(context): SizedBox(),
                     ],
                   ):SizedBox()),
@@ -1087,7 +1103,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
             SizedBox(
               height: 5,
             ),
-            Container(
+            controller.plantrip_with_product_list.length > 0 ?Container(
                 height: 30,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
@@ -1142,9 +1158,9 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                       text: labels.fuelConsumption,
                     ),
                   ],
-                )),
+                )):SizedBox(),
             // tab bar view here
-            Container(
+            controller.plantrip_with_product_list.length > 0 ?Container(
               height: 350,
                 child: controller.plantrip_with_product_list[arg_index].state ==
                     'open'
@@ -1170,17 +1186,31 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                     //Fuel Consumption
                     consumptionContainer(context),
                   ],
-                )),
-            controller.plantrip_with_product_list[arg_index].state == 'running'
-                ? isDriver == false&&is_spare==false
+                )):SizedBox(),
+            controller.plantrip_with_product_list.length > 0 && controller.plantrip_with_product_list[arg_index].state == 'advance_withdraw'  && isIncharge ?
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+              child: GFButton(
+                color: textFieldTapColor,
+                onPressed: () {
+                  controller.clickstartPlanTripProduct(controller.plantrip_with_product_list[arg_index].id);
+                },
+                text: 'Start Trip',
+                blockButton: true,
+                size: GFSize.LARGE,
+              ),
+            )
+                : SizedBox(),
+            controller.plantrip_with_product_list.length > 0 && controller.plantrip_with_product_list[arg_index].state == 'running'
+                ? isIncharge
                 ? Padding(
               padding: const EdgeInsets.only(left: 15.0, bottom: 15),
               child: GFButton(
                 color: textFieldTapColor,
                 onPressed: () {
-                  controller.endPlanTripProduct(context);
+                  controller.clickendPlanTripProduct(controller.plantrip_with_product_list[arg_index].id);
                 },
-                text: labels.save,
+                text: 'End Trip',
                 blockButton: true,
                 size: GFSize.LARGE,
               ),
@@ -1282,7 +1312,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                           flex: 1,
                           child: Container(
                               // width: 80,
-                              child: Text(NumberFormat('#,###')
+                              child: Text(NumberFormat('#,###.##')
                                   .format(double.tryParse(controller
                                       .plantrip_with_product_list[arg_index]
                                       .consumptionIds[index]
@@ -1300,9 +1330,9 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                 .description),style: TextStyle(fontSize: 11)),
                           ),
                         ),
-                        controller.plantrip_with_product_list[arg_index].state == "expense_claim"|| controller.plantrip_with_product_list[arg_index].state == "close"
+                        controller.plantrip_with_product_list[arg_index].state == "close"
                             ? SizedBox()
-                            : isDriver==true||is_spare==true&&is_branch_manager==false?Expanded(
+                            : ((controller.plantrip_with_product_list[arg_index].state == "running" && (isDriver==true||is_spare==true)&&is_branch_manager==false))?Expanded(
                                 child: IconButton(
                                 icon: Icon(Icons.delete),
                                 onPressed: () {
@@ -1317,11 +1347,11 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                                   arg_index].id);
                                 },
                               )):SizedBox(),
-                        controller.plantrip_with_product_list[arg_index]
+                        (controller.plantrip_with_product_list[arg_index]
                                         .state ==
                                     'running' &&
                                 isDriver == true||is_spare == true &&
-                                is_branch_manager == false
+                                is_branch_manager == false)
                             ? Expanded(
                                 flex: 1,
                                 child: Padding(
@@ -1443,7 +1473,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
       // height: 300,
       margin: EdgeInsets.only(left: 5, right: 5),
       child: Obx(
-        () => Scrollbar(
+        () => controller.plantrip_with_product_list.length > 0 ?Scrollbar(
           isAlwaysShown: true,
           thickness: 5,
           controller: scrollController,
@@ -1630,7 +1660,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
               );
             },
           ),
-        ),
+        ):SizedBox(),
       ),
     );
   }
@@ -1739,7 +1769,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                         });
                       },
                       type: GFButtonType.outline,
-                      text: 'Click',
+                      text: plantrip_product_list_lines[index].status == '' || plantrip_product_list_lines[index].status == null ? 'Start' : plantrip_product_list_lines[index].status == 'running' ? 'End' : '',
                       textColor: textFieldTapColor,
                       blockButton: true,
                       size: GFSize.SMALL,
@@ -1973,8 +2003,12 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                   .plantrip_with_product_list[arg_index]
                                   .fuelinIds[index]
                                   .productId
+                                  .name !=null ? controller
+                                  .plantrip_with_product_list[arg_index]
+                                  .fuelinIds[index]
+                                  .productId
                                   .name
-                                  .toString(),style: TextStyle(fontSize: 11)),
+                                  .toString() : '',style: TextStyle(fontSize: 11)),
                             ),
                           ),
                           Expanded(
@@ -2013,11 +2047,33 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                                       .toString())),style: TextStyle(fontSize: 11)),
                             ),
                           ),
-                          controller.plantrip_with_product_list[arg_index].state == "expense_claim"|| controller.plantrip_with_product_list[arg_index].state == "close"
+                          controller.plantrip_with_product_list[arg_index].state == "close"
                               ? SizedBox()
-                              : controller.plantrip_with_product_list[arg_index]
-                                          .fuelinIds[index].add_from_office ==
-                                      null&&isDriver==true||is_spare==true&&is_branch_manager==false
+                              : (controller.plantrip_with_product_list[arg_index].state=='running'&&(controller.plantrip_with_product_list[arg_index].fuelinIds[index].add_from_office == null) && (isDriver==true||is_spare==true)&&is_branch_manager==false)
+                                  ? Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                           Get.to(AddFuelPage(
+                                                "PlanTripProduct",
+                                                controller.plantrip_with_product_list[arg_index].id,
+                                                controller.plantrip_with_product_list[arg_index]
+                                                    .fromDatetime,
+                                                controller.plantrip_with_product_list[arg_index]
+                                                    .toDatetime,
+                                                controller.plantrip_with_product_list[arg_index].fuelinIds[index]
+                                                )).then((value) {
+                                                  if (value != null) {
+                                                    controller.getPlantripList(controller.current_page.value);
+                                                  }
+                                                });
+                                        },
+                                      ))
+                                  : Expanded(flex: 1, child: SizedBox()),
+                          controller.plantrip_with_product_list[arg_index].state == "close"
+                              ? SizedBox()
+                              : (controller.plantrip_with_product_list[arg_index].state=='running'&& (controller.plantrip_with_product_list[arg_index].fuelinIds[index].add_from_office == null)&&(isDriver==true||is_spare==true)&&is_branch_manager==false)
                                   ? Expanded(
                                       flex: 1,
                                       child: IconButton(
@@ -2699,7 +2755,9 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
       controller.actualAmountTextController.text = consumption.consumedLiter.toString();
       controller.descriptionTextController.text = consumption.description;
     } else {
-      controller.selectedBaseRoute = controller.base_route_list.value[0];
+      if(controller.base_route_list!=null && controller.base_route_list.value.length > 0){
+        controller.selectedBaseRoute = controller.base_route_list.value[0];
+      }
       controller.actualAmountTextController.text = "";
       controller.descriptionTextController.text = "";
     }

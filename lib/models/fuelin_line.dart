@@ -18,9 +18,11 @@ class Fuelin_line {
   int _locationId;
   String _slipNo;
   double _liter;
-  int _priceUnit;
+  double _priceUnit;
   int _dayTripId;
   String _status;
+  int _employeeId;
+  int _lineId;
 
   String get date => _date;
   String get shop => _shop;
@@ -28,8 +30,10 @@ class Fuelin_line {
   int get locationId => _locationId;
   String get slipNo => _slipNo;
   double get liter => _liter;
-  int get priceUnit => _priceUnit;
+  double get priceUnit => _priceUnit;
   int get dayTripId => _dayTripId;
+  int get employeeId => _employeeId;
+  int get lineId => _lineId;
 
   Fuelin_line({
       String date, 
@@ -38,8 +42,9 @@ class Fuelin_line {
       int locationId, 
       String slipNo, 
       double liter,
-      int priceUnit, 
-      int dayTripId,String status}){
+      double priceUnit, 
+      int dayTripId,String status,
+      int employeeId, int lineId}){
     _date = date;
     _shop = shop;
     _productId = productId;
@@ -49,6 +54,8 @@ class Fuelin_line {
     _priceUnit = priceUnit;
     _dayTripId = dayTripId;
     _status = status;
+    _employeeId = employeeId;
+    _lineId = lineId;
 }
 
   Fuelin_line.fromJson(dynamic json) {
@@ -60,6 +67,8 @@ class Fuelin_line {
     _liter = json["liter"];
     _priceUnit = json["price_unit"];
     _dayTripId = json["day_trip_id"];
+    _employeeId = json["employee_id"];
+    _lineId = json["line_id"];
   }
 
   String toJson() => json.encode(toMap());
@@ -74,7 +83,9 @@ class Fuelin_line {
       'liter': _liter,
       'price_unit': _priceUnit,
       'parent_id': _dayTripId,
-      'status':_status
+      'status':_status,
+      'employee_id': _employeeId,
+      'line_id':_lineId
     };
   }
 

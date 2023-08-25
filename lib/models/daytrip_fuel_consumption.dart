@@ -8,6 +8,7 @@ import 'dart:convert';
 
 class Daytrip_fuel_consumption {
   int _dayTripId;
+  int _lineId;
   double _consumedLiter;
   String _description;
   int _vehicleId;
@@ -17,6 +18,7 @@ class Daytrip_fuel_consumption {
   int _fillingLiter;
 
   int get dayTripId => _dayTripId;
+  int get lineId => _lineId;
   double get consumedLiter => _consumedLiter;
   String get description => _description;
   int get vehicleId => _vehicleId;
@@ -27,6 +29,7 @@ class Daytrip_fuel_consumption {
 
   Daytrip_fuel_consumption({
       int dayTripId,
+      int lineId,
     double consumedLiter,
       String description,
       int vehicleId,
@@ -36,6 +39,7 @@ class Daytrip_fuel_consumption {
       int fillingLiter,
   }){
     _dayTripId = dayTripId;
+    _lineId = lineId;
     _consumedLiter = consumedLiter;
     _description = description;
     _vehicleId = vehicleId;
@@ -47,6 +51,7 @@ class Daytrip_fuel_consumption {
 
   Daytrip_fuel_consumption.fromJson(dynamic json) {
     _dayTripId = json["day_trip_id"];
+    _lineId = json["line_id"];
     _consumedLiter = json["consumed_liter"];
     _description = json["description"];
     _vehicleId = json["vehicle_id"];
@@ -62,10 +67,11 @@ class Daytrip_fuel_consumption {
   Map<String, dynamic> toMap() {
     return {
       'day_trip_id':_dayTripId,
+      'line_id':_lineId,
       'consumed_liter': _consumedLiter,
       'description': _description,
       // 'vehicle_id' : _vehicleId,
-      // 'employee_id' : _employeeId,
+      'employee_id' : _employeeId,
       // 'source_doc' : _sourceDoc,
       'date' : _date,
       // 'filling_liter' : _fillingLiter,

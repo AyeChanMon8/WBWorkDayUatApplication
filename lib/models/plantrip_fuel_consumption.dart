@@ -72,7 +72,7 @@ class Plantrip_fuel_consumption {
       'description': _description,
       'route_id': _route_id,
       // 'vehicle_id' : _vehicleId,
-      // 'employee_id' : _employeeId,
+     'employee_id' : _employeeId,
       // 'source_doc' : _sourceDoc,
       'date' : _date,
        'line_id' : _line_id,
