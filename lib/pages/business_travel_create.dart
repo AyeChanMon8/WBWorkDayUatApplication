@@ -276,7 +276,7 @@ bool selectCamera = false;
                           icon: Icon(Icons.keyboard_arrow_down),
                           iconSize: 30,
                           isExpanded: true,
-                          onChanged: (TravelRequestListResponse value) {
+                          onChanged: controller.travelLineModel.length > 0 ? null :(TravelRequestListResponse value) {
                             controller
                                 .onChangeTravelExpenseApproveDropdown(value);
                           },
