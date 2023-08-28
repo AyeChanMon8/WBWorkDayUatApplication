@@ -24,7 +24,7 @@ class Plan_trip_product {
   double _currentOdometer;
   double _tripDistance;
   int _totalStandardLiter;
-  int _totalConsumedLiter;
+  double _totalConsumedLiter;
   double _avgCalculation;
   List<Fuelin_ids> _fuelinIds;
   List<Advanced_ids> _advancedIds;
@@ -50,7 +50,7 @@ class Plan_trip_product {
   double get currentOdometer => _currentOdometer;
   double get tripDistance => _tripDistance;
   int get totalStandardLiter => _totalStandardLiter;
-  int get totalConsumedLiter => _totalConsumedLiter;
+  double get totalConsumedLiter => _totalConsumedLiter;
   double get avgCalculation => _avgCalculation;
   List<Fuelin_ids> get fuelinIds => _fuelinIds;
   List<Advanced_ids> get advancedIds => _advancedIds;
@@ -76,7 +76,7 @@ class Plan_trip_product {
       double currentOdometer, 
       double tripDistance, 
       int totalStandardLiter, 
-      int totalConsumedLiter, 
+      double totalConsumedLiter, 
       double avgCalculation, 
       List<Fuelin_ids> fuelinIds, 
       List<Advanced_ids> advancedIds, 

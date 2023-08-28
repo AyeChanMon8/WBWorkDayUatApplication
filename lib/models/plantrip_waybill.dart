@@ -24,7 +24,7 @@ class Plantrip_waybill {
   double _currentOdometer;
   double _tripDistance;
   int _totalStandardLiter;
-  int _totalConsumedLiter;
+  double _totalConsumedLiter;
   double _avgCalculation;
   List<Commission_ids> _commissionIds;
   List<WayBill_Fuelin_ids> _fuelinIds;
@@ -53,7 +53,7 @@ class Plantrip_waybill {
   double get currentOdometer => _currentOdometer;
   double get tripDistance => _tripDistance;
   int get totalStandardLiter => _totalStandardLiter;
-  int get totalConsumedLiter => _totalConsumedLiter;
+  double get totalConsumedLiter => _totalConsumedLiter;
   double get avgCalculation => _avgCalculation;
   List<Commission_ids> get commissionIds => _commissionIds;
   List<WayBill_Fuelin_ids> get fuelinIds => _fuelinIds;
@@ -81,7 +81,7 @@ class Plantrip_waybill {
       double currentOdometer, 
       double tripDistance, 
       int totalStandardLiter, 
-      int totalConsumedLiter, 
+      double totalConsumedLiter, 
       double avgCalculation, 
       List<Commission_ids> commissionIds, 
       List<WayBill_Fuelin_ids> fuelinIds,
