@@ -131,7 +131,7 @@ Widget build(BuildContext context) {
             Container(
               child:  GFButton(
                 color: textFieldTapColor,
-                onPressed: () {
+                onPressed: day_trip_controller.isAdvanceButton.value ? null :() {
                   advanceLineTotal = double.tryParse(day_trip_controller.totalAmountController.text.toString());
                   if(advanceTotal>=advanceLineTotal)
                   day_trip_controller.addAdvance(from_where,arg_id);
