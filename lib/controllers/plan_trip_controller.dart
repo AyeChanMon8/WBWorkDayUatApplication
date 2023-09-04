@@ -1108,7 +1108,7 @@ class PlanTripController extends GetxController {
     super.onClose();
   }
 
-  clickWayBillRouteLine(bool first_route, int trip_id, int route_id, int next_route_id) async {
+  clickWayBillRouteLine(bool first_route, int trip_id, int route_id, int next_route_id,int previous_route_id) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(
@@ -1120,7 +1120,7 @@ class PlanTripController extends GetxController {
             barrierDismissible: false));
     var created = 0;
     await planTripServie
-        .clickWayBillRouteLineTrip(first_route, trip_id,route_id,next_route_id)
+        .clickWayBillRouteLineTrip(first_route, trip_id,route_id,next_route_id,previous_route_id)
         .then((data) {
       if (data != 0) {
         Get.back();
@@ -1130,7 +1130,7 @@ class PlanTripController extends GetxController {
     return created;
   }
 
-  clickProductRouteLine(bool first_route, int trip_id, int route_id, int next_route_id) async {
+  clickProductRouteLine(bool first_route, int trip_id, int route_id, int next_route_id,int previous_route_id) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(
@@ -1142,7 +1142,7 @@ class PlanTripController extends GetxController {
             barrierDismissible: false));
     var created = 0;
     await planTripServie
-        .clickProductRouteLineTrip(first_route, trip_id,route_id,next_route_id)
+        .clickProductRouteLineTrip(first_route, trip_id,route_id,next_route_id,previous_route_id)
         .then((data) {
       if (data != 0) {
         Get.back();

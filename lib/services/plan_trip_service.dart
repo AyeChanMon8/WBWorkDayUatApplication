@@ -603,13 +603,13 @@ class PlanTripServie extends OdooService {
   }
 
 
-    Future<int> clickWayBillRouteLineTrip(bool first_route, int tripID, int route_id, int next_route_id) async {
+    Future<int> clickWayBillRouteLineTrip(bool first_route, int tripID, int route_id, int next_route_id,int previous_route_id) async {
     String process_datetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now());
     var created = 0;
     String url =
         Globals.baseURL + "/plan.trip.waybill/1/update_route_status";
     Response response = await dioClient.put(url,
-    data: jsonEncode({'first_route':first_route, 'trip_id': tripID, 'route_id': route_id, 'next_route_id': next_route_id,'process_datetime': process_datetime}));
+    data: jsonEncode({'first_route':first_route, 'trip_id': tripID, 'route_id': route_id, 'next_route_id': next_route_id,'process_datetime': process_datetime,'previous_route_id':previous_route_id}));
     if (response.statusCode == 200) {
       created = 1;
     }else{
@@ -620,13 +620,13 @@ class PlanTripServie extends OdooService {
     return created;
   }
 
-  Future<int> clickProductRouteLineTrip(bool first_route, int tripID, int route_id, int next_route_id) async {
+  Future<int> clickProductRouteLineTrip(bool first_route, int tripID, int route_id, int next_route_id,int previous_route_id) async {
     String process_datetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now());
     var created = 0;
     String url =
         Globals.baseURL + "/plan.trip.product/1/update_route_status";
     Response response = await dioClient.put(url,
-    data: jsonEncode({'first_route':first_route, 'trip_id': tripID, 'route_id': route_id, 'next_route_id': next_route_id,'process_datetime': process_datetime}));
+    data: jsonEncode({'first_route':first_route, 'trip_id': tripID, 'route_id': route_id, 'next_route_id': next_route_id,'process_datetime': process_datetime,'previous_route_id':previous_route_id}));
     if (response.statusCode == 200) {
       created = 1;
     }else{

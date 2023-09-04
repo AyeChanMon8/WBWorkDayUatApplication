@@ -46,6 +46,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
   var is_branch_manager = false;
   var plantrip_product_list_lines = [];
   var next_route_id = 0;
+  var previous_route_id = 0;
   var isIncharge = false;
   var employee_id;
   @override
@@ -1716,6 +1717,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
       child: Obx(() {
         plantrip_product_list_lines = [];
         next_route_id = 0;
+        previous_route_id = 0;
           for(var i=0; i< controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds.length; i++){
             if(i == 0 && (controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds[i].status == '' || controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds[i].status == null)){
               first_route = true;
@@ -1762,7 +1764,16 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                     width: 50,
                     child: GFButton(
                       onPressed: () {
-                        controller.clickProductRouteLine(first_route, controller.plantrip_with_product_list.value[controller.arg_index.value].id, plantrip_product_list_lines[index].id,next_route_id).then((value){
+                        if(controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds.length > 1){
+                          for(var i=0; i< controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds.length; i++){
+                            if(i!=0){
+                                if(plantrip_product_list_lines[index].id == controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds[i].id){
+                                  previous_route_id = controller.plantrip_with_product_list.value[controller.arg_index.value].routePlanIds[i-1].id;break;
+                                }
+                            }
+                          }
+                        }
+                        controller.clickProductRouteLine(first_route, controller.plantrip_with_product_list.value[controller.arg_index.value].id, plantrip_product_list_lines[index].id,next_route_id,previous_route_id).then((value){
                           if(value!=0){
                             controller.getPlantripWithProductList(controller.current_page.value);
                           }
