@@ -1,6 +1,8 @@
 // @dart=2.9
 
 import 'package:winbrother_hr_app/models/key_performance_attachment_ids.dart';
+import 'package:winbrother_hr_app/models/pms_attachments.dart';
+import 'package:winbrother_hr_app/models/rating_config.dart';
 
 /// id : 15
 /// name : "PE014"
@@ -33,21 +35,23 @@ class PMSDetailModel {
   Date_range_id _dateRangeId;
   String _dateStart;
   String _dateEnd;
-  String _deadline;
+  // String _deadline;
   List<Key_performance_ids> _keyPerformanceIds;
-  List<KeyPerformanceAttachmentIds> _keyPerformanceAttachmentIds;
+  // List<KeyPerformanceAttachmentIds> _keyPerformanceAttachmentIds;
   List<Competencies_ids> _competenciesIds;
   Employee_id _job_id;
   double _competency_score;
   double _mid_competency_score;
-  double _kpi;
-  double _mid_kpi;
-  double _final_rating;
-  double _mid_final_rating;
-  bool _is_submitted;
+  // double _kpi;
+  // double _mid_kpi;
+  int _what_final_rating;
+  int _how_final_rating;
+  // bool _is_submitted;
+  FinalRating _final_evaluation_rating;
+  String _final_evaluation_description;
 
   int get id => _id;
-  bool get is_submitted => _is_submitted;
+  // bool get is_submitted => _is_submitted;
   String get name => _name;
   String get state => _state;
   Employee_id get employeeId => _employeeId;
@@ -60,18 +64,20 @@ class PMSDetailModel {
   Date_range_id get dateRangeId => _dateRangeId;
   String get dateStart => _dateStart;
   String get dateEnd => _dateEnd;
-  String get deadline => _deadline ?? '';
+  // String get deadline => _deadline ?? '';
   List<Key_performance_ids> get keyPerformanceIds => _keyPerformanceIds;
-  List<KeyPerformanceAttachmentIds> get keyPerformanceAttachmentIds =>
-      _keyPerformanceAttachmentIds;
+  // List<KeyPerformanceAttachmentIds> get keyPerformanceAttachmentIds =>
+  //     _keyPerformanceAttachmentIds;
   List<Competencies_ids> get competenciesIds => _competenciesIds;
-  double get kpi => _kpi;
-  double get mid_kpi => _mid_kpi;
+  // double get kpi => _kpi;
+  // double get mid_kpi => _mid_kpi;
   double get competency_score => _competency_score;
   double get mid_competency_score => _mid_competency_score;
-  double get mid_final_rating => _mid_final_rating;
-  double get final_rating => _final_rating;
+  int get how_final_rating => _how_final_rating;
+  int get what_final_rating => _what_final_rating;
   Employee_id get job_id => _job_id;
+  FinalRating get final_evaluation_rating => _final_evaluation_rating;
+  String get final_evaluation_description => _final_evaluation_description;
 
   PMSDetailModel(
       {int id,
@@ -87,15 +93,17 @@ class PMSDetailModel {
       Date_range_id dateRangeId,
       String dateStart,
       String dateEnd,
-      String deadline,
+      // String deadline,
       List<Key_performance_ids> keyPerformanceIds,
       List<Competencies_ids> competenciesIds,
-      double kpi,
-      double mid_kpi,
+      // double kpi,
+      // double mid_kpi,
       double competency_score,
       double mid_competency_score,
-      double final_rating,
-      double mid_final_rating}) {
+      int what_final_rating,
+      int how_final_rating,
+      FinalRating final_evaluation_rating,
+      String final_evaluation_description}) {
     _id = id;
     _name = name;
     _state = state;
@@ -109,16 +117,18 @@ class PMSDetailModel {
     _dateRangeId = dateRangeId;
     _dateStart = dateStart;
     _dateEnd = dateEnd;
-    _deadline = deadline;
+    // _deadline = deadline;
     _keyPerformanceIds = keyPerformanceIds;
-    _keyPerformanceAttachmentIds = keyPerformanceAttachmentIds;
+    // _keyPerformanceAttachmentIds = keyPerformanceAttachmentIds;
     _competenciesIds = competenciesIds;
-    _kpi = kpi;
-    _mid_kpi = mid_kpi;
+    // _kpi = kpi;
+    // _mid_kpi = mid_kpi;
     _competency_score = competency_score;
     _mid_competency_score = mid_competency_score;
-    _final_rating = final_rating;
-    _mid_final_rating = mid_final_rating;
+    _what_final_rating = what_final_rating;
+    _how_final_rating = how_final_rating;
+    _final_evaluation_rating = final_evaluation_rating;
+    _final_evaluation_description = final_evaluation_description;
   }
 
   PMSDetailModel.name();
@@ -130,11 +140,11 @@ class PMSDetailModel {
     _employeeId = json["employee_id"] != null
         ? Employee_id.fromJson(json["employee_id"])
         : null;
-    _templateId = json["template_id"] != null
-        ? Template_id.fromJson(json["template_id"])
+    _templateId = json["performance_template_id"] != null
+        ? Template_id.fromJson(json["performance_template_id"])
         : null;
-    _compTemplateId = json["comp_template_id"] != null
-        ? Comp_template_id.fromJson(json["comp_template_id"])
+    _compTemplateId = json["competencies_template_id"] != null
+        ? Comp_template_id.fromJson(json["competencies_template_id"])
         : null;
     _midFromDate = json["mid_from_date"];
     _midToDate = json["mid_to_date"];
@@ -145,15 +155,15 @@ class PMSDetailModel {
         : null;
     _dateStart = json["date_start"];
     _dateEnd = json["date_end"];
-    _deadline = json["deadline"];
+    // _deadline = json["deadline"];
 
     _competency_score = json["competency_score"];
     _mid_competency_score = json["mid_competency_score"];
-    _kpi = json["kpi"];
-    _mid_kpi = json["mid_kpi"];
-    _final_rating = json["final_rating"];
-    _mid_final_rating = json["mid_rating"];
-    _is_submitted = json["is_submitted"] == null ? false : json["is_submitted"];
+    // _kpi = json["kpi"];
+    // _mid_kpi = json["mid_kpi"];
+    _what_final_rating = json["what_final_rating"];
+    _how_final_rating = json["how_final_rating"];
+    // _is_submitted = json["is_submitted"] == null ? false : json["is_submitted"];
     _job_id =
         json["job_id"] != null ? Employee_id.fromJson(json["job_id"]) : null;
 
@@ -163,20 +173,23 @@ class PMSDetailModel {
         _keyPerformanceIds.add(Key_performance_ids.fromJson(v));
       });
     }
-    if (json["key_performance_attachment_ids"] != null) {
-      _keyPerformanceAttachmentIds = [];
-      json["key_performance_attachment_ids"].forEach((v) {
-        _keyPerformanceAttachmentIds.add(KeyPerformanceAttachmentIds.fromMap(v));
-      });
-    }else{
-      _keyPerformanceAttachmentIds = [];
-    }
-    if (json["competencies_ids"] != null) {
+    // if (json["key_performance_attachment_ids"] != null) {
+    //   _keyPerformanceAttachmentIds = [];
+    //   json["key_performance_attachment_ids"].forEach((v) {
+    //     _keyPerformanceAttachmentIds.add(KeyPerformanceAttachmentIds.fromMap(v));
+    //   });
+    // }else{
+    //   _keyPerformanceAttachmentIds = [];
+    // }
+    if (json["key_competencies_ids"] != null) {
       _competenciesIds = [];
-      json["competencies_ids"].forEach((v) {
+      json["key_competencies_ids"].forEach((v) {
         _competenciesIds.add(Competencies_ids.fromJson(v));
       });
     }
+    // _final_evaluation_rating = json['final_evaluation_rating'];
+    _final_evaluation_rating = json["final_evaluation_rating"] != null ? FinalRating.fromJson(json["final_evaluation_rating"]) : null;
+    _final_evaluation_description = json['final_evaluation_description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -188,10 +201,10 @@ class PMSDetailModel {
       map["employee_id"] = _employeeId.toJson();
     }
     if (_templateId != null) {
-      map["template_id"] = _templateId.toJson();
+      map["performance_template_id"] = _templateId.toJson();
     }
     if (_compTemplateId != null) {
-      map["comp_template_id"] = _compTemplateId.toJson();
+      map["competencies_template_id"] = _compTemplateId.toJson();
     }
     map["mid_from_date"] = _midFromDate;
     map["mid_to_date"] = _midToDate;
@@ -200,21 +213,26 @@ class PMSDetailModel {
     if (_dateRangeId != null) {
       map["date_range_id"] = _dateRangeId.toJson();
     }
+    map["what_final_rating"] = _what_final_rating;
     map["date_start"] = _dateStart;
     map["date_end"] = _dateEnd;
-    map["deadline"] = _deadline;
+    // map["deadline"] = _deadline;
     if (_keyPerformanceIds != null) {
       map["key_performance_ids"] =
           _keyPerformanceIds.map((v) => v.toJson()).toList();
     }
-    if (_keyPerformanceAttachmentIds != null) {
-      map["key_performance_attachment_ids"] =
-          _keyPerformanceAttachmentIds.map((v) => v.toMap()).toList();
-    }
+    // if (_keyPerformanceAttachmentIds != null) {
+    //   map["key_performance_attachment_ids"] =
+    //       _keyPerformanceAttachmentIds.map((v) => v.toMap()).toList();
+    // }
     if (_competenciesIds != null) {
-      map["competencies_ids"] =
+      map["key_competencies_ids"] =
           _competenciesIds.map((v) => v.toJson()).toList();
     }
+    if (_final_evaluation_rating != null) {
+      map["final_evaluation_rating"] = _final_evaluation_rating.toJson();
+    }
+    map["_final_evaluation_description"] = _final_evaluation_description;
     return map;
   }
 
@@ -250,11 +268,15 @@ class Competencies_ids {
   String _description;
   double _score;
   dynamic _comment;
+  Rating _rating;
+  Rating _employee_rating;
 
   int get id => _id;
   String get name => _name;
   String get description => _description;
   double get score => _score;
+  Rating get rating => _rating;
+  Rating get employee_rating => _employee_rating;
   void setScore(double score) {
     _score = score;
   }
@@ -269,12 +291,17 @@ class Competencies_ids {
       String name,
       String description,
       double score,
-      dynamic comment}) {
+      dynamic comment,
+      Rating rating,
+      Rating employee_rating,
+      }) {
     _id = id;
     _name = name;
     _description = description;
     _score = score;
     _comment = comment;
+    _rating = rating;
+    _employee_rating = employee_rating;
   }
 
   Competencies_ids.fromJson(dynamic json) {
@@ -283,6 +310,8 @@ class Competencies_ids {
     _description = json["description"];
     _score = json["score"];
     _comment = json["comment"];
+    _rating = json["rating"] != null ? Rating.fromJson(json["rating"]) : null;
+    _employee_rating = json["employee_rating"] != null ? Rating.fromJson(json["employee_rating"]) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -292,6 +321,12 @@ class Competencies_ids {
     map["description"] = _description;
     map["score"] = _score;
     map["comment"] = _comment;
+    if (_rating != null) {
+      map["rating"] = _rating.toJson();
+    }
+    if (_employee_rating != null) {
+      map["employee_rating"] = _employee_rating.toJson();
+    }
     return map;
   }
 }
@@ -314,12 +349,18 @@ class Key_performance_ids {
   dynamic _employeeRemark;
   double _managerRate;
   dynamic _managerRemark;
+  Rating _employeeRating;
+  Rating _managerRating;
+  List<PMSattachments> _attachmentIds;
 
   int get id => _id;
   String get name => _name;
   String get description => _description;
   int get weightage => _weightage;
   double get employeeRate => _employeeRate;
+  Rating get employeeRating => _employeeRating;
+  Rating get managerRating => _managerRating;
+  List<PMSattachments> get attachmentIds => _attachmentIds;
   void setemployeeRate(double rate) {
     _employeeRate = rate;
   }
@@ -347,7 +388,10 @@ class Key_performance_ids {
       double employeeRate,
       dynamic employeeRemark,
       double managerRate,
-      dynamic managerRemark}) {
+      dynamic managerRemark,
+      List<PMSattachments> attachmentIds,
+      Rating employeeRating,
+      Rating managerRating}) {
     _id = id;
     _name = name;
     _description = description;
@@ -356,6 +400,9 @@ class Key_performance_ids {
     _employeeRemark = employeeRemark;
     _managerRate = managerRate;
     _managerRemark = managerRemark;
+    _attachmentIds = attachmentIds;
+    _employeeRating = employeeRating;
+    _managerRating = managerRating;
   }
 
   Key_performance_ids.fromJson(dynamic json) {
@@ -363,10 +410,29 @@ class Key_performance_ids {
     _name = json["name"];
     _description = json["description"];
     _weightage = json["weightage"];
-    _employeeRate = json["employee_rate"].toDouble();
     _employeeRemark = json["employee_remark"];
-    _managerRate = json["manager_rate"].toDouble();
     _managerRemark = json["manager_remark"];
+    _employeeRating = json["employee_rating"] != null ? Rating.fromJson(json["employee_rating"]) : null;
+    _managerRating = json["manager_rating"] != null ? Rating.fromJson(json["manager_rating"]) : null;
+    if (json["attachment_ids"] != null) {
+      _attachmentIds = [];
+      json["attachment_ids"].forEach((v) {
+        _attachmentIds.add(PMSattachments.fromJson(v));
+      });
+    }
+    // if (json["attachment_ids"] != null) {
+    //   _attachmentIds = [];
+    //   json["attachment_ids"].forEach((v) {
+    //     print("attData");
+    //     print(v);
+    //     if(v=="false"||v==false){
+    //       print("falseData");
+    //     }else{
+    //       _attachmentIds.add(v);
+    //     }
+
+    //   });
+    // }
   }
 
   Map<String, dynamic> toJson() {
@@ -375,16 +441,21 @@ class Key_performance_ids {
     map["name"] = _name;
     map["description"] = _description;
     map["weightage"] = _weightage;
-    map["employee_rate"] = _employeeRate;
     map["employee_remark"] = _employeeRemark;
-    map["manager_rate"] = _managerRate;
     map["manager_remark"] = _managerRemark;
+    // map["attachment_ids"] = _attachmentIds;
+    if (_attachmentIds != null) {
+      map["attachment_ids"] = _attachmentIds.map((v) => v.toJson()).toList();
+    }
+    if (_employeeRating != null) {
+      map["employee_rating"] = _employeeRating.toJson();
+    }
+    if (_managerRating != null) {
+      map["manager_rating"] = _managerRating.toJson();
+    }
     return map;
   }
 }
-
-/// id : 5
-/// name : "2020-2021 Objective"
 
 class Date_range_id {
   int _id;
@@ -493,4 +564,74 @@ class Employee_id {
     map["name"] = _name;
     return map;
   }
+}
+
+class Rating {
+  int _id;
+  String _rating_description;
+  String _name;
+
+  int get id => _id;
+  String get rating_description => _rating_description;
+  String get name => _name;
+
+  Rating({
+      int id, 
+      String rating_description,
+      String name
+      }){
+    _id = id;
+    _rating_description = rating_description;
+    _name = name;
+}
+
+  Rating.fromJson(dynamic json) {
+    _id = json["id"];
+    _rating_description = json["rating_description"];
+    _name = json["name"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["id"] = _id;
+    map["rating_description"] = _rating_description;
+    map["name"] = _name;
+    return map;
+  }
+
+}
+
+class FinalRating {
+  int _id;
+  String _final_description;
+  String _name;
+
+  int get id => _id;
+  String get final_description => _final_description;
+  String get name => _name;
+
+  FinalRating({
+      int id, 
+      String final_description,
+      String name
+      }){
+    _id = id;
+    _final_description = final_description;
+    _name = name;
+}
+
+  FinalRating.fromJson(dynamic json) {
+    _id = json["id"];
+    _final_description = json["final_description"];
+    _name = json["name"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["id"] = _id;
+    map["final_description"] = _final_description;
+    map["name"] = _name;
+    return map;
+  }
+
 }

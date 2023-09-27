@@ -43,7 +43,7 @@ class _PmsDetailsState extends State<PmsDoneDetails>
   @override
   void initState() {
     role = box.read('role_category');
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     controller.detailModel.value = Get.arguments;
     empID = int.tryParse(box.read('emp_id'));
 
@@ -68,9 +68,9 @@ class _PmsDetailsState extends State<PmsDoneDetails>
     //PMSDetailModel pmsDetailModel = Get.arguments;
     // controller.detailModel.value = Get.arguments;
 
-    controller.calculateTotalEmployeeRate();
-    controller.calculateTotalFinalRate();
-    controller.calculateTotalScoreAverage();
+    //controller.calculateTotalEmployeeRate();
+    //controller.calculateTotalFinalRate();
+    //controller.calculateTotalScoreAverage();
     final box = GetStorage();
     String user_image = box.read('emp_image');
     return Scaffold(
@@ -210,17 +210,17 @@ class _PmsDetailsState extends State<PmsDoneDetails>
               unselectedLabelColor: Colors.black,
               tabs: [
                 Tab(
-                  text: 'Key Performance \nEvaluation',
+                  text: 'THE WHAT:',
                 ),
                 Tab(
-                  text: 'Competencies',
+                  text: 'THE HOW:',
                 ),
                 Tab(
-                  text: 'Final Rating',
+                  text: 'Final Evaluation',
                 ),
-                Tab(
-                  text: 'Attachments',
-                ),
+                // Tab(
+                //   text: 'Attachments',
+                // ),
               ],
             ),
           ),
@@ -247,14 +247,14 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                               Expanded(
                                   flex: 1,
                                   child: Text(
-                                    'Employee Rate',
+                                    'Employee Self-Assessment',
                                     style: TextStyle(color: backgroundIconColor),
                                   )),
                               SizedBox(width:5),
                               Expanded(
                                   flex: 1,
                                   child: Text(
-                                    'Final Rate',
+                                    'Manager Rating',
                                     style: TextStyle(color: backgroundIconColor),
                                   )),
                             ],
@@ -285,141 +285,223 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                       .toString();
                                   return InkWell(
                                     onTap: () {
+                                      if(keyPerformance.attachmentIds!=null && keyPerformance.attachmentIds.length > 0){
+                                        controller.getAttachment(keyPerformance.attachmentIds);
+                                      }
                                       showModalBottomSheet(
                                           context: context,
-                                          builder: (context) => Container(
+                                          builder: (context) => ListView(
+                                            children: [
+                                              Container(
 
-                                            color: Color(0xff757575),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(10),
-                                                    topRight:
-                                                    Radius.circular(10)),
-                                              ),
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 5),
-                                              child: Container(
-                                                margin: EdgeInsets.only(left: 10, right: 10),
-                                                child: Column(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                      Alignment.bottomRight,
-                                                      child: IconButton(
-                                                        icon: Icon(
-                                                            Icons.close_outlined),
-                                                        onPressed: () {
-                                                          Get.back();
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Row(
+                                                color: Color(0xff757575),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(10),
+                                                        topRight:
+                                                        Radius.circular(10)),
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5, horizontal: 5),
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(left: 10, right: 10),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Expanded(
-                                                            child: Text(
-                                                              'KEY PERFORMANCE AREAS',
-                                                              style: pmstitleStyle(),
-                                                            )),
-                                                        Expanded(
-                                                            child: Text(
-                                                                keyPerformance
-                                                                    .name))
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                            child: Text(
-                                                                'Description',
-                                                                style:
-                                                                pmstitleStyle())),
-                                                        Expanded(
-                                                            child: Text(
-                                                                keyPerformance
-                                                                    .description))
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                            child: Text(
-                                                                'WEIGHTAGE(%)',
-                                                                style:
-                                                                pmstitleStyle())),
-                                                        Expanded(
-                                                            child: Text(
-                                                                keyPerformance
-                                                                    .weightage
-                                                                    .toString()))
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                            child: Text(
-                                                                'Employee Self-Assessment',
-                                                                style:
-                                                                pmstitleStyle())),
-                                                        Expanded(
-                                                            child: Text(
-                                                                keyPerformance
-                                                                    .employeeRate
-                                                                    .toString())
-                                                        )
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                            child: Text(
-                                                                'Final Rate',
-                                                                style:
-                                                                pmstitleStyle())),
+                                                        Align(
+                                                          alignment:
+                                                          Alignment.bottomRight,
+                                                          child: IconButton(
+                                                            icon: Icon(
+                                                                Icons.close_outlined),
+                                                            onPressed: () {
+                                                              controller.attachment_list.value = [];
+                                                              controller.isShowImageAttachment.value = false;
+                                                              controller.image_base64_list =[];
+                                                              controller.imageList.value = [];
+                                                              Get.back();
+                                                            },
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child: Text(
+                                                                  'KEY PERFORMANCE AREAS',
+                                                                  style: pmstitleStyle(),
+                                                                )),
+                                                            Expanded(
+                                                                child: Text(
+                                                                    keyPerformance
+                                                                        .name))
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child: Text(
+                                                                    'Description',
+                                                                    style:
+                                                                    pmstitleStyle())),
+                                                            keyPerformance
+                                                                        .description!=null ? Expanded(
+                                                                child: Text(
+                                                                    keyPerformance
+                                                                        .description)):Expanded(child: Text(''))
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child: Text(
+                                                                    'WEIGHTAGE(%)',
+                                                                    style:
+                                                                    pmstitleStyle())),
+                                                            Expanded(
+                                                                child: Text(
+                                                                    keyPerformance
+                                                                        .weightage
+                                                                        .toString()))
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child: Text(
+                                                                    'Employee Self-Assessment',
+                                                                    style:
+                                                                    pmstitleStyle())),
+                                                            keyPerformance
+                                                              .employeeRating !=
+                                                          null &&
+                                                      keyPerformance
+                                                              .employeeRating
+                                                              .name !=
+                                                          null ? Expanded(
+                                                                child: Text(
+                                                                    keyPerformance
+                                                                        .employeeRating.name
+                                                                        .toString())
+                                                            ):Expanded(child: Text(''),)
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child: Text(
+                                                                    'Manager Rating',
+                                                                    style:
+                                                                    pmstitleStyle())),
 
-                                                        Expanded(
-                                                            child: Text(
-                                                                keyPerformance
-                                                                    .managerRate
-                                                                    .toString())
-                                                        )
+                                                            keyPerformance
+                                                              .managerRating !=
+                                                          null &&
+                                                      keyPerformance
+                                                              .managerRating
+                                                              .name !=
+                                                          null ?Expanded(
+                                                                child: Text(
+                                                                    keyPerformance
+                                                                        .managerRating.name
+                                                                        .toString())
+                                                            ):Expanded(child: Text(''))
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text('Employee Remarks',
+                                                            style: pmstitleStyle()),
+                                                        Text(keyPerformance
+                                                            .employeeRemark
+                                                            .toString() ??
+                                                            ''),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text('Manager Remarks',
+                                                            style: pmstitleStyle()),
+                                                        Text(keyPerformance
+                                                            .managerRemark
+                                                            .toString() ??
+                                                            ''),
+                                                        SizedBox(height: 10,),
+                                                        Text('Attachments',
+                                                            style: pmstitleStyle()),
+                                                        Obx(() => controller.attachment_list.value.length > 0
+                                                                                            ? Row(
+                                                                                              children: [
+                                                                                                Expanded(
+                                                                                                    child: GridView.count(
+                                                                                                    shrinkWrap: true,
+                                                                                                    physics: NeverScrollableScrollPhysics(),
+                                                                                                    crossAxisCount: 3,
+                                                                                                    children: List.generate(controller.attachment_list.value.length, (index1) {
+                                                                                                      return controller.attachment_list.value[index1].name.contains(".pdf")
+                                                                                                          ? Padding(
+                                                                                                              padding: EdgeInsets.all(8.0),
+                                                                                                              child: GestureDetector(
+                                                                                                                onTap: () async {
+                                                                                                                  createPDFFileFromString(controller.attachment_list.value[index1].attach_file).then((path) async {
+                                                                                                                    await OpenFile.open(path);
+                                                                                                                  });
+                                                                                                                },
+                                                                                                                child: Container(
+                                                                                                                  height: 100,
+                                                                                                                  width: 100,
+                                                                                                                  decoration: BoxDecoration(
+                                                                                                                      border: Border.all(
+                                                                                                                        color: Colors.black, //color of border
+                                                                                                                        width: 1, //width of border
+                                                                                                                      ),
+                                                                                                                      borderRadius: BorderRadius.circular(5)),
+                                                                                                                  child: Center(
+                                                                                                                    child: Text(
+                                                                                                                      controller.attachment_list.value[index1].name,
+                                                                                                                      textAlign: TextAlign.center,
+                                                                                                                      style: TextStyle(
+                                                                                                                        color: Colors.black54,
+                                                                                                                        fontSize: 16,
+                                                                                                                      ),
+                                                                                                                    ),
+                                                                                                                  ),
+                                                                                                                ),
+                                                                                                              ),
+                                                                                                            )
+                                                                                                          : Padding(
+                                                                                                              padding: EdgeInsets.all(8.0),
+                                                                                                              child: Image.memory(
+                                                                                                                base64Decode(controller.attachment_list.value[index1].attach_file),
+                                                                                                                fit: BoxFit.cover,
+                                                                                                                width: 100,
+                                                                                                                height: 100,
+                                                                                                              ),
+                                                                                                            );
+                                                                                                    }),
+                                                                                                  )),
+                                                                                              ],
+                                                                                            )
+                                                                                            : SizedBox()),
                                                       ],
                                                     ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text('Employee Remarks',
-                                                        style: pmstitleStyle()),
-                                                    Text(keyPerformance
-                                                        .employeeRemark
-                                                        .toString() ??
-                                                        ''),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text('Manager Remarks',
-                                                        style: pmstitleStyle()),
-                                                    Text(keyPerformance
-                                                        .managerRemark
-                                                        .toString() ??
-                                                        '')
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ));
                                     },
                                     child: Container(
@@ -441,26 +523,28 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                               )),
                                           Expanded(
                                               flex: 1,
-                                              child: Text(
-                                                keyPerformance.employeeRate
+                                              child: keyPerformance.employeeRating!= null && keyPerformance.employeeRating.id!= 0 && keyPerformance.employeeRating.id!=null ?Text(
+                                                keyPerformance.employeeRating.name
                                                     .toString(),
                                                 style: TextStyle(
                                                     color: backgroundIconColor),
                                                 textAlign: TextAlign.center,
-                                              )),
+                                              ):Text('',style: TextStyle(
+                                                    color: backgroundIconColor))),
                                           Expanded(
                                               flex: 1,
                                               child: Row(
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    keyPerformance.managerRate
+                                                  keyPerformance.managerRating!=null && keyPerformance.managerRating.id!=0 && keyPerformance.managerRating.id!=null ? Text(
+                                                    keyPerformance.managerRating.name
                                                         .toString(),
                                                     style: TextStyle(
                                                         color: backgroundIconColor),
                                                     textAlign: TextAlign.center,
-                                                  ),
+                                                  ):Text('',style: TextStyle(
+                                                        color: backgroundIconColor)),
                                                 ],
                                               )),
                                         ],
@@ -471,47 +555,47 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                           ),
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10, right: 5, left: 5,bottom:10),
-                          child: Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: backgroundIconColor,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10,left:10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'Average',
-                                    style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Obx(
-                                        () => Text(
-                                      NumberFormat("#.##").format(
-                                          controller.totalEmployeeRate.value),
-                                      style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Obx(
-                                        () => Text(
-                                      NumberFormat("#.##")
-                                          .format(controller.totalFinalRate.value),
-                                      style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 10, right: 5, left: 5,bottom:10),
+                        //   child: Divider(
+                        //     height: 1,
+                        //     thickness: 1,
+                        //     color: backgroundIconColor,
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 10,left:10),
+                        //   child: Row(
+                        //     children: [
+                        //       Expanded(
+                        //           flex: 2,
+                        //           child: Text(
+                        //             'Average',
+                        //             style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
+                        //           )),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Obx(
+                        //                 () => Text(
+                        //               NumberFormat("#.##").format(
+                        //                   controller.totalEmployeeRate.value),
+                        //               style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           )),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Obx(
+                        //                 () => Text(
+                        //               NumberFormat("#.##")
+                        //                   .format(controller.totalFinalRate.value),
+                        //               style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           )),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     )),
                 Container(
@@ -522,21 +606,31 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                           child: Row(
                             children: [
                               Expanded(
-                                  flex: 3,
+                                  flex: 2,
                                   child: Text(
                                     'Key Performance Areas',
                                     style: TextStyle(color: backgroundIconColor),
                                   )),
                               Expanded(
-                                  flex: 3,
+                                  flex: 2,
                                   child: Text('Description',
                                       style: TextStyle(color: backgroundIconColor),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis)),
                               Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    'Employee Self-Assessment',
+                                    style: TextStyle(
+                                      color: backgroundIconColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                              Expanded(
                                   flex: 1,
                                   child: Text(
-                                    'Score',
+                                    'Manager Rating',
                                     style: TextStyle(
                                       color: backgroundIconColor,
                                     ),
@@ -579,6 +673,7 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 5),
                                           child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Align(
                                                 alignment:
@@ -614,8 +709,9 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                                           style:
                                                           pmstitleStyle())),
                                                   Expanded(
-                                                      child: Text(competencies
-                                                          .description))
+                                                      child: competencies
+                                                          .description!= null ?Text(competencies
+                                                          .description):Text(''))
                                                 ],
                                               ),
                                               SizedBox(
@@ -624,19 +720,34 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                               Row(
                                                 children: [
                                                   Expanded(
-                                                      child: Text('Score',
+                                                      child: Text('Employee Self-Assessment',
                                                           style:
                                                           pmstitleStyle())),
-                                                  Expanded(
+                                                  competencies.employee_rating!=null && competencies.employee_rating.id != 0 && competencies.employee_rating.id != null ? Expanded(
                                                       child: Text(competencies
-                                                          .score
-                                                          .toString()))
+                                                          .employee_rating.name
+                                                          .toString())):Expanded(child: Text(''),)
                                                 ],
                                               ),
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              Text('Comment',
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Text('Manager Rating',
+                                                          style:
+                                                          pmstitleStyle())),
+                                                  competencies.rating!=null && competencies.rating.id != 0 && competencies.rating.id != null ? Expanded(
+                                                      child: Text(competencies
+                                                          .rating.name
+                                                          .toString())):Expanded(child: Text(''),)
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text('Remark',
                                                   style: pmstitleStyle()),
                                               Text(competencies.comment
                                                   .toString() ??
@@ -662,11 +773,11 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                               )),
                                           Expanded(
                                               flex: 2,
-                                              child: Text(competencies.description,
+                                              child: competencies.description!=null ?Text(competencies.description,
                                                   style: TextStyle(
                                                       color: backgroundIconColor),
                                                   maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis)),
+                                                  overflow: TextOverflow.ellipsis):Text('')),
                                           /* Expanded(
                                                 flex: 1,
                                                 child: Text(
@@ -683,12 +794,28 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                                 children: [
-                                                  Text(
-                                                    competencies.score.toString(),
+                                                  competencies.employee_rating!=null && competencies.employee_rating.id!=0 && competencies.employee_rating.id!=null ? Text(
+                                                    competencies.employee_rating.name.toString(),
                                                     style: TextStyle(
                                                         color: backgroundIconColor),
                                                     textAlign: TextAlign.center,
-                                                  ),
+                                                  ):Text('',style: TextStyle(
+                                                        color: backgroundIconColor)),
+                                                ],
+                                              )),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                                children: [
+                                                  competencies.rating!=null && competencies.id!=0 && competencies.id!=null ? Text(
+                                                    competencies.rating.name.toString(),
+                                                    style: TextStyle(
+                                                        color: backgroundIconColor),
+                                                    textAlign: TextAlign.center,
+                                                  ):Text('',style: TextStyle(
+                                                        color: backgroundIconColor)),
                                                 ],
                                               )),
                                         ],
@@ -709,32 +836,32 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                           ),
                         ),
                         SizedBox(height:10),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10,left:10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'Average',
-                                    style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
-                                  )),
-                              Expanded(
-                                  flex: 2,
-                                  child: Container()),
-                              Expanded(
-                                  flex: 1,
-                                  child: Obx(
-                                        () => Text(
-                                      NumberFormat("#.##").format(
-                                          controller.totalScoreAverage.value),
-                                      style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 10,left:10),
+                        //   child: Row(
+                        //     children: [
+                        //       Expanded(
+                        //           flex: 2,
+                        //           child: Text(
+                        //             'Average',
+                        //             style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
+                        //           )),
+                        //       Expanded(
+                        //           flex: 2,
+                        //           child: Container()),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Obx(
+                        //                 () => Text(
+                        //               NumberFormat("#.##").format(
+                        //                   controller.totalScoreAverage.value),
+                        //               style: TextStyle(color: backgroundIconColor,fontSize: 16,fontWeight: FontWeight.bold),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           )),
+                        //     ],
+                        //   ),
+                        // ),
 
 
                       ],
@@ -755,27 +882,27 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                               Expanded(
                                   flex: 1,
                                   child: Text(
-                                    'From-To',
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'KPI',
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'Competency',
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
                                     'Final Rating',
                                     style: TextStyle(color: backgroundIconColor),
                                   )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    'Final Description',
+                                    style: TextStyle(color: backgroundIconColor),
+                                  )),
+                              // Expanded(
+                              //     flex: 1,
+                              //     child: Text(
+                              //       'Competency',
+                              //       style: TextStyle(color: backgroundIconColor),
+                              //     )),
+                              // Expanded(
+                              //     flex: 1,
+                              //     child: Text(
+                              //       'Final Rating',
+                              //       style: TextStyle(color: backgroundIconColor),
+                              //     )),
                             ],
                           ),
                         ),
@@ -800,168 +927,178 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                               //     )),
                               Expanded(
                                   flex: 1,
-                                  child: Text(
-                                    AppUtils.changeDateFormat(controller.detailModel.value.midFromDate)+" - "+AppUtils.changeDateFormat(controller.detailModel.value.midToDate),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
+                                  // child: Text(
+                                  //   AppUtils.changeDateFormat(controller.detailModel.value.midFromDate)+" - "+AppUtils.changeDateFormat(controller.detailModel.value.midToDate),
+                                  //   style: TextStyle(color: backgroundIconColor),
+                                  // )),
+                                  child: controller
+                                          .detailModel.value.final_evaluation_rating!=null && controller
+                                          .detailModel.value.final_evaluation_rating.id != 0 && controller
+                                          .detailModel.value.final_evaluation_rating.id != null ?Text(controller
+                                          .detailModel.value.final_evaluation_rating.name.toString(),
+                                          style: TextStyle(color: backgroundIconColor)):Text('',style: TextStyle(color: backgroundIconColor),)
+                                 ),
                               Expanded(
                                   flex: 1,
-                                  child: Text(
-                                    AppUtils.removeNullString(controller.detailModel.value.mid_kpi.toStringAsFixed(1)),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    AppUtils.removeNullString(controller.detailModel.value.mid_competency_score.toStringAsFixed(1)),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    AppUtils.removeNullString(controller.detailModel.value.mid_final_rating.toStringAsFixed(1)),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height:10),
-                        Padding(
-                          padding: const EdgeInsets.only(left:10,top: 10),
-                          child: Row(
-                            children: [
+                                  // child: Text(
+                                  //   AppUtils.removeNullString(controller.detailModel.value.mid_kpi.toStringAsFixed(1)),
+                                  //   style: TextStyle(color: backgroundIconColor),
+                                  // )),
+                                  child: controller.detailModel.value.final_evaluation_description!=null ?Text(controller.detailModel.value.final_evaluation_description.toString(),style: TextStyle(color: backgroundIconColor)):
+                                  Text('',style: TextStyle(color: backgroundIconColor),)
+                              ),
                               // Expanded(
                               //     flex: 1,
                               //     child: Text(
-                              //       'Annual',
+                              //       AppUtils.removeNullString(controller.detailModel.value.mid_competency_score.toStringAsFixed(1)),
                               //       style: TextStyle(color: backgroundIconColor),
                               //     )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    AppUtils.changeDateFormat(controller.detailModel.value.endFromDate)+" - "+AppUtils.changeDateFormat(controller.detailModel.value.endToDate),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    AppUtils.removeNullString(controller.detailModel.value.kpi.toStringAsFixed(1)),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    AppUtils.removeNullString(controller.detailModel.value.competency_score.toStringAsFixed(1)),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    AppUtils.removeNullString(controller.detailModel.value.final_rating.toStringAsFixed(1)),
-                                    style: TextStyle(color: backgroundIconColor),
-                                  )),
+                              // Expanded(
+                              //     flex: 1,
+                              //     child: Text(
+                              //       AppUtils.removeNullString(controller.detailModel.value.mid_final_rating.toStringAsFixed(1)),
+                              //       style: TextStyle(color: backgroundIconColor),
+                              //     )),
                             ],
                           ),
                         ),
+                        // SizedBox(height:10),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left:10,top: 10),
+                        //   child: Row(
+                        //     children: [
+                        //       // Expanded(
+                        //       //     flex: 1,
+                        //       //     child: Text(
+                        //       //       'Annual',
+                        //       //       style: TextStyle(color: backgroundIconColor),
+                        //       //     )),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Text(
+                        //             AppUtils.changeDateFormat(controller.detailModel.value.endFromDate)+" - "+AppUtils.changeDateFormat(controller.detailModel.value.endToDate),
+                        //             style: TextStyle(color: backgroundIconColor),
+                        //           )),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Text(
+                        //             AppUtils.removeNullString(controller.detailModel.value.kpi.toStringAsFixed(1)),
+                        //             style: TextStyle(color: backgroundIconColor),
+                        //           )),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Text(
+                        //             AppUtils.removeNullString(controller.detailModel.value.competency_score.toStringAsFixed(1)),
+                        //             style: TextStyle(color: backgroundIconColor),
+                        //           )),
+                        //       Expanded(
+                        //           flex: 1,
+                        //           child: Text(
+                        //             AppUtils.removeNullString(controller.detailModel.value.final_rating.toStringAsFixed(1)),
+                        //             style: TextStyle(color: backgroundIconColor),
+                        //           )),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     )),
 
-                Container(
-                  child: Obx(() => 
-                  controller.detailModel.value.keyPerformanceAttachmentIds.length <= 0 ? 
-                  Center(child: Text('No attachment'),)
-                  :
-                  ListView.builder(
-                      itemCount: controller.detailModel.value.keyPerformanceAttachmentIds.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: ()async{
-                            controller.detailModel.value
-                                        .keyPerformanceAttachmentIds[index].mimetype
-                                        .contains('pdf')
-                                    ?
-                                    // open pdf
-                                    createPDFFileFromString(controller
-                                            .detailModel
-                                            .value
-                                            .keyPerformanceAttachmentIds[index]
-                                            .attached_file)
-                                        .then((path) async {
-                                        await OpenFile.open(path);
-                                      })
-                                      :controller.detailModel.value
-                                        .keyPerformanceAttachmentIds[index].mimetype
-                                        .contains('application/vnd.ms-excel')
-                                    ?
-                                    // open pdf
-                                    createExcelFileFromString(controller
-                                            .detailModel
-                                            .value
-                                            .keyPerformanceAttachmentIds[index]
-                                            .attached_file)
-                                        .then((path) async {
-                                        await OpenFile.open(path);
-                                      })
-                                    :controller.detailModel.value
-                                        .keyPerformanceAttachmentIds[index].mimetype
-                                        .contains('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                                    ?
-                                    // open pdf
-                                    createExFileFromString(controller
-                                            .detailModel
-                                            .value
-                                            .keyPerformanceAttachmentIds[index]
-                                            .attached_file)
-                                        .then((path) async {
-                                        await OpenFile.open(path);
-                                      })
-                                    :controller.detailModel.value
-                                        .keyPerformanceAttachmentIds[index].mimetype
-                                        .contains('application/msword')
-                                    ?
-                                    // open pdf
-                                    createWordFileFromString(controller
-                                            .detailModel
-                                            .value
-                                            .keyPerformanceAttachmentIds[index]
-                                            .attached_file)
-                                        .then((path) async {
-                                        await OpenFile.open(path);
-                                      })
-                                      :controller.detailModel.value
-                                        .keyPerformanceAttachmentIds[index].mimetype
-                                        .contains('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                                    ?
-                                    // open pdf
-                                    createDocxWordFileFromString(controller
-                                            .detailModel
-                                            .value
-                                            .keyPerformanceAttachmentIds[index]
-                                            .attached_file)
-                                        .then((path) async {
-                                        await OpenFile.open(path);
-                                      })
-                                    :
-                                    await showDialog(
-                                        context: context,
-                                        builder: (_) {
-                                          return ImageDialog(
-                                            bytes: base64Decode(controller
-                                            .detailModel
-                                            .value
-                                            .keyPerformanceAttachmentIds[index]
-                                            .attached_file),
-                                          );
-                                        });
-                          },
-                          child: Card(
-                            child: ListTile(
-                              title: Text('${controller.detailModel.value.keyPerformanceAttachmentIds[index].name}'),
-                            ),
-                          ),
-                        );
-                      })),
-                ),
+                // Container(
+                //   child: Obx(() => 
+                //   controller.detailModel.value.keyPerformanceAttachmentIds.length <= 0 ? 
+                //   Center(child: Text('No attachment'),)
+                //   :
+                //   ListView.builder(
+                //       itemCount: controller.detailModel.value.keyPerformanceAttachmentIds.length,
+                //       itemBuilder: (context, index) {
+                //         return InkWell(
+                //           onTap: ()async{
+                //             controller.detailModel.value
+                //                         .keyPerformanceAttachmentIds[index].mimetype
+                //                         .contains('pdf')
+                //                     ?
+                //                     // open pdf
+                //                     createPDFFileFromString(controller
+                //                             .detailModel
+                //                             .value
+                //                             .keyPerformanceAttachmentIds[index]
+                //                             .attached_file)
+                //                         .then((path) async {
+                //                         await OpenFile.open(path);
+                //                       })
+                //                       :controller.detailModel.value
+                //                         .keyPerformanceAttachmentIds[index].mimetype
+                //                         .contains('application/vnd.ms-excel')
+                //                     ?
+                //                     // open pdf
+                //                     createExcelFileFromString(controller
+                //                             .detailModel
+                //                             .value
+                //                             .keyPerformanceAttachmentIds[index]
+                //                             .attached_file)
+                //                         .then((path) async {
+                //                         await OpenFile.open(path);
+                //                       })
+                //                     :controller.detailModel.value
+                //                         .keyPerformanceAttachmentIds[index].mimetype
+                //                         .contains('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                //                     ?
+                //                     // open pdf
+                //                     createExFileFromString(controller
+                //                             .detailModel
+                //                             .value
+                //                             .keyPerformanceAttachmentIds[index]
+                //                             .attached_file)
+                //                         .then((path) async {
+                //                         await OpenFile.open(path);
+                //                       })
+                //                     :controller.detailModel.value
+                //                         .keyPerformanceAttachmentIds[index].mimetype
+                //                         .contains('application/msword')
+                //                     ?
+                //                     // open pdf
+                //                     createWordFileFromString(controller
+                //                             .detailModel
+                //                             .value
+                //                             .keyPerformanceAttachmentIds[index]
+                //                             .attached_file)
+                //                         .then((path) async {
+                //                         await OpenFile.open(path);
+                //                       })
+                //                       :controller.detailModel.value
+                //                         .keyPerformanceAttachmentIds[index].mimetype
+                //                         .contains('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                //                     ?
+                //                     // open pdf
+                //                     createDocxWordFileFromString(controller
+                //                             .detailModel
+                //                             .value
+                //                             .keyPerformanceAttachmentIds[index]
+                //                             .attached_file)
+                //                         .then((path) async {
+                //                         await OpenFile.open(path);
+                //                       })
+                //                     :
+                //                     await showDialog(
+                //                         context: context,
+                //                         builder: (_) {
+                //                           return ImageDialog(
+                //                             bytes: base64Decode(controller
+                //                             .detailModel
+                //                             .value
+                //                             .keyPerformanceAttachmentIds[index]
+                //                             .attached_file),
+                //                           );
+                //                         });
+                //           },
+                //           child: Card(
+                //             child: ListTile(
+                //               title: Text('${controller.detailModel.value.keyPerformanceAttachmentIds[index].name}'),
+                //             ),
+                //           ),
+                //         );
+                //       })),
+                // ),
               ],
             ),
           ),

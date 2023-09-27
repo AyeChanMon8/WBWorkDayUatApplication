@@ -11,7 +11,7 @@ class Globals {
   //   static final String baseURL = "http://www.uatwbholdings.biz/api";
   //static final String baseURL = "http://100.21.115.20:8069/api"; // Production Server
   //static final String baseURL = "http://100.21.115.20:8013/api"; // UAT
-  //static final String baseURL = "http://192.168.50.15:8013/api"; //local
+  //static final String baseURL = "http://192.168.50.70:8013/api"; //local
   static final String baseURL = "http://52.74.227.97/api"; //local
   //static final String baseURL = "http://172.20.10.2:8013/api";
   //static final RxBool ph_hardware_back = true.obs;

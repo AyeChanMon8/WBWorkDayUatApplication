@@ -285,12 +285,12 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                           style: datalistStyle(),
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          (labels.submittedDate),
-                          style: datalistStyle(),
-                        ),
-                      ),
+                      // Container(
+                      //   child: Text(
+                      //     (labels.submittedDate),
+                      //     style: datalistStyle(),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -306,12 +306,12 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                             style: subtitleStyle(),
                           ),
                         ),
-                        Container(
-                          child: Text(
-                            AppUtils.changeDateFormat(controller.suspensionApprovedList.value[index].suspension_submit_date),
-                            style: subtitleStyle(),
-                          ),
-                        ),
+                        // Container(
+                        //   child: Text(
+                        //     AppUtils.changeDateFormat(controller.suspensionApprovedList.value[index].suspension_submit_date),
+                        //     style: subtitleStyle(),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -329,16 +329,16 @@ class _ApprovedSuspensionDetailsState extends State<ApprovedSuspensionDetails> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Container(
+                      //   child: Text(
+                      //     labels.lastDayOfEmployee,
+                      //     // ("loan_amount"),
+                      //     style: datalistStyle(),
+                      //   ),
+                      // ),
                       Container(
                         child: Text(
-                          labels.lastDayOfEmployee,
-                          // ("loan_amount"),
-                          style: datalistStyle(),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          labels.approvedLastDayOfEmployee,
+                          'Suspension Effective Date',
                           // ("no_of_installments"),
                           style: datalistStyle(),
                         ),

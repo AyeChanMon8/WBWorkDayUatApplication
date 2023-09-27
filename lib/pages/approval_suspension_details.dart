@@ -351,12 +351,12 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                           style: datalistStyle(),
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          ("Submitted Date"),
-                          style: datalistStyle(),
-                        ),
-                      ),
+                      // Container(
+                      //   child: Text(
+                      //     ("Submitted Date"),
+                      //     style: datalistStyle(),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -371,12 +371,12 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                             style: subtitleStyle(),
                           ):SizedBox(),
                         ),
-                        Container(
-                          child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].suspension_submit_date != null? Text(
-                            AppUtils.changeDateFormat(controller.suspensionApprovalList.value[index].suspension_submit_date),
-                            style: subtitleStyle(),
-                          ):SizedBox(),
-                        ),
+                        // Container(
+                        //   child: controller.suspensionApprovalList.length > 0 && controller.suspensionApprovalList.value[index].suspension_submit_date != null? Text(
+                        //     AppUtils.changeDateFormat(controller.suspensionApprovalList.value[index].suspension_submit_date),
+                        //     style: subtitleStyle(),
+                        //   ):SizedBox(),
+                        // ),
                       ],
                     ),
                   ),
@@ -402,7 +402,7 @@ class _ApprovalSuspensionDetailsState extends State<ApprovalSuspensionDetails> {
                       // ),
                       Container(
                         child: Text(
-                          'Approved Last Day Of Employee',
+                          'Suspension Effective Date',
                           // ("no_of_installments"),
                           style: datalistStyle(),
                         ),

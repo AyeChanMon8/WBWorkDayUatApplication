@@ -1626,8 +1626,13 @@ print("secondApproval $response");
     Response response = await dioClient.put(url,
         data:
             jsonEncode({'employee_id': int.tryParse(empID)}));
-    List<dynamic> travel_ids = response.data;
-    print(response.data);
+    List<dynamic> travel_ids = [];
+    if (response.statusCode == 200) {
+       travel_ids = response.data;
+    }else{
+      //Get.back();
+      AppUtils.showErrorDialog(response.toString(),response.statusCode.toString());
+    }
     return travel_ids;
   }
   Future<TravelLine> updateTravelLine(TravelLine data) async {

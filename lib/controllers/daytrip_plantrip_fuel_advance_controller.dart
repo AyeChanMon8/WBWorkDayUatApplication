@@ -254,8 +254,8 @@ class DayTripPlanTripGeneralController extends GetxController{
 
   void calculateAdvanceAmount() {
     var qty = quantityTextController.text ?? "1";
-    if(amountTextController.text.isEmpty)
-      amountTextController.text = '0';
+    // if(amountTextController.text.isEmpty)
+    //   amountTextController.text = '0';
     var unit_price = amountTextController.text ?? "0";
     amount.value = double.tryParse(qty) * double.tryParse(unit_price);
     var amt = amount.value.toStringAsFixed(1);
@@ -498,8 +498,8 @@ class DayTripPlanTripGeneralController extends GetxController{
 
   void calculateAdvancePriceUnit() {
     var qty = quantityTextController.text ?? "1";
-    if(totalAmountController.text.isEmpty)
-      totalAmountController.text = '0';
+    // if(totalAmountController.text.isEmpty)
+    //   totalAmountController.text = '0';
     var unit_price = totalAmountController.text ?? "0";
     amount.value = double.tryParse(unit_price)/double.tryParse(qty);
     var amt = amount.value.toStringAsFixed(1);

@@ -1164,7 +1164,7 @@ class _PlanTripWayBillDetailsState extends State<PlanTripWayBillDetails> with Si
               ),
             ):SizedBox(),
             controller.plantrip_with_waybill_list.value.length > 0 ?Container(
-              height: 350,
+              height: 300,
               child: controller.plantrip_with_waybill_list.value[controller.arg_index.value].state=='open'?
               TabBarView(
                 controller: _tabController,

@@ -79,6 +79,7 @@ TextStyle appbarTextStyleFont() =>
 
 //Login Page//
 final textFieldTapColor = Color.fromRGBO(60, 47, 126, 1);
+final attachmentButtonColor = Color.fromRGBO(211, 211, 211, 1);
 final logoImage = Image.asset('assets/icon/icon.jpg');
 
 //Home Page//

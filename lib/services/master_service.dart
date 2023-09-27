@@ -11,6 +11,7 @@ import 'package:winbrother_hr_app/models/department.dart';
 import 'package:winbrother_hr_app/models/employee_category.dart';
 import 'package:winbrother_hr_app/models/leave_type.dart';
 import 'package:winbrother_hr_app/models/overtime_category.dart';
+import 'package:winbrother_hr_app/models/rating_config.dart';
 import 'package:winbrother_hr_app/models/stock_location.dart';
 import 'package:winbrother_hr_app/models/travel_expense/list/travel_expense_approve_model.dart';
 import 'package:winbrother_hr_app/models/travel_expense/travel_expense_category.dart';
@@ -209,4 +210,19 @@ class MasterService extends OdooService {
     }
     return route_list;
   }
+
+  Future<List<RatingConfig>> getRatingConfig() async {
+    String url = Globals.baseURL +
+        "/rating.structure?filters=&order=point desc";
+    Response response = await dioClient.get(url);
+    List<RatingConfig> states = new List<RatingConfig>();
+    if (response.statusCode == 200) {
+      var list = response.data['results'];
+      list.forEach((v) {
+        states.add(RatingConfig.fromMap(v));
+      });
+    }
+    return states;
+  }
+
 }

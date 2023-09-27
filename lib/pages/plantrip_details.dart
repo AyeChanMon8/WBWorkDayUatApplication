@@ -1162,7 +1162,7 @@ class _PlanTripDetailsState extends State<PlanTripDetails>
                 )):SizedBox(),
             // tab bar view here
             controller.plantrip_with_product_list.length > 0 ?Container(
-              height: 350,
+              height: 300,
                 child: controller.plantrip_with_product_list[arg_index].state ==
                     'open'
                     ? TabBarView(

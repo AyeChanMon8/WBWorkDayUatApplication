@@ -62,9 +62,11 @@ class _MaintenanceDetailPageState extends State<MaintenanceDetailPage> {
     var employee_id = box.read('emp_id');
     if((maintenanceRequestModel.driverId.id != int.parse(employee_id) && box.read('real_role_category').toString().contains('branch manager')) || maintenanceRequestModel.driverId.id != int.parse(employee_id) && box.read('real_role_category').toString().contains('manager')){
       is_branch_manager = true;
-    }else if(maintenanceRequestModel.driverId.id == int.parse(employee_id) && box.read('real_role_category').toString().contains('branch manager')){
-      is_branch_manager = true;
-    }else{
+    }
+    // else if(maintenanceRequestModel.driverId.id == int.parse(employee_id) && box.read('real_role_category').toString().contains('branch manager')){
+    //   is_branch_manager = true;
+    // }
+    else{
       is_branch_manager = false;
     }
     if(box.read('real_role_category').toString().contains('spare')){
@@ -1059,7 +1061,7 @@ class _MaintenanceDetailPageState extends State<MaintenanceDetailPage> {
                   ),
                 ],
               ) : SizedBox(),
-              maintenanceRequestModel.state == 'submit'&&is_branch_manager
+              (maintenanceRequestModel.state == 'submit'&&is_branch_manager)
                   ? Row(
                 children: [
                   Expanded(

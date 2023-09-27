@@ -77,7 +77,7 @@ class _PmsPageState extends State<PmsPage> {
             itemBuilder: (BuildContext context, int index) {
               PMSDetailModel pmsDetailModel = controller.pmsDetailModels[index];
 
-              var deadLine = AppUtils.changeDateFormat(pmsDetailModel.deadline);
+              // var deadLine = AppUtils.changeDateFormat(pmsDetailModel.deadline);
               return InkWell(
                 onTap: (){
                   Get.toNamed(Routes.PMS_DETAILS_PAGE,arguments: pmsDetailModel);
@@ -96,8 +96,8 @@ class _PmsPageState extends State<PmsPage> {
                                 Text(pmsDetailModel.name,style: TextStyle(color: backgroundIconColor,fontWeight: FontWeight.bold),),
                                 SizedBox(height: 5,),
                                 Text(pmsDetailModel.templateId.name,style: TextStyle(color: Colors.deepPurple[700]),),
-                                SizedBox(height: 5,),
-                                Text(pmsDetailModel.compTemplateId.name,style: TextStyle(color: Colors.deepPurple[700]),),
+                                // SizedBox(height: 5,),
+                                // Text(pmsDetailModel.compTemplateId.name,style: TextStyle(color: Colors.deepPurple[700]),),
                               ],
                             ),
                           ),
