@@ -602,6 +602,26 @@ class BusinessTravelController extends GetxController {
         from_travel_date.value = data[0].start_date;
         to_travel_date.value = data[0].end_date;
         travel_expense_approve_list.value = data;
+          if (travel_expense_approve_list.value.length > 0) {
+          selectedApproveList = travel_expense_approve_list
+              .value[travel_expense_approve_list.value.length - 1];
+          var totalamount = 0.0;
+          from_travel_date.value = travel_expense_approve_list
+              .value[travel_expense_approve_list.value.length - 1].start_date;
+          to_travel_date.value = travel_expense_approve_list
+              .value[travel_expense_approve_list.value.length - 1].end_date;
+          if (travel_expense_approve_list
+              .value[travel_expense_approve_list.value.length - 1].request_allowance_lines != null) {
+            travel_expense_approve_list
+              .value[travel_expense_approve_list.value.length - 1].request_allowance_lines
+                .forEach((element) {
+              totalamount += element.total_amount;
+            });
+          }
+          totalAdvanceAmount.value = travel_expense_approve_list
+              .value[travel_expense_approve_list.value.length - 1].payment_amount;
+          update();
+        }
       }
     });
   }

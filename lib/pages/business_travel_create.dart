@@ -276,9 +276,12 @@ bool selectCamera = false;
                           icon: Icon(Icons.keyboard_arrow_down),
                           iconSize: 30,
                           isExpanded: true,
-                          onChanged: controller.travelLineModel.length > 0 ? null :(TravelRequestListResponse value) {
-                            controller
-                                .onChangeTravelExpenseApproveDropdown(value);
+                          // onChanged: controller.travelLineModel.length > 0 ? null :(TravelRequestListResponse value) {
+                          //   controller
+                          //       .onChangeTravelExpenseApproveDropdown(value);
+                          // },
+                          onChanged: controller.travelLineModel.length > 0 ? null : (TravelRequestListResponse value) {
+                            
                           },
                           items: controller.travel_expense_approve_list
                               .map((TravelRequestListResponse travel) {
