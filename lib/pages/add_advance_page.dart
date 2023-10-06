@@ -128,7 +128,8 @@ Widget build(BuildContext context) {
             SizedBox(
               height: 20,
             ),
-            Container(
+            Obx(
+                      () => Container(
               child:  GFButton(
                 color: textFieldTapColor,
                 onPressed: day_trip_controller.isAdvanceButton.value ? null :() {
@@ -143,7 +144,7 @@ Widget build(BuildContext context) {
                 size: GFSize.LARGE,
               ),
             ),
-
+            ),
 
           ],
         ),
