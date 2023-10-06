@@ -217,10 +217,12 @@ class MasterService extends OdooService {
     Response response = await dioClient.get(url);
     List<RatingConfig> states = new List<RatingConfig>();
     if (response.statusCode == 200) {
-      var list = response.data['results'];
-      list.forEach((v) {
-        states.add(RatingConfig.fromMap(v));
-      });
+      if(response.data['results'].length > 0){
+        var list = response.data['results'];
+        list.forEach((v) {
+          states.add(RatingConfig.fromMap(v));
+        });
+      }
     }
     return states;
   }

@@ -250,7 +250,7 @@ class _PmsDetailsState extends State<PmsDetails>
                           Expanded(
                               flex: 2,
                               child: Text(
-                                'Key Performance Area',
+                                'Goal',
                                 style: TextStyle(color: backgroundIconColor),
                               )),
                           Expanded(
@@ -344,7 +344,7 @@ class _PmsDetailsState extends State<PmsDetails>
                                                       children: [
                                                         Expanded(
                                                             child: Text(
-                                                          'KEY PERFORMANCE AREAS',
+                                                          'Goal',
                                                           style:
                                                               pmstitleStyle(),
                                                         )),
@@ -361,7 +361,7 @@ class _PmsDetailsState extends State<PmsDetails>
                                                       children: [
                                                         Expanded(
                                                             child: Text(
-                                                                'Description',
+                                                                'KPI',
                                                                 style:
                                                                     pmstitleStyle())),
                                                         Expanded(
@@ -704,7 +704,7 @@ class _PmsDetailsState extends State<PmsDetails>
                                                                               ),
                                                                               Row(
                                                                                 children: [
-                                                                                  Expanded(child: Text('KEY PERFORMANCE AREAS', style: pmstitleStyle())),
+                                                                                  Expanded(child: Text('Goal', style: pmstitleStyle())),
                                                                                   Expanded(child: Text(keyPerformance.name))
                                                                                 ],
                                                                               ),
@@ -713,7 +713,7 @@ class _PmsDetailsState extends State<PmsDetails>
                                                                               ),
                                                                               Row(
                                                                                 children: [
-                                                                                  Expanded(child: Text('Description', style: pmstitleStyle())),
+                                                                                  Expanded(child: Text('KPI', style: pmstitleStyle())),
                                                                                   Expanded(child: Text(keyPerformance.description ?? ''))
                                                                                 ],
                                                                               ),

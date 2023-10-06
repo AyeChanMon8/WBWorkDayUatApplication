@@ -241,7 +241,7 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                               Expanded(
                                   flex: 2,
                                   child: Text(
-                                    'Key Performance Area',
+                                    'Goal',
                                     style: TextStyle(color: backgroundIconColor),
                                   )),
                               Expanded(
@@ -329,7 +329,7 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                                           children: [
                                                             Expanded(
                                                                 child: Text(
-                                                                  'KEY PERFORMANCE AREAS',
+                                                                  'Goal',
                                                                   style: pmstitleStyle(),
                                                                 )),
                                                             Expanded(
@@ -345,7 +345,7 @@ class _PmsDetailsState extends State<PmsDoneDetails>
                                                           children: [
                                                             Expanded(
                                                                 child: Text(
-                                                                    'Description',
+                                                                    'KPI',
                                                                     style:
                                                                     pmstitleStyle())),
                                                             keyPerformance
