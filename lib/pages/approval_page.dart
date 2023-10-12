@@ -793,9 +793,7 @@ class _ApprovalPageState extends State<ApprovalPage> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            
 
             SizedBox(
               height: 10,
@@ -1048,7 +1046,65 @@ class _ApprovalPageState extends State<ApprovalPage> {
                 ],
               ),
             ),
-          
+            SizedBox(height: 10,),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  InkWell(
+                    onTap: () {
+                       Get.toNamed(Routes.APPROVAL_INSURANCE_LIST);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              labels.insuranceApproval,
+                              style: listTileStyle(),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Obx(
+                                () => Container(
+                                  child: Text(
+                                    controller
+                                        .insurance_approval_count.value
+                                        .toString(),
+                                    style: countLabelStyle(),
+                                  ),
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 2,
+                                      )),
+                                ),
+                              ),
+                              arrowforwardIcon,
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),

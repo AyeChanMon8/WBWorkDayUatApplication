@@ -425,10 +425,31 @@ class EmployeeService extends OdooService {
     }
     return result;
   }
+  Future<bool> approvalInsuranceClick(int id) async {
+    bool result = true;
+    String url =
+        Globals.baseURL + "/hr.insurance/" + id.toString() + "/action_approve";
+    Response response = await dioClient.put(url);
+    if (response.statusCode == 200) {
+      result = response.data;
+    }
+    return result;
+  }
   Future<bool> rejectAnnouncementClick(int id) async {
     bool result = true;
     String url =
         Globals.baseURL + "/hr.announcement/" + id.toString() + "/reject";
+    Response response = await dioClient.put(url);
+    if (response.statusCode == 200) {
+      result = response.data;
+    }
+    return result;
+  }
+
+  Future<bool> rejectInsuranceClick(int id) async {
+    bool result = true;
+    String url =
+        Globals.baseURL + "/hr.insurance/" + id.toString() + "/action_refuse";
     Response response = await dioClient.put(url);
     if (response.statusCode == 200) {
       result = response.data;
@@ -724,6 +745,14 @@ class EmployeeService extends OdooService {
   Future<int> getAnnouncementToApproveCount(String empID) async {
     String url =
         Globals.baseURL + "/hr.employee/1/approval_announcements_count";
+    Response response = await dioClient.put(url,
+        data: jsonEncode({'employee_id': int.parse(empID.toString())}));
+    return response.data;
+  }
+
+  Future<int> getInsuranceToApproveCount(String empID) async {
+    String url =
+        Globals.baseURL + "/hr.employee/1/approval_insurance_count";
     Response response = await dioClient.put(url,
         data: jsonEncode({'employee_id': int.parse(empID.toString())}));
     return response.data;
@@ -1148,6 +1177,34 @@ class EmployeeService extends OdooService {
     return emp_ids;
   }
 
+  getInsuranceIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/2/approval_insurance";
+    Response response = await dioClient.put(url, data: jsonEncode({'employee_id': int.tryParse(empID)}));
+    List<dynamic> insurance_ids = response.data;
+    print(response.data);
+    return insurance_ids;
+  }
+
+  Future<List<Insurancemodel>> getInsuranceToApprove(
+      String empID,String offset) async {
+    List<dynamic> insurance_ids = await getInsuranceIDsList(empID);
+    String filter = "[('id','in'," + insurance_ids.toString() + ")]";
+    String url = Globals.baseURL + "/hr.insurance?filters=[('id','in'," + insurance_ids.toString() + ")]&limit="+Globals.pag_limit.toString()+"&offset="+offset;
+    Response response =
+        await dioClient.get(url, queryParameters: {"filters": filter});
+    List<Insurancemodel> insurance_list = new List<Insurancemodel>();
+    if (response.statusCode == 200) {
+      print(response.toString());
+      var list = response.data['results'];
+      if (response.data['count'] != 0) {
+        list.forEach((v) {
+          insurance_list.add(Insurancemodel.fromJson(v));
+        });
+      }
+    }
+    return insurance_list;
+  }
+
   Future<List<Branch_id>> getBranchList(int companyid,String keyword) async {
     List<dynamic> branch_ids = await getBranchIdsList(companyid,keyword);
     String url = Globals.baseURL +
@@ -1247,5 +1304,34 @@ class EmployeeService extends OdooService {
     }
     return result;
 
+  }
+  Future<List<Insurancemodel>> getInsuranceApproved(String empID,String offset) async {
+   List<dynamic> insurance_ids =
+        await getInsuranceApprovedIDsList(empID);
+    String filter = "[('id','in'," + insurance_ids.toString() + ")]";
+    String url = Globals.baseURL + "/hr.insurance";
+    Response response =
+        await dioClient.get(url, queryParameters: {"filters": filter});
+    List<Insurancemodel> insurance_list = new List<Insurancemodel>();
+    if (response.statusCode == 200) {
+      print(response.toString());
+      var list = response.data['results'];
+      if (response.data['count'] != 0) {
+        list.forEach((v) {
+          insurance_list.add(Insurancemodel.fromJson(v));
+        });
+      }
+    }
+    return insurance_list;
+  }
+
+  getInsuranceApprovedIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/2/approved_insurance";
+    Response response = await dioClient.put(url,
+        data:
+            jsonEncode({'employee_id': int.tryParse(empID)}));
+    List<dynamic> insurance_ids = response.data;
+    print(response.data);
+    return insurance_ids;
   }
 }

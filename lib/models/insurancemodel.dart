@@ -38,6 +38,7 @@ class Insurancemodel {
   double _balanceAmount;
   String _name;
   String _poilcy_coverage;
+  String _state;
 
   int get id => _id;
   Employee_id get employeeId => _employeeId;
@@ -58,6 +59,7 @@ class Insurancemodel {
   double get balanceAmount => _balanceAmount;
   String get name => _name;
   String get poilcy_coverage => _poilcy_coverage;
+  String get state => _state;
   Insurancemodel({
       int id, 
       Employee_id employeeId, 
@@ -75,7 +77,8 @@ class Insurancemodel {
       List<Insurance_lines> insuranceLines, 
       double totalAmount, 
       double totalPaidAmount, 
-      double balanceAmount}){
+      double balanceAmount,
+      String state}){
     _id = id;
     _employeeId = employeeId;
     _premiumAmount = premiumAmount;
@@ -93,6 +96,7 @@ class Insurancemodel {
     _totalAmount = totalAmount;
     _totalPaidAmount = totalPaidAmount;
     _balanceAmount = balanceAmount;
+    _state = state;
 }
 
   Insurancemodel.fromJson(dynamic json) {
@@ -120,6 +124,7 @@ class Insurancemodel {
     _totalPaidAmount = json["total_paid_amount"];
     _balanceAmount = json["balance_amount"];
     _poilcy_coverage = json["policy_coverage"];
+    _state = json["state"];
   }
 
   Map<String, dynamic> toJson() {
@@ -148,6 +153,7 @@ class Insurancemodel {
     map["total_paid_amount"] = _totalPaidAmount;
     map["balance_amount"] = _balanceAmount;
     map["policy_coverage"] = _poilcy_coverage;
+    map["state"] = _state;
     return map;
   }
 

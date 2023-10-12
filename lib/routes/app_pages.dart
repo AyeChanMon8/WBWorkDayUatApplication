@@ -79,6 +79,9 @@ import 'package:winbrother_hr_app/pages/forget_password.dart';
 import 'package:winbrother_hr_app/pages/change_password_page.dart';
 import 'package:winbrother_hr_app/pages/home_page.dart';
 import 'package:winbrother_hr_app/pages/insurance_page.dart';
+import 'package:winbrother_hr_app/pages/insurance_page/approved_insurance_details.dart';
+import 'package:winbrother_hr_app/pages/insurance_page/insurance_approval.dart';
+import 'package:winbrother_hr_app/pages/insurance_page/insurance_approval_tabar.dart';
 import 'package:winbrother_hr_app/pages/language.dart';
 import 'package:winbrother_hr_app/pages/leave_approval_tabbar.dart';
 import 'package:winbrother_hr_app/pages/leave_detail.dart';
@@ -357,6 +360,9 @@ class AppPages {
         name: Routes.TRAVEL_EXPENSE_APPROVAL,
         page: () => TravelExpenseApproval()),
     GetPage(
+        name: Routes.INSURANCE_APPROVAL,
+        page: () => InsuranceApproval()),
+    GetPage(
         name: Routes.TRIP_EXPENSE_APPROVAL, page: () => TripExpenseApproval()),
     GetPage(
         name: Routes.APPROVAL_OUTOFPOCKET_LIST,
@@ -367,6 +373,10 @@ class AppPages {
     GetPage(
         name: Routes.APPROVAL_TRAVEL_EXPENSE_LIST,
         page: () => TravelExpenseApprovalTabar()),
+    GetPage(
+      name: Routes.APPROVAL_INSURANCE_LIST,
+      page: () => InsuranceApprovalTabar()
+    ),
     GetPage(
         name: Routes.APPROVED_OUTOFPOCKET_APPROVED_DETAILS,
         page: () => OutOfPocketApprovedDetails()),
@@ -424,6 +434,10 @@ class AppPages {
     GetPage(
         name: Routes.APPROVEDMAINTENANCEDETAILPAGE,
         page: () => ApprovedMaintenanceDetailPage()),
+    GetPage(
+      name: Routes.APPROVED_INSURANCE_DETAILS,
+      page: () => ApprovedInsuranceDetailsPage()
+    )
 
 
   ];

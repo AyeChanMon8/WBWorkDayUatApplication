@@ -117,6 +117,7 @@ abstract class Routes {
   static const APPROVAL_TRIPEXPENSE_LIST = '/approval_tripexpense_list';
   static const APPROVED_TRIPEXXPENSE_APPROVED_DETAILS = '/approved_tripexpense_details';
   static const APPROVAL_TRAVEL_EXPENSE_LIST = '/approval_travelexpense_list';
+  static const APPROVAL_INSURANCE_LIST = '/approval_insurance_list';
   static const APPROVED_TRAVEL_EXPENSE_DETAILS = '/approved_travel_expense_details';
   static const CONFIGURATION_PAGE = '/configuration';
   static const NOTIFICATION_PAGE = '/notification';
@@ -139,4 +140,6 @@ abstract class Routes {
   static const APPROVAL_SUSPENSION_DETAILS = '/approval_suspension_details';
   static const APPROVED_SUSPENSION_DETAILS = '/approved_suspension_details';
   static const APPROVEDMAINTENANCEDETAILPAGE = '/approved_maintenance_detail_page';
+  static const INSURANCE_APPROVAL = '/insurance_approval';
+  static const APPROVED_INSURANCE_DETAILS = '/approved_insurance_details';
 }

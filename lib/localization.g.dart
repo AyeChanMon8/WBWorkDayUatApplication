@@ -319,6 +319,7 @@ class AppLocalizations {
         routeApproval: "Route Approval",
         resignationApproval: "Resignation Approval",
         employeeChangesApproval: "Employee Changes Approval",
+        insuranceApproval: "Insurance Approval",
         toApprove: "To Approve",
         firstApprove: "First Approve",
         secondApprove: "Second Approve",
@@ -1347,6 +1348,7 @@ class AppLocalizations {
         resignationApproval: "နုတ်ထွက်ခွင့်ပြုချက်",
         loanApproval: "ချေးငွေအတည်ပြုချက်",
         employeeChangesApproval: "၀န်ထမ်းအပြောင်းအလဲထောက်ခံချက်",
+        insuranceApproval: "အာမခံအတည်ပြုချက်",
         toApprove: "အတည်ပြုရန်",
         firstApprove: "ပထမအတည်ပြုရန်",
         secondApprove: "ဒုတိယအတည်ပြုရန်",
@@ -2378,6 +2380,7 @@ class AppLocalizations_Labels {
     this.resignationApproval,
     this.loanApproval,
     this.employeeChangesApproval,
+    this.insuranceApproval,
     this.toApprove,
     this.firstApprove,
     this.secondApprove,
@@ -3210,6 +3213,8 @@ class AppLocalizations_Labels {
   final String loanApproval;
 
   final String employeeChangesApproval;
+
+  final String insuranceApproval;
 
   final String toApprove;
 

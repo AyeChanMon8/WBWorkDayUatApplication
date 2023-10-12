@@ -9,6 +9,8 @@ import 'package:winbrother_hr_app/models/announcement.dart';
 import 'package:winbrother_hr_app/models/base_route.dart';
 import 'package:winbrother_hr_app/models/employee_promotion.dart';
 import 'package:winbrother_hr_app/models/expense_attachment.dart';
+import 'package:winbrother_hr_app/models/insurance.dart';
+import 'package:winbrother_hr_app/models/insurancemodel.dart';
 import 'package:winbrother_hr_app/models/loan.dart';
 import 'package:winbrother_hr_app/models/overtime_request_response.dart';
 import 'package:winbrother_hr_app/models/overtime_response.dart';
@@ -86,6 +88,9 @@ class ApprovalController extends GetxController {
   var suspened_approval_count = 0.obs;
   var suspendedApprovalList = List<Suspension>().obs;
   var suspendedApprovedList = List<Suspension>().obs;
+  var insurance_approval_count = 0.obs;
+  var insuranceApprovalList = List<Insurancemodel>().obs;
+  var insuranceApprovedList = List<Insurancemodel>().obs;
   final box = GetStorage();
   TextEditingController remarkController;
   TravelRequestService travelRequestService;
@@ -191,6 +196,33 @@ class ApprovalController extends GetxController {
     });
   }
 
+  getInsuranceApprovalList() async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(
+            Center(
+                child: SpinKitWave(
+                  color: Color.fromRGBO(63, 51, 128, 1),
+                  size: 30.0,
+                )),
+            barrierDismissible: false));
+
+    var employee_id = box.read('emp_id');
+    await employeeService.getInsuranceToApprove(employee_id,offset.toString()).then((data) {
+      if(offset!=0){
+        // update data and loading status
+        isLoading.value = false;
+        //resignationApprovalList.addAll(data);
+        data.forEach((element) {
+          insuranceApprovalList.add(element);
+        });
+      }else{
+        insuranceApprovalList.value = data;
+      }
+      Get.back();
+    });
+  }
+
   getTravelExpenseApproved() async {
     Future.delayed(
         Duration.zero,
@@ -215,6 +247,36 @@ class ApprovalController extends GetxController {
         });
       }else{
         travelExpenseApprovedList.value = data;
+      }
+
+      update();
+      Get.back();
+    });
+  }
+
+  getInsuranceApproved() async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(
+            Center(
+                child: SpinKitWave(
+                  color: Color.fromRGBO(63, 51, 128, 1),
+                  size: 30.0,
+                )),
+            barrierDismissible: false));
+    //fetch emp_id from GetX Storage
+    var employee_id = box.read('emp_id');
+    await employeeService
+        .getInsuranceApproved(employee_id,offset.toString())
+        .then((data) {
+      //print("travelExpenseList");
+      if(offset!=0){
+        isLoading.value = false;
+        data.forEach((element) {
+          insuranceApprovedList.add(element);
+        });
+      }else{
+        insuranceApprovedList.value = data;
       }
 
       update();
@@ -648,6 +710,28 @@ class ApprovalController extends GetxController {
       });
     });
   }
+  approveInsurance(int id) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(
+            Center(
+                child: SpinKitWave(
+                  color: Color.fromRGBO(63, 51, 128, 1),
+                  size: 30.0,
+                )),
+            barrierDismissible: false));
+    await employeeService.approvalInsuranceClick(id).then((data) {
+      Get.back();
+      AppUtils.showConfirmDialog('Information', "Approved!",() async {
+        var employee_id = box.read('emp_id');
+        insurance_approval_count.value = await employeeService.getInsuranceToApproveCount(employee_id);
+        offset.value = 0;
+        Get.back();
+        Get.back();
+        getInsuranceApprovalList();
+      });
+    });
+  }
   rejectAnnouncement(int id) async {
     Future.delayed(
         Duration.zero,
@@ -667,6 +751,29 @@ class ApprovalController extends GetxController {
         Get.back();
         Get.back();
         getAnnouncementsList();
+      });
+    });
+  }
+
+  rejectInsurance(int id) async {
+    Future.delayed(
+        Duration.zero,
+            () => Get.dialog(
+            Center(
+                child: SpinKitWave(
+                  color: Color.fromRGBO(63, 51, 128, 1),
+                  size: 30.0,
+                )),
+            barrierDismissible: false));
+    await employeeService.rejectInsuranceClick(id).then((data) {
+      Get.back();
+      AppUtils.showConfirmDialog('Information', "Rejected!",() async {
+        var employee_id = box.read('emp_id');
+        announcement_approval_count.value = await employeeService.getInsuranceToApproveCount(employee_id);
+        offset.value = 0;
+        Get.back();
+        Get.back();
+        getInsuranceApprovalList()();
       });
     });
   }
@@ -1573,7 +1680,7 @@ route_approve_show.value = false;
     resignation_approval_count.value =  await travelRequestService.getResignationToApproveCount(employee_id);
     employee_changes_approval_count.value =  await travelRequestService.getEmployeeChangesToApproveCount(employee_id);
     suspened_approval_count.value =  await travelRequestService.getSuspensionToApproveCount(employee_id);
-
+    insurance_approval_count.value = await employeeService.getInsuranceToApproveCount(employee_id);
     var role = box.read('role_category');
     if (role == 'employee') {
       overtime_count.value = await overtimeService.getEmployeeOverTimeResponseCount(employee_id);
