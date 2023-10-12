@@ -21,7 +21,7 @@ class Globals {
   static final String tokenDate = "TOKEN_DATE";
   static final String check_in_or_not = "false";
   static final int pag_limit = 100;
-  static final String app_version = "6.11";
+  static final String app_version = "6.12";
 
   static final List<MenuOptionsModel> languageOptions = [
     MenuOptionsModel(key: "en", value: "English"), //English
