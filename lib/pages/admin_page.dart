@@ -36,7 +36,7 @@ class _AdminPageState extends State<AdminPage> {
     final plan_trip_waybill = box.read("allow_plan_trip_waybill");
     final day_trip = box.read("allow_day_trip");
     final purchase_order = box.read("allow_purchase_order_approval");
-
+    final employee_benefit = box.read("allow_employee_benefit");
    /* if (expense_report != null) {
       admin.add([
         Icons.calendar_today,
@@ -100,6 +100,13 @@ class _AdminPageState extends State<AdminPage> {
         FontAwesomeIcons.shoppingCart,
         labels?.purchaseOrder,
         Routes.PURCHASE_ORDER_LIST
+      ]);
+    }
+    if (employee_benefit != null) {
+      admin.add([
+        FontAwesomeIcons.award,
+        labels?.benefit,
+        Routes.EMPLOYEE_BENEFIT_LIST
       ]);
     }
 

@@ -174,6 +174,7 @@ class UserProfileController extends GetxController {
         box.write("allow_travel_expense", data.allow_travel_expense);
         box.write("branch_id", data.branch_id.id);
         box.write("allow_purchase_order_approval", data.allow_purchase_order_approval);
+        box.write("allow_employee_benefit", data.allow_employee_benefit);
 
         // fetchChildEmp(data);
         getFiscialYearData();

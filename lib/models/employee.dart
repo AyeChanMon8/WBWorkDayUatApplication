@@ -58,6 +58,7 @@ class Employee {
   final bool allow_travel_expense;
   bool allow_employee_change = true;
   final bool allow_purchase_order_approval;
+  final bool allow_employee_benefit;
   Company branch_id;
   Employee({
     this.id,
@@ -106,7 +107,8 @@ class Employee {
     this.allow_out_of_pocket,
     this.allow_travel_expense,
     this.branch_id,this.allow_employee_change,
-    this.allow_purchase_order_approval
+    this.allow_purchase_order_approval,
+    this.allow_employee_benefit
   });
 
   Employee copyWith({
@@ -154,7 +156,7 @@ class Employee {
     bool allow_out_of_pocket,
     bool allow_travel_expense,
     bool allow_purchase_order_approval,
-
+    bool allow_employee_benefit
   }) {
     return Employee(
       id: id ?? this.id,
@@ -218,6 +220,7 @@ class Employee {
       allow_out_of_pocket: this.allow_out_of_pocket == null ? false : allow_out_of_pocket,
       allow_travel_expense: this.allow_travel_expense == null ? false : allow_travel_expense,
       allow_purchase_order_approval: this.allow_purchase_order_approval == null ? false : allow_purchase_order_approval,
+      allow_employee_benefit: this.allow_employee_benefit == null ? false : allow_employee_benefit
     );
   }
 
@@ -319,7 +322,8 @@ class Employee {
       child_ids: List<EmployeeID>.from(
           map['child_ids']?.map((x) => EmployeeID.fromMap(x))) ?? [],
       branch_id: Company.fromMap(map['branch_id']),
-      allow_purchase_order_approval: map['allow_purchase_order_approval']
+      allow_purchase_order_approval: map['allow_purchase_order_approval'],
+      allow_employee_benefit: map['allow_employee_benefit']
     );
   }
 
@@ -330,7 +334,7 @@ class Employee {
 
   @override
   String toString() {
-    return 'Employee(id: $id, name: $name, image_128: $image_128, job_title: $job_title, department_id: $department_id, job_id: $job_id, work_location: $work_location, mobile_phone: $mobile_phone, work_email: $work_email, company_id: $company_id, parent_id: $parent_id, ssb_no: $ssb_no, ssb_issue_date: $ssb_issue_date, ssb_temporary_card: $ssb_temporary_card, ssb_temporary_card_no: $ssb_temporary_card_no, smart_card: $smart_card, smart_card_issue_date: $smart_card_issue_date, smart_card_no: $smart_card_no, fingerprint_id: $fingerprint_id, child_ids: $child_ids)';
+    return 'Employee(id: $id, name: $name, image_128: $image_128, job_title: $job_title, department_id: $department_id, job_id: $job_id, work_location: $work_location, mobile_phone: $mobile_phone, work_email: $work_email, company_id: $company_id, parent_id: $parent_id, ssb_no: $ssb_no, ssb_issue_date: $ssb_issue_date, ssb_temporary_card: $ssb_temporary_card, ssb_temporary_card_no: $ssb_temporary_card_no, smart_card: $smart_card, smart_card_issue_date: $smart_card_issue_date, smart_card_no: $smart_card_no, fingerprint_id: $fingerprint_id, child_ids: $child_ids,allow_employee_benefit: $allow_employee_benefit)';
   }
 
   @override
@@ -354,6 +358,7 @@ class Employee {
         smart_card_issue_date.hashCode ^
         smart_card_no.hashCode ^
         fingerprint_id.hashCode ^
-        child_ids.hashCode;
+        child_ids.hashCode ^
+        allow_employee_benefit.hashCode;
   }
 }

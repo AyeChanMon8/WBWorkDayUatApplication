@@ -533,7 +533,11 @@ class AppLocalizations {
         suspensionApproval: "Suspension Approval",
         suspensionDetails: "Supension Details",
         joiningDate: "Joining Date",
-        submittedDate: "Submitted Date"
+        submittedDate: "Submitted Date",
+        benefit: "Benefit",
+        insurance_list: "Insurance List",
+        employee_benefit_list: "Employee Benefit List",
+        employee_benefit_details: "Employee Benefit Details"
         ),
     // Locale.fromSubtags(languageCode: "my"): AppLocalizations_Labels(
     //     employeeID: "ဝန်ထမ်း ID",
@@ -1560,6 +1564,10 @@ class AppLocalizations {
         suspensionDetails: "Supension Details",
         joiningDate: "Joining Date",
         submittedDate: "Submitted Date",
+        benefit: "Benefit",
+        insurance_list: "Insurance List",
+        employee_benefit_list: "Employee Benefit List",
+        employee_benefit_details: "Employee Benefit Details"
 ),
   };
 
@@ -2594,6 +2602,10 @@ class AppLocalizations_Labels {
     this.suspension,
     this.joiningDate,
     this.submittedDate,
+    this.benefit,
+    this.insurance_list,
+    this.employee_benefit_list,
+    this.employee_benefit_details
   });
 
   final String employeeID;
@@ -3561,6 +3573,10 @@ class AppLocalizations_Labels {
   final String suspension;
   final String joiningDate;
   final String submittedDate;
+  final String benefit;
+  final String insurance_list;
+  final String employee_benefit_list;
+  final String employee_benefit_details;
   String getByKey(String key) {
     switch (key) {
       case 'employeeID':
@@ -4435,6 +4451,14 @@ class AppLocalizations_Labels {
         return joiningDate;
       case 'submittedDate':
         return submittedDate;
+      case 'benefit':
+        return benefit;
+      case 'insurance_list':
+        return insurance_list;
+      case 'employee_benefit_details':
+        return employee_benefit_details;
+      case 'employee_benefit_list':
+        return employee_benefit_list;
       default:
         return '';
     }

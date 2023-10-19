@@ -63,6 +63,8 @@ import 'package:winbrother_hr_app/pages/document_list.dart';
 import 'package:winbrother_hr_app/pages/documentation.dart';
 import 'package:winbrother_hr_app/pages/drawer.dart';
 import 'package:winbrother_hr_app/pages/employee_approval_tabar.dart';
+import 'package:winbrother_hr_app/pages/employee_benefit_page/employee_benefit_detail_page.dart';
+import 'package:winbrother_hr_app/pages/employee_benefit_page/employee_benefit_list_page.dart';
 import 'package:winbrother_hr_app/pages/employee_change_tabbar.dart';
 import 'package:winbrother_hr_app/pages/employee_changes_details.dart';
 import 'package:winbrother_hr_app/pages/employee_changes_list.dart';
@@ -256,7 +258,7 @@ class AppPages {
     GetPage(name: Routes.OVERTIME_DETAILS, page: () => OvertimeDetails()),
     GetPage(name: Routes.OVERTIME_DECLINE, page: () => OverTimeDeclinePage()),
     GetPage(name: Routes.LOAN_DETAILS, page: () => LoanDetailsPage()),
-
+    GetPage(name: Routes.EMPLOYEE_BENEFIT_DETAILS, page: () => EmployeeBenefitDetailsPage()),
     GetPage(name: Routes.HOME_PAGE, page: () => HomePage()),
     GetPage(name: Routes.HR_PAGE, page: () => HRPage()),
     GetPage(name: Routes.ADMIN_PAGE, page: () => AdminPage()),
@@ -422,6 +424,8 @@ class AppPages {
     binding: PurchaseOrderBinding(), page: () => PurchaseOrderListPage()),
     GetPage(
         name: Routes.PURCHASE_ORDER_DETAIL, page: () => PurchaseOrderDetails()),
+    GetPage(
+        name: Routes.EMPLOYEE_BENEFIT_LIST, page: () => EmployeeBenefitListPage()),
     GetPage(
         name: Routes.APPROVAL_SUSPENSION_LIST,
         page: () => SuspensionApprovalTabBar()),

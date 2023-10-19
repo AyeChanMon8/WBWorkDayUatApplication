@@ -67,6 +67,7 @@ abstract class Routes {
   static const OVERTIME_COMPLETE_DETAILS = '/overtimecompletedetails';
   static const OVERTIME_DECLINE = '/overtimedeclinepage';
   static const LOAN_DETAILS = '/loandetails';
+  static const EMPLOYEE_BENEFIT_DETAILS = '/employeebenefitdetails';
   static const HOME_PAGE = '/homepage';
   static const HR_PAGE = '/hrpage';
   static const ADMIN_PAGE = '/adminpage';
@@ -136,6 +137,7 @@ abstract class Routes {
   static const CREATEROUTEDATEWAYBILL = '/create_route_date_waybill';
   static const OTPCONFIRM ='/otp_confirm';
   static const PURCHASE_ORDER_LIST = '/purchase_order_list';
+  static const EMPLOYEE_BENEFIT_LIST = '/employee_benefit_list';
   static const PURCHASE_ORDER_DETAIL = '/purchase_order_detail';
   static const APPROVAL_SUSPENSION_DETAILS = '/approval_suspension_details';
   static const APPROVED_SUSPENSION_DETAILS = '/approved_suspension_details';
