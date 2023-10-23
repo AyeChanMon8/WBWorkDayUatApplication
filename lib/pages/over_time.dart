@@ -10,6 +10,7 @@ import 'package:winbrother_hr_app/localization.dart';
 import 'package:winbrother_hr_app/models/depart_empids.dart';
 import 'package:winbrother_hr_app/models/department.dart';
 import 'package:winbrother_hr_app/models/employee_category.dart';
+import 'package:winbrother_hr_app/models/ot_department.dart';
 import 'package:winbrother_hr_app/models/overtime_category.dart';
 import 'package:winbrother_hr_app/my_class/my_app_bar.dart';
 import 'package:winbrother_hr_app/my_class/my_style.dart';
@@ -158,7 +159,7 @@ class _StateOverTimePage extends State<OverTimePage> {
   //   );
   // }
 
-  Widget buildDeptChips(RxList<Department> chipValues) {
+  Widget buildDeptChips(RxList<OTDepartment> chipValues) {
     List<Widget> chips = new List();
     for (int i = 0; i < chipValues.length; i++) {
       InputChip actionChip = InputChip(
@@ -418,7 +419,7 @@ class _StateOverTimePage extends State<OverTimePage> {
                   ),
                   child: Obx(
                         () => DropdownButtonHideUnderline(
-                      child: DropdownButton<Department>(
+                      child: DropdownButton<OTDepartment>(
                           hint: Container(
                               padding: EdgeInsets.only(left: 20),
                               child: Text(
@@ -429,7 +430,7 @@ class _StateOverTimePage extends State<OverTimePage> {
                           icon: Icon(Icons.keyboard_arrow_down),
                           iconSize: 30,
                           isExpanded: true,
-                          onChanged: controller.enableDropdown.value ? (Department value) {
+                          onChanged: controller.enableDropdown.value ? (OTDepartment value) {
                             setState(() {
                               controller.onChangeDepartmentDropdown(value);
                             });
@@ -437,8 +438,8 @@ class _StateOverTimePage extends State<OverTimePage> {
                           } : null,
                           // hint: Text('Department'),
                           items: controller.department_list
-                              .map((Department department) {
-                            return DropdownMenuItem<Department>(
+                              .map((OTDepartment department) {
+                            return DropdownMenuItem<OTDepartment>(
                               value: department,
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10),

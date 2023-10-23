@@ -12,6 +12,7 @@ import 'package:winbrother_hr_app/models/emp_dept_tag.dart';
 import 'package:winbrother_hr_app/models/employee.dart';
 import 'package:winbrother_hr_app/models/employee_category.dart';
 import 'package:winbrother_hr_app/models/employee_id.dart';
+import 'package:winbrother_hr_app/models/ot_department.dart';
 import 'package:winbrother_hr_app/models/overtime_category.dart';
 import 'package:winbrother_hr_app/models/overtime_request.dart';
 import 'package:winbrother_hr_app/models/overtime_request_line.dart';
@@ -43,7 +44,7 @@ class OvertimeRequestController extends GetxController {
   var from_date_time = "";
   var to_date_time = "";
   var category_ids = List<CategoryID>();
-  var dept_ids = List<Department>();
+  var dept_ids = List<OTDepartment>();
   var otcategory_ids = List<OvertimeCategory>();
   var employee_tag_list = List<EmployeeCategory>().obs;
   var enableDropdown = false.obs;
@@ -52,11 +53,11 @@ class OvertimeRequestController extends GetxController {
   EmployeeCategory get selectedEmployeeTag => _selectedEmployeeTag.value;
   set selectedEmployeeTag(EmployeeCategory state) =>
       _selectedEmployeeTag.value = state;
-  var department_list = List<Department>().obs;
+  var department_list = List<OTDepartment>().obs;
   var category_list = List<OvertimeCategory>().obs;
-  Rx<Department> _selectedDepartment = Department().obs;
-  Department get selectedDepartment => _selectedDepartment.value;
-  set selectedDepartment(Department department) =>
+  Rx<OTDepartment> _selectedDepartment = OTDepartment().obs;
+  OTDepartment get selectedDepartment => _selectedDepartment.value;
+  set selectedDepartment(OTDepartment department) =>
       _selectedDepartment.value = department;
 
   Rx<OvertimeCategory> _selectedOvertimeCategory = OvertimeCategory().obs;
@@ -68,7 +69,7 @@ class OvertimeRequestController extends GetxController {
   // var chipValues = List<EmployeeCategory>().obs;
   // var selectedChip = List<bool>().obs;
 
-  var deptChipValues = List<Department>().obs;
+  var deptChipValues = List<OTDepartment>().obs;
   var selectedDeptChip = List<bool>().obs;
   DateTime selectedFromDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
@@ -92,11 +93,11 @@ class OvertimeRequestController extends GetxController {
   }
 
 
-  void onChangeDepartmentDropdown(Department department) async {
+  void onChangeDepartmentDropdown(OTDepartment department) async {
     var employee_id = int.tryParse(box.read('emp_id'));
     if (department.name != 'Department') {
       bool dept_found = false;
-      var dept = Department(id: department.id, name: department.name);
+      var dept = OTDepartment(id: department.id, name: department.name, branch_id: department.branch_id);
       if (dept_ids.length > 0) {
         for (int i = 0; i < dept_ids.length; i++) {
           if (dept_ids[i].id == department.id) {
@@ -139,6 +140,7 @@ class OvertimeRequestController extends GetxController {
                 state: 'draft',
                 emp_name: data[i].name,
                 dept_id: data[i].department_id.id,
+                branch_id: data[i].branch_id.id
               ),
             );
           }
@@ -177,7 +179,7 @@ class OvertimeRequestController extends GetxController {
     await masterService.getDepartmentList(employee_id).then((data) {
       print("deptSize");
       print(data.length);
-      data.insert(0, Department(id: 0, name: 'Department'));
+      data.insert(0, OTDepartment(id: 0, name: 'Department', branch_id: Branch_id(id: 0, name: 'Branch')));
       this.selectedDepartment = data[0];
       department_list.value = data;
     });
@@ -221,9 +223,17 @@ class OvertimeRequestController extends GetxController {
                 size: 30.0,
               )),
               barrierDismissible: false));
+      List<Branch_id> branch_ids = [];
+      for(var i=0;i<dept_ids.length;i++){
+        Branch_id branch = new Branch_id();
+        branch.id = dept_ids[i].branch_id.id;
+        branch.name = dept_ids[i].branch_id.name;
+        branch_ids.add(branch);
+      }
       var overtime_request = OvertimeRequest(
         name: reasonTextController.text,
         department_ids: dept_ids,
+        branch_ids: branch_ids,
         start_date: from_date,
         end_date: to_date,
         duration: double.parse(durationController.text),

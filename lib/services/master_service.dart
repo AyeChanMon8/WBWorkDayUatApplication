@@ -10,6 +10,7 @@ import 'package:winbrother_hr_app/models/depart_empids.dart';
 import 'package:winbrother_hr_app/models/department.dart';
 import 'package:winbrother_hr_app/models/employee_category.dart';
 import 'package:winbrother_hr_app/models/leave_type.dart';
+import 'package:winbrother_hr_app/models/ot_department.dart';
 import 'package:winbrother_hr_app/models/overtime_category.dart';
 import 'package:winbrother_hr_app/models/rating_config.dart';
 import 'package:winbrother_hr_app/models/stock_location.dart';
@@ -150,18 +151,18 @@ class MasterService extends OdooService {
     return category_list;
   }
 
-  Future<List<Department>> getDepartmentList(int empID) async {
+  Future<List<OTDepartment>> getDepartmentList(int empID) async {
     String url = Globals.baseURL + "/ot.request/1/get_department_filter";
     Response response =
         await dioClient.put(url, data: jsonEncode({'employee_id': empID}));
-    List<Department> department_list = new List<Department>();
+    List<OTDepartment> department_list = new List<OTDepartment>();
     // List<DepartmentEmpIds> department_list = response.data;
     // print(department_list);
     // print("Test");
     if (response.statusCode == 200) {
       var list = response.data;
       list.forEach((v) {
-        department_list.add(Department.fromMap(v));
+        department_list.add(OTDepartment.fromMap(v));
       });
     }
     return department_list;

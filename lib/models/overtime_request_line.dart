@@ -2,7 +2,10 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:winbrother_hr_app/models/employee.dart';
+
+import 'overtime_request.dart';
 
 class OvertimeRequestLine {
   String start_date;
@@ -13,6 +16,7 @@ class OvertimeRequestLine {
   String state;
   int dept_id;
   double duration;
+  int branch_id;
   OvertimeRequestLine({
     this.start_date,
     this.end_date,
@@ -22,6 +26,7 @@ class OvertimeRequestLine {
     this.state,
     this.dept_id,
     this.duration,
+    this.branch_id
   });
 
 
@@ -34,6 +39,7 @@ class OvertimeRequestLine {
     String state,
     int dept_id,
     double duration,
+    int branch_id
   }) {
     return OvertimeRequestLine(
       start_date: start_date ?? this.start_date,
@@ -44,6 +50,7 @@ class OvertimeRequestLine {
       state: state ?? this.state,
       dept_id: dept_id ?? this.dept_id,
       duration: duration ?? this.duration,
+      branch_id: branch_id ?? this.branch_id
     );
   }
 
@@ -55,6 +62,7 @@ class OvertimeRequestLine {
       'end_date': end_date,
       'email': email,
       'state': state,
+      'branch_id': branch_id,
     };
   }
 
@@ -70,6 +78,7 @@ class OvertimeRequestLine {
       state: map['state'],
       dept_id: map['dept_id'],
       duration: map['duration'],
+      branch_id: map['branch_id'],
     );
   }
 
@@ -79,7 +88,7 @@ class OvertimeRequestLine {
 
   @override
   String toString() {
-    return 'OvertimeRequestLine(start_date: $start_date, end_date: $end_date, employee_id: $employee_id, emp_name: $emp_name, email: $email, state: $state, dept_id: $dept_id, duration: $duration)';
+    return 'OvertimeRequestLine(start_date: $start_date, end_date: $end_date, employee_id: $employee_id, emp_name: $emp_name, email: $email, state: $state, dept_id: $dept_id, duration: $duration,branch_id: $branch_id)';
   }
 
   @override
@@ -94,7 +103,8 @@ class OvertimeRequestLine {
         o.email == email &&
         o.state == state &&
         o.dept_id == dept_id &&
-        o.duration == duration;
+        o.duration == duration &&
+        o.branch_id == branch_id;
   }
 
   @override
@@ -106,6 +116,7 @@ class OvertimeRequestLine {
     email.hashCode ^
     state.hashCode ^
     dept_id.hashCode ^
-    duration.hashCode;
+    duration.hashCode ^
+    branch_id.hashCode;
   }
 }
