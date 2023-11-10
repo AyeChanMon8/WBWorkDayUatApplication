@@ -41,85 +41,284 @@ class _InsuranceApprovalState extends State<InsuranceApproval> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(children: [
-                  AutoSizeText('Code',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].name)}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Expire Date',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.changeDateFormat(controller.insuranceApprovalList.value[index].expireDate)}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText(labels?.insuranceType,style: detailsStyle()),
-                  AutoSizeText(' : ${controller.insuranceApprovalList.value[index].insuranceTypeId.policy_type}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText(labels?.employeeName,style: detailsStyle()),
-                  AutoSizeText(' : ${controller.insuranceApprovalList.value[index].employeeId.name}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Benefits',style: detailsStyle()),
-                  AutoSizeText(' : ${controller.insuranceApprovalList.value[index].benefit}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Policy Coverage',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].poilcy_coverage)}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Efective Date',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.changeDateFormat(controller.insuranceApprovalList.value[index].effectiveDate)}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Premium Amount',style: detailsStyle()),
-                  AutoSizeText(' : ${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].premiumAmount.toString()))}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Coverage Amount',style: detailsStyle()),
-                  AutoSizeText(' : ${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].coverageAmount.toString()))}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Premium Fees(Employee)',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].feesEmployee.toString())}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Premium Fees(Employer)',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].feesEmployer.toString())}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Balance Amount',style: detailsStyle()),
-                  AutoSizeText(' : ${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].balanceAmount.toString()))}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('No of Installments',style: detailsStyle()),
-                  AutoSizeText(' : ${controller.insuranceApprovalList.value[index].installment}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Total Amount',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].totalAmount)}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Total Paid Amount',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].totalPaidAmount)}',style: maintitleStyle()),
-                ],),
-                SizedBox(height: 10,),
-                Row(children: [
-                  AutoSizeText('Balance Amount',style: detailsStyle()),
-                  AutoSizeText(' : ${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].balanceAmount)}',style: maintitleStyle()),
-                ],),
+                // Row(children: [
+                //   AutoSizeText('Code',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].name)}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Expire Date',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.changeDateFormat(controller.insuranceApprovalList.value[index].expireDate)}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText(labels?.insuranceType,style: detailsStyle()),
+                //   AutoSizeText(' : ${controller.insuranceApprovalList.value[index].insuranceTypeId.policy_type}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText(labels?.employeeName,style: detailsStyle()),
+                //   AutoSizeText(' : ${controller.insuranceApprovalList.value[index].employeeId.name}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Benefits',style: detailsStyle()),
+                //   AutoSizeText(' : ${controller.insuranceApprovalList.value[index].benefit}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Policy Coverage',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].poilcy_coverage)}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Efective Date',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.changeDateFormat(controller.insuranceApprovalList.value[index].effectiveDate)}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Premium Amount',style: detailsStyle()),
+                //   AutoSizeText(' : ${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].premiumAmount.toString()))}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Coverage Amount',style: detailsStyle()),
+                //   AutoSizeText(' : ${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].coverageAmount.toString()))}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Premium Fees(Employee)',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].feesEmployee.toString())}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Premium Fees(Employer)',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].feesEmployer.toString())}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Balance Amount',style: detailsStyle()),
+                //   AutoSizeText(' : ${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].balanceAmount.toString()))}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('No of Installments',style: detailsStyle()),
+                //   AutoSizeText(' : ${controller.insuranceApprovalList.value[index].installment}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Total Amount',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].totalAmount)}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Total Paid Amount',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].totalPaidAmount)}',style: maintitleStyle()),
+                // ],),
+                // SizedBox(height: 10,),
+                // Row(children: [
+                //   AutoSizeText('Balance Amount',style: detailsStyle()),
+                //   AutoSizeText(' : ${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].balanceAmount)}',style: maintitleStyle()),
+                // ],),
+                Table(
+                  border: TableBorder.all(color: Colors.black26),
+                  // border: TableBorder(horizontalInside: BorderSide()),
+                  children: [
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Code', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].name)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Expire Date', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.changeDateFormat(controller.insuranceApprovalList.value[index].expireDate)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text(labels?.insuranceType, style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${controller.insuranceApprovalList.value[index].insuranceTypeId.policy_type}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text(labels?.employeeName, style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${controller.insuranceApprovalList.value[index].employeeId.name}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Benefits', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${controller.insuranceApprovalList.value[index].benefit}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Policy Coverage', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].poilcy_coverage)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Efective Date', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.changeDateFormat(controller.insuranceApprovalList.value[index].effectiveDate)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Premium Amount', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].premiumAmount.toString()))}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Coverage Amount', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].coverageAmount.toString()))}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Premium Fees(Employee)', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].feesEmployee.toString())}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Premium Fees(Employer)', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.removeNullString(controller.insuranceApprovalList.value[index].feesEmployer.toString())}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Balance Amount', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${NumberFormat('#,###').format(double.tryParse(controller.insuranceApprovalList.value[index].balanceAmount.toString()))}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('No of Installments', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${controller.insuranceApprovalList.value[index].installment}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Total Amount', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].totalAmount)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Total Paid Amount', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].totalPaidAmount)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('Balance Amount', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Text('${AppUtils.addThousnadSperator(controller.insuranceApprovalList.value[index].balanceAmount)}', style: TextStyle(
+                        color: Color.fromRGBO(58, 47, 112, 1))),
+                      ),
+                    ])
+                  ],
+                ),
+                
                 SizedBox(height: 10,),
                 AutoSizeText('Installments',style: detailsStyle(),),
                 SizedBox(height: 20,),

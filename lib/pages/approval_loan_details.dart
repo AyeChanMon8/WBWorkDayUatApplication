@@ -70,12 +70,12 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.loanApprovalList.length > 0 ?Container(
                           child: Text(
                             controller.loanApprovalList[index].state,
                             style: subtitleStyle(),
                           ),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
@@ -93,12 +93,12 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.loanApprovalList.value.length > 0 ?Container(
                           child: Text(
                             controller.loanApprovalList.value[index].employee_id.name,
                             style: subtitleStyle(),
                           ),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
@@ -116,7 +116,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.loanApprovalList.value.length > 0 ?Container(
                           child: controller.loanApprovalList.value[index].job_position.name !=
                               null
                               ? Text(
@@ -124,7 +124,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                             style: subtitleStyle(),
                           )
                               : Text('-'),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
@@ -159,7 +159,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                   ),
                 ),
                 Obx(
-                      () => Container(
+                      () => controller.loanApprovalList.value.length > 0 ?Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,7 +178,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                         ),
                       ],
                     ),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(
                   height: 10,
@@ -210,7 +210,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                   ),
                 ),
                 Obx(
-                      () => Container(
+                      () => controller.loanApprovalList.value.length > 0 ? Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,7 +238,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                         ),
                       ],
                     ),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(
                   height: 10,
@@ -271,7 +271,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                   ),
                 ),
                 Obx(
-                      () => Container(
+                      () => controller.loanApprovalList.value.length>0 ? Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,7 +290,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                         ),
                       ],
                     ),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(
                   height: 10,
@@ -377,7 +377,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
                 SizedBox(
                   height: 10,
                 ),
-                installmentWidget(context),
+                controller.loanApprovalList.value.length > 0 ?installmentWidget(context):SizedBox(),
                 SizedBox(
                   height: 10,
                 ),
@@ -424,7 +424,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
 
   Widget installmentWidget(BuildContext context) {
     final labels = AppLocalizations.of(context);
-    return Obx(() => Container(
+    return Obx(() => controller.loanApprovalList.value.length>0 ?Container(
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -465,7 +465,7 @@ class _ApprovalLoanDetailsState extends State<ApprovalLoanDetails> {
           );
         },
       ),
-    ));
+    ):SizedBox());
   }
   Future<String> _createFileFromString(String encodedStr) async {
     //final encodedStr = "put base64 encoded string here";

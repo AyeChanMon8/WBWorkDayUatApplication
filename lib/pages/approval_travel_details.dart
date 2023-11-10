@@ -465,7 +465,8 @@ class _ApprovalTravelDetailsState extends State<ApprovalTravelDetails> {
     List<TextEditingController> total_amount_controllers;
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
-      child: Obx(() => ListView.builder(
+      child: Obx(() => controller
+                .travelApprovalList.value.length > 0 ?ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: controller
@@ -562,7 +563,7 @@ class _ApprovalTravelDetailsState extends State<ApprovalTravelDetails> {
                 ],
               );
             },
-          )),
+          ):SizedBox()),
     );
   }
 }

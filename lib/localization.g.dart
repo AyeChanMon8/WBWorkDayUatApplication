@@ -531,7 +531,7 @@ class AppLocalizations {
         subTotal: "Subtotal",
         suspension: "Suspension",
         suspensionApproval: "Suspension Approval",
-        suspensionDetails: "Supension Details",
+        suspensionDetails: "Suspension Details",
         joiningDate: "Joining Date",
         submittedDate: "Submitted Date",
         benefit: "Benefit",

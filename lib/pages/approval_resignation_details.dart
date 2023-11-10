@@ -69,11 +69,11 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.resignationApprovalList.value.length > 0 ?Container(
                           child: Text(AppUtils.removeNullString(controller.resignationApprovalList.value[index].employeeId.name),
                             style: subtitleStyle(),
                           ),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
@@ -91,7 +91,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.resignationApprovalList.value.length > 0 ?Container(
                           child: controller.resignationApprovalList.value[index].employeeContract !=
                               null
                               ? Text(AppUtils.removeNullString(controller.resignationApprovalList.value[index].employeeContract)
@@ -99,7 +99,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                             style: subtitleStyle(),
                           )
                               : Text('-'),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
@@ -123,7 +123,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.resignationApprovalList.value.length > 0 ?Container(
                           child: controller.resignationApprovalList.value[index].departmentId !=
                               null
                               ? Text(AppUtils.removeNullString(controller.resignationApprovalList.value[index].departmentId.name)
@@ -131,7 +131,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                             style: subtitleStyle(),
                           )
                               : Text('-'),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
@@ -166,7 +166,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                   ),
                 ),
                 Obx(
-                      () => Container(
+                      () => controller.resignationApprovalList.value.length > 0 ?Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -197,7 +197,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ],
                     ),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(
                   height: 10,
@@ -230,7 +230,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                   ),
                 ),
                 Obx(
-                      () => Container(
+                      () => controller.resignationApprovalList.value.length > 0 ?Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -249,7 +249,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ],
                     ),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(
                   height: 10,
@@ -282,7 +282,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                   ),
                 ),
                 Obx(
-                      () => Container(
+                      () => controller.resignationApprovalList.value.length > 0 ? Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -301,7 +301,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ],
                     ),
-                  ),
+                  ):SizedBox(),
                 ),
                 SizedBox(
                   height: 10,
@@ -324,7 +324,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ),
                       Obx(
-                            () => Expanded(
+                            () => controller.resignationApprovalList.value.length > 0 ? Expanded(
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: Container(
@@ -340,7 +340,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                                   : Text('-'),
                         ),
                               ),
-                            ),
+                            ):SizedBox(),
                       ),
                     ],
                   ),
@@ -364,7 +364,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                         ),
                       ),
                       Obx(
-                            () => Container(
+                            () => controller.resignationApprovalList.value.length > 0 ?Container(
                           child: controller.resignationApprovalList.value[index].resignationType !=
                               null
                               ? Text(AppUtils.removeNullString(controller.resignationApprovalList.value[index].resignationType)
@@ -372,7 +372,7 @@ class _ApprovalResignationDetailsState extends State<ApprovalResignationDetails>
                             style: subtitleStyle(),
                           )
                               : Text('-'),
-                        ),
+                        ):SizedBox(),
                       ),
                     ],
                   ),
