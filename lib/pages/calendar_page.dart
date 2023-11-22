@@ -114,10 +114,11 @@ class _CalendarPageState extends State<CalendarPage> {
               view: CalendarView.month,
               scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
               initialDisplayDate: DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 0, 0, 0),
-              monthViewSettings: MonthViewSettings(
-                  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                  appointmentDisplayCount: 4),
+                  DateTime.now().day, 00, 00, 00),
+              // monthViewSettings: MonthViewSettings(
+              //     appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+              //     appointmentDisplayCount: 4),
+              monthViewSettings: MonthViewSettings(showAgenda: true,agendaItemHeight: 90,),
               timeSlotViewSettings: TimeSlotViewSettings(
                   minimumAppointmentDuration: const Duration(minutes: 60))
           ),

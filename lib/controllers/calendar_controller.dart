@@ -86,6 +86,33 @@ class CalendarControllers extends GetxController{
           isAllDay: false,
         ));
       }
+      for(Travel pms in calendarData.pms){
+        appointmentsList.add(Appointment(
+          subject: pms.name,
+          startTime: DateTime.parse(pms.startDate),
+          endTime: DateTime.parse(pms.endDate),
+          color: Colors.blueGrey,
+          isAllDay: false,
+        ));
+      }
+      for(Travel attendance in calendarData.attendance){
+        appointmentsList.add(Appointment(
+          subject: attendance.name,
+          startTime: DateTime.parse(attendance.startDate),
+          endTime: DateTime.parse(attendance.endDate),
+          color: Colors.purple,
+          isAllDay: false,
+        ));
+      }
+      for(Travel dayTrip in calendarData.dayTrip){
+        appointmentsList.add(Appointment(
+          subject: dayTrip.name,
+          startTime: DateTime.parse(dayTrip.startDate),
+          endTime: DateTime.parse(dayTrip.endDate),
+          color: Colors.indigo,
+          isAllDay: false,
+        ));
+      }
       // for(Travel travel in calendarData.calendar){
       //   appointmentsList.add(Appointment(
       //     subject: travel.name,

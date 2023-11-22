@@ -12,13 +12,21 @@ class CalendarData {
   List<Travel> _tripProduct;
   List<Travel> _tripBill;
   List<Travel> _calendar;
+  List<Travel> _pms;
+  List<Travel> _attendance;
+  List<Travel> _dayTrip;
+
   List<Travel> get travel => _travel;
   List<Travel> get leave => _leave;
   List<Travel> get training => _training;
   List<Travel> get tripProduct => _tripProduct;
   List<Travel> get tripBill => _tripBill;
   List<Travel> get calendar => _calendar;
+  List<Travel> get pms => _pms;
+  List<Travel> get attendance => _attendance;
+  List<Travel> get dayTrip => _dayTrip;
 
+  
   CalendarData({
       List<Travel> travel, 
       List<Travel> leave,
@@ -26,6 +34,10 @@ class CalendarData {
       List<Travel> tripProduct,
       List<Travel> tripBill,
       List<Travel> calendar,
+      List<Travel> pms,
+      List<Travel> attendance,
+      List<Travel> dayTrip,
+
   }){
     _travel = travel;
     _leave = leave;
@@ -33,6 +45,10 @@ class CalendarData {
     _tripProduct = tripProduct;
     _tripBill = tripBill;
     _calendar = calendar;
+    _pms = pms;
+    _attendance = attendance;
+    _dayTrip = dayTrip;
+
 }
 
   CalendarData.fromJson(dynamic json) {
@@ -72,6 +88,24 @@ class CalendarData {
         _calendar.add(Travel.fromJson(v));
       });
     }
+        if (json["pms"] != null) {
+      _pms = [];
+      json["pms"].forEach((v) {
+        _pms.add(Travel.fromJson(v));
+      });
+    }
+    if (json["attendance"] != null) {
+      _attendance = [];
+      json["attendance"].forEach((v) {
+        _attendance.add(Travel.fromJson(v));
+      });
+    }
+    if (json["day_trip"] != null) {
+      _dayTrip = [];
+      json["day_trip"].forEach((v) {
+        _dayTrip.add(Travel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +127,15 @@ class CalendarData {
     }
     if (_tripBill != null) {
       map["calendar"] = _calendar.map((v) => v.toJson()).toList();
+    }
+    if (_pms != null) {
+      map["pms"] = _pms.map((v) => v.toJson()).toList();
+    }
+    if (_attendance != null) {
+      map["attendance"] = _attendance.map((v) => v.toJson()).toList();
+    }
+    if (_dayTrip != null) {
+      map["day_trip"] = _dayTrip.map((v) => v.toJson()).toList();
     }
     return map;
   }
