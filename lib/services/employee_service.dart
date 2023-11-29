@@ -533,9 +533,19 @@ class EmployeeService extends OdooService {
 
   Future<List<Reward>> rewardApprovalList(String id, String offset) async {
     //branch_id.manager_id.id
+    // String url = Globals.baseURL +
+    //     "/hr.reward?filters=[('state','=','submit'),('employee_id.branch_id.manager_id.id','='," +
+    //     id +
+    //     ")]&limit=" +
+    //     Globals.pag_limit.toString() +
+    //     "&offset=" +
+    //     offset;
+    var empID = box.read('emp_id');
+    List<dynamic> reward_ids = await getRewardIDsList(empID);
+    String filter = "[('id','in'," + reward_ids.toString() + ")]";
     String url = Globals.baseURL +
-        "/hr.reward?filters=[('state','=','submit'),('employee_id.branch_id.manager_id.id','='," +
-        id +
+        "/hr.reward?filters=[('id','in'," +
+        reward_ids.toString() +
         ")]&limit=" +
         Globals.pag_limit.toString() +
         "&offset=" +
@@ -553,15 +563,33 @@ class EmployeeService extends OdooService {
     return rewards_list;
   }
 
+  getRewardIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/2/approval_reward";
+    Response response = await dioClient.put(url, data: jsonEncode({'employee_id': int.tryParse(empID)}));
+    List<dynamic> reward_ids = response.data;
+    print(response.data);
+    return reward_ids;
+  }
+
   Future<List<Reward>> rewardApproveList(String id, String offset) async {
     //branch_id.manager_id.id
+    var empID = box.read('emp_id');
+    List<dynamic> leave_ids = await getRewardApproveIDsList(empID);
+    String filter = "[('id','in'," + leave_ids.toString() + ")]";
     String url = Globals.baseURL +
-        "/hr.reward?filters=[('state','=','approve'),('employee_id.branch_id.manager_id.id','='," +
-        id +
+        "/hr.reward?filters=[('id','in'," +
+        leave_ids.toString() +
         ")]&limit=" +
         Globals.pag_limit.toString() +
         "&offset=" +
         offset;
+    // String url = Globals.baseURL +
+    //     "/hr.reward?filters=[('state','=','approve'),('employee_id.branch_id.manager_id.id','='," +
+    //     id +
+    //     ")]&limit=" +
+    //     Globals.pag_limit.toString() +
+    //     "&offset=" +
+    //     offset;
     Response response = await dioClient.get(url);
     List<Reward> rewards_list = new List<Reward>();
     Warning_model result;
@@ -657,13 +685,23 @@ class EmployeeService extends OdooService {
   Future<List<Warning_model>> warningApprovalList(
       String id, String offset) async {
     //branch_id.manager_id.id
+    var empID = box.read('emp_id');
+    List<dynamic> warning_ids = await getWarningIDsList(empID);
+    String filter = "[('id','in'," + warning_ids.toString() + ")]";
     String url = Globals.baseURL +
-        "/hr.warning?filters=[('state','=','submit'),('employee_id.branch_id.manager_id.id','='," +
-        id +
+        "/hr.warning?filters=[('id','in'," +
+        warning_ids.toString() +
         ")]&limit=" +
         Globals.pag_limit.toString() +
         "&offset=" +
         offset;
+    // String url = Globals.baseURL +
+    //     "/hr.warning?filters=[('state','=','submit'),('employee_id.branch_id.manager_id.id','='," +
+    //     id +
+    //     ")]&limit=" +
+    //     Globals.pag_limit.toString() +
+    //     "&offset=" +
+    //     offset;
 
     Response response = await dioClient.get(url);
     debugPrint("URL: $url");
@@ -684,13 +722,23 @@ class EmployeeService extends OdooService {
   Future<List<Warning_model>> warningApproveList(
       String id, String offset) async {
     //branch_id.manager_id.id
+    var empID = box.read('emp_id');
+    List<dynamic> warning_ids = await getWarningApproveIDsList(empID);
+    String filter = "[('id','in'," + warning_ids.toString() + ")]";
     String url = Globals.baseURL +
-        "/hr.warning?filters=[('state','=','approve'),('employee_id.branch_id.manager_id.id','='," +
-        id +
+        "/hr.warning?filters=[('id','in'," +
+        warning_ids.toString() +
         ")]&limit=" +
         Globals.pag_limit.toString() +
         "&offset=" +
         offset;
+    // String url = Globals.baseURL +
+    //     "/hr.warning?filters=[('state','=','approve'),('employee_id.branch_id.manager_id.id','='," +
+    //     id +
+    //     ")]&limit=" +
+    //     Globals.pag_limit.toString() +
+    //     "&offset=" +
+    //     offset;
     Response response = await dioClient.get(url);
     List<Warning_model> warnings_list = new List<Warning_model>();
     Warning_model result;
@@ -1183,6 +1231,29 @@ class EmployeeService extends OdooService {
     List<dynamic> insurance_ids = response.data;
     print(response.data);
     return insurance_ids;
+  }
+
+  getWarningIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/2/approval_warning";
+    Response response = await dioClient.put(url, data: jsonEncode({'employee_id': int.tryParse(empID)}));
+    List<dynamic> warning_ids = response.data;
+    print(response.data);
+    return warning_ids;
+  }
+
+  getRewardApproveIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/2/approve_reward";
+    Response response = await dioClient.put(url, data: jsonEncode({'employee_id': int.tryParse(empID)}));
+    List<dynamic> warning_ids = response.data;
+    print(response.data);
+    return warning_ids;
+  }
+  getWarningApproveIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/2/approve_warning";
+    Response response = await dioClient.put(url, data: jsonEncode({'employee_id': int.tryParse(empID)}));
+    List<dynamic> warning_ids = response.data;
+    print(response.data);
+    return warning_ids;
   }
 
   Future<List<Insurancemodel>> getInsuranceToApprove(
