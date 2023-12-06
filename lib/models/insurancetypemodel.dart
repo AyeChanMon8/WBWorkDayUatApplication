@@ -81,8 +81,8 @@ class Insurancetypemodel {
     _id = json["id"];
     _policyType = json["policy_type"];
     _policyNumber = json["policy_number"]==null?0:json["policy_number"];
-    _benefit = json["benefit"]==null?0:json["benefit"];
-    _policyCoverage = json["policy_coverage"]==null?0:json["policy_coverage"];
+    _benefit = json["benefit"]==null?"":json["benefit"];
+    _policyCoverage = json["policy_coverage"]==null?"":json["policy_coverage"];
     _effectiveDate = json["effective_date"];
     _expireDate = json["expire_date"];
     _premiumAmount = json["premium_amount"];

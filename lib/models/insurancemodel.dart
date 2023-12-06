@@ -233,18 +233,131 @@ class Insurance_type_id {
 class Employee_id {
   int _id;
   String _name;
+  CompanyID _companyId;
+  BranchID _branchId;
+  JobID _jobId;
+
+  int get id => _id;
+  String get name => _name;
+  CompanyID get companyId => _companyId;
+  BranchID get branchId => _branchId;
+  JobID get jobId => _jobId;
+
+  Employee_id({
+      int id, 
+      String name,
+      CompanyID companyId,
+      BranchID branchId,
+      JobID jobId
+      }){
+    _id = id;
+    _name = name;
+    _companyId = companyId;
+    _branchId = branchId;
+    _jobId = jobId;
+}
+
+  Employee_id.fromJson(dynamic json) {
+    _id = json["id"];
+    _name = json["name"];
+    _companyId = json["company_id"] != null ? CompanyID.fromJson(json["company_id"]) : null;
+    _branchId = json["branch_id"] != null ? BranchID.fromJson(json["branch_id"]) : null;
+    _jobId = json["job_id"] != null ? JobID.fromJson(json["job_id"]) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["id"] = _id;
+    map["name"] = _name;
+    if (_companyId != null) {
+      map["company_id"] = _companyId.toJson();
+    }
+    if (_branchId != null) {
+      map["branch_id"] = _branchId.toJson();
+    }
+    if (_jobId != null) {
+      map["job_id"] = _jobId.toJson();
+    }
+    return map;
+  }
+
+}
+
+class CompanyID {
+  int _id;
+  String _name;
 
   int get id => _id;
   String get name => _name;
 
-  Employee_id({
+  CompanyID({
       int id, 
       String name}){
     _id = id;
     _name = name;
 }
 
-  Employee_id.fromJson(dynamic json) {
+  CompanyID.fromJson(dynamic json) {
+    _id = json["id"];
+    _name = json["name"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["id"] = _id;
+    map["name"] = _name;
+    return map;
+  }
+  @override
+  String toString() {
+
+    return _name;
+  }
+
+}
+
+class BranchID {
+  int _id;
+  String _name;
+
+  int get id => _id;
+  String get name => _name;
+
+  BranchID({
+      int id, 
+      String name}){
+    _id = id;
+    _name = name;
+}
+
+  BranchID.fromJson(dynamic json) {
+    _id = json["id"];
+    _name = json["name"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["id"] = _id;
+    map["name"] = _name;
+    return map;
+  }
+
+}
+class JobID {
+  int _id;
+  String _name;
+
+  int get id => _id;
+  String get name => _name;
+
+  JobID({
+      int id, 
+      String name}){
+    _id = id;
+    _name = name;
+}
+
+  JobID.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
   }

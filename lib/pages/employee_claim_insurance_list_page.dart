@@ -60,10 +60,10 @@ class _EmployeeClaimInsuranceListPageState extends State<EmployeeClaimInsuranceL
                             AutoSizeText(' : ${insurance.insuranceTypeId.policyType}',style: maintitleStyle()),
                           ],),
                           SizedBox(height: 10,),
-                          Row(children: [
+                          insurance.insurance_ids.length > 0 ? Row(children: [
                             AutoSizeText('Insurance Reference',style: detailsStyle()),
                             AutoSizeText(' : ${insurance.insurance_ids[0].name}',style: maintitleStyle()),
-                          ],),
+                          ],):SizedBox(),
                           SizedBox(height: 10,),
                           Row(children: [
                             AutoSizeText(labels?.employeeName,style: detailsStyle()),
