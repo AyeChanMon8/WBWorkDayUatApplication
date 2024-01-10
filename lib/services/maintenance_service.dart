@@ -194,7 +194,7 @@ class MaintenanceService extends OdooService{
   Future<List<Maintenance_request_model>> approveMaintenance(var employeeId,var id,String state) async{
     List<Maintenance_request_model> maintenanceRequestModelList = [];
     String url = Globals.baseURL+"/maintenance.request/${id}";
-    Response response = await dioClient.put(url,data: jsonEncode({'state' : 'approved'}));
+    Response response = await dioClient.put(url,data: jsonEncode({'state' : 'approved','maintenance_req_from_mobile': true}));
     if(response.statusCode == 200){
       maintenanceRequestModelList = await getMaintenanceRequestList(int.tryParse(employeeId),state) as List<Maintenance_request_model>;
       // String url = Globals.baseURL+"/maintenance.request?filters=[('driver_id', '=', ${employeeId})]";
@@ -236,7 +236,7 @@ class MaintenanceService extends OdooService{
   Future<List<Maintenance_request_model>> secondApproveMaintenance(var employeeId,var id,String state) async{
     List<Maintenance_request_model> maintenanceRequestModelList = [];
     String url = Globals.baseURL+"/maintenance.request/${id}";
-    Response response = await dioClient.put(url,data: jsonEncode({'state' : 'approve'}));
+    Response response = await dioClient.put(url,data: jsonEncode({'state' : 'approve','maintenance_req_from_mobile': true}));
     if(response.statusCode == 200){
       maintenanceRequestModelList = await getMaintenanceRequestList(int.tryParse(employeeId),state) as List<Maintenance_request_model>;
       // String url = Globals.baseURL+"/maintenance.request?filters=[('driver_id', '=', ${employeeId})]";

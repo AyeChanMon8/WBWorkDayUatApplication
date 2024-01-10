@@ -1260,7 +1260,7 @@ class EmployeeService extends OdooService {
       String empID,String offset) async {
     List<dynamic> insurance_ids = await getInsuranceIDsList(empID);
     String filter = "[('id','in'," + insurance_ids.toString() + ")]";
-    String url = Globals.baseURL + "/hr.insurance?filters=[('id','in'," + insurance_ids.toString() + ")]&limit="+Globals.pag_limit.toString()+"&offset="+offset;
+    String url = Globals.baseURL + "/hr.insurance?filters=[('id','in'," + insurance_ids.toString() + ")]&limit="+Globals.pag_limit.toString()+"&offset="+offset+"&order=name desc";
     Response response =
         await dioClient.get(url, queryParameters: {"filters": filter});
     List<Insurancemodel> insurance_list = new List<Insurancemodel>();
@@ -1380,7 +1380,10 @@ class EmployeeService extends OdooService {
    List<dynamic> insurance_ids =
         await getInsuranceApprovedIDsList(empID);
     String filter = "[('id','in'," + insurance_ids.toString() + ")]";
-    String url = Globals.baseURL + "/hr.insurance";
+    // String url = Globals.baseURL + "/hr.insurance";
+    // Response response =
+    //     await dioClient.get(url, queryParameters: {"filters": filter});
+    String url = Globals.baseURL + "/hr.insurance?filters=[('id','in'," + insurance_ids.toString() + ")]&limit="+Globals.pag_limit.toString()+"&offset="+offset+"&order=name desc";
     Response response =
         await dioClient.get(url, queryParameters: {"filters": filter});
     List<Insurancemodel> insurance_list = new List<Insurancemodel>();
