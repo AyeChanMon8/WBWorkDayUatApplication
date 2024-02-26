@@ -697,20 +697,20 @@ class _FleetPageState extends State<FleetPage> {
               )
             ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child: Text(labels?.horsePower),
-              ),
-              Container(
-                child: Text(controller.fleetModel.value.horsepower.toString()),
-              )
-            ],
-          ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Container(
+          //       child: Text(labels?.horsePower),
+          //     ),
+          //     Container(
+          //       child: Text(controller.fleetModel.value.horsepower.toString()),
+          //     )
+          //   ],
+          // ),
           SizedBox(
             height: 20,
           ),

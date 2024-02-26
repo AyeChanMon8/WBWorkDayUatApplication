@@ -77,12 +77,9 @@ class OutOfPocketController extends GetxController {
   final RxBool save_btn_show = true.obs;
   Rx<TravelExpenseCategory> _selectedExpenseCategory =
       TravelExpenseCategory().obs;
-  Rx<Fleet_model> _selectedVehicle =
-      Fleet_model().obs;
-  Fleet_model get selectedVehicle =>
-      _selectedVehicle.value;
-  set selectedVehicle(Fleet_model type) =>
-      _selectedVehicle.value = type;
+  Rx<Fleet_model> _selectedVehicle = Fleet_model().obs;
+  Fleet_model get selectedVehicle => _selectedVehicle.value;
+  set selectedVehicle(Fleet_model type) => _selectedVehicle.value = type;
   TravelExpenseCategory get selectedExpenseCategory =>
       _selectedExpenseCategory.value;
   set selectedExpenseCategory(TravelExpenseCategory type) =>
@@ -122,11 +119,32 @@ class OutOfPocketController extends GetxController {
     update();
   }
 
-  void onChangeVehicleDropdown(
-      Fleet_model fleet_model) async {
+  void onChangeVehicleDropdown(Fleet_model fleet_model) async {
+    var company_id = box.read('emp_company');
     this.selectedVehicle = fleet_model;
+    if ((this.selectedExpenseCategory.fuel != null &&
+            this.selectedExpenseCategory.fuel) &&
+        (this.selectedVehicle != null || this.selectedVehicle != "")) {
+      await masterService
+          .getVehicleProduct(this.selectedVehicle.id, this.selectedExpenseCategory.id, company_id.toString())
+          .then((data) async {
+        if (data != 0) {
+          await masterService
+              .getOutOfPocketExpenseProduct(data)
+              .then((productID) async {
+            if (productID != 0) {
+              this.selectedExpenseProduct = productID[0];
+            }
+            travel_expense_product_list.value = productID;
+          });
+        } else {
+          this.selectedExpenseProduct = null;
+        }
+      });
+    }
     update();
   }
+
   @override
   void onInit() {
     super.onInit();
@@ -150,56 +168,74 @@ class OutOfPocketController extends GetxController {
 
   void calculateAmount() {
     //var qty = qtyController.text ?? "1";
-    if(qtyController.text.isNotEmpty&&priceController.text.isNotEmpty){
-      amount.value = double.tryParse(qtyController.text) * double.tryParse(priceController.text);
+    if (qtyController.text.isNotEmpty && priceController.text.isNotEmpty) {
+      amount.value = double.tryParse(qtyController.text) *
+          double.tryParse(priceController.text);
       totalAmount = totalAmountController;
       amount_value = amount.value;
       totalAmountController.text = amount.value.toString();
       update();
-    }else if(totalAmountController.text.isNotEmpty&&qtyController.text.isNotEmpty){
-      amount.value = double.tryParse(totalAmountController.text)/double.tryParse(qtyController.text);
+    } else if (totalAmountController.text.isNotEmpty &&
+        qtyController.text.isNotEmpty) {
+      amount.value = double.tryParse(totalAmountController.text) /
+          double.tryParse(qtyController.text);
       priceController.text = amount.value.toStringAsFixed(2);
       update();
-    }else{
+    } else {
       priceController.text = "";
     }
+  }
 
-  }
   void calculateUnitAmount() {
-    if(totalAmountController.text.isNotEmpty&&qtyController.text.isNotEmpty){
-      amount.value = double.tryParse(totalAmountController.text)/double.tryParse(qtyController.text);
+    if (totalAmountController.text.isNotEmpty &&
+        qtyController.text.isNotEmpty) {
+      amount.value = double.tryParse(totalAmountController.text) /
+          double.tryParse(qtyController.text);
       priceController.text = amount.value.toStringAsFixed(2);
       update();
-    }else{
+    } else {
       priceController.text = "";
     }
   }
+
   addExpenseLine() {
-    var vehicleID = 0;
-    var attachment_include = false;
-    if(image_base64!=null&&image_base64.isNotEmpty) attachment_include = true;
-    selectedExpenseCategory.is_vehicle_selected!=null?vehicleID=selectedVehicle.id:vehicleID=0;
-    var travelExpense = PockectModel(
-        date: fromDateTextController.text,
-        categ_id: selectedExpenseCategory.id,
-        expense_category: selectedExpenseProduct.name,
-        // category_name: selectedExpenseCategory.display_name,
-        product_id: selectedExpenseProduct.id,
-        description: descriptionController.text,
-        qty: double.tryParse(qtyController.text),
-        price_unit: double.tryParse(priceController.text),
-        price_subtotal: double.tryParse(totalAmountController.text),
-        attached_file: image_base64,
-        vehicle_id:vehicleID,attachment_include: attachment_include
-    );
-    outofpocketList.add(travelExpense);
-    // fromDateTextController.text = "";
-    priceController.text = "";
-    qtyController.text = "";
-    totalAmountController.text = "";
-    descriptionController.text = "";
-    image_base64 =null;
-    getTotalAmount();
+    bool valid = true;
+    if (selectedExpenseCategory.fuel != null && selectedExpenseCategory.fuel) {
+      if (selectedExpenseProduct == null) {
+        valid = false;
+        AppUtils.showDialog('Information', 'Please Attach Expense Title!');
+      }
+    }
+    if (valid) {
+      var vehicleID = 0;
+      var attachment_include = false;
+      if (image_base64 != null && image_base64.isNotEmpty)
+        attachment_include = true;
+      selectedExpenseCategory.is_vehicle_selected != null
+          ? vehicleID = selectedVehicle.id
+          : vehicleID = 0;
+      var travelExpense = PockectModel(
+          date: fromDateTextController.text,
+          categ_id: selectedExpenseCategory.id,
+          expense_category: selectedExpenseProduct.name,
+          // category_name: selectedExpenseCategory.display_name,
+          product_id: selectedExpenseProduct.id,
+          description: descriptionController.text,
+          qty: double.tryParse(qtyController.text),
+          price_unit: double.tryParse(priceController.text),
+          price_subtotal: double.tryParse(totalAmountController.text),
+          attached_file: image_base64,
+          vehicle_id: vehicleID,
+          attachment_include: attachment_include);
+      outofpocketList.add(travelExpense);
+      // fromDateTextController.text = "";
+      priceController.text = "";
+      qtyController.text = "";
+      totalAmountController.text = "";
+      descriptionController.text = "";
+      image_base64 = null;
+      getTotalAmount();
+    }
   }
 
   void removeRow(int index) {
@@ -207,10 +243,11 @@ class OutOfPocketController extends GetxController {
     getTotalAmount();
   }
 
-
   getTravelExpenseCategory() async {
     var company_id = box.read('emp_company');
-    await masterService.getOutofPocketExpenseCategory(int.tryParse(company_id)).then((data) {
+    await masterService
+        .getOutofPocketExpenseCategory(int.tryParse(company_id))
+        .then((data) {
       this.selectedExpenseCategory = data[0];
       travel_expense_category_list.value = data;
       int id = selectedExpenseCategory.id;
@@ -222,16 +259,18 @@ class OutOfPocketController extends GetxController {
     var company_id = box.read('emp_company');
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(
+        () => Get.dialog(
             Center(
                 child: SpinKitWave(
-                  color: Color.fromRGBO(63, 51, 128, 1),
-                  size: 30.0,
-                )),
+              color: Color.fromRGBO(63, 51, 128, 1),
+              size: 30.0,
+            )),
             barrierDismissible: false));
-    await masterService.getTravelExpenseProduct(id,company_id.toString()).then((data) {
+    await masterService
+        .getTravelExpenseProduct(id, company_id.toString())
+        .then((data) {
       Get.back();
-      if(data.length!=0){
+      if (data.length != 0) {
         this.selectedExpenseProduct = data[0];
       }
       travel_expense_product_list.value = data;
@@ -240,11 +279,34 @@ class OutOfPocketController extends GetxController {
 
   void onChangeExpenseCategoryDropdown(
       TravelExpenseCategory travelExpenseCategory) async {
+    var company_id = box.read('emp_company');
     this.selectedExpenseCategory = travelExpenseCategory;
     int id = selectedExpenseCategory.id;
     this.travel_expense_product_list.value.clear();
     //this.selectedExpenseProduct = TravelExpenseProduct(id:0,name: 'Choose Product');
-    getTravelExpenseProduct(id);
+
+    if ((this.selectedExpenseCategory.fuel != null &&
+            this.selectedExpenseCategory.fuel) &&
+        (this.selectedVehicle != null || this.selectedVehicle != "")) {
+      await masterService
+          .getVehicleProduct(this.selectedVehicle.id, id, company_id.toString())
+          .then((data) async {
+        if (data != 0) {
+          await masterService
+              .getOutOfPocketExpenseProduct(data)
+              .then((productID) async {
+            if (productID != 0) {
+              this.selectedExpenseProduct = productID[0];
+            }
+            travel_expense_product_list.value = productID;
+          });
+        } else {
+          this.selectedExpenseProduct = null;
+        }
+      });
+    } else {
+      getTravelExpenseProduct(id);
+    }
     update();
   }
 
@@ -260,16 +322,18 @@ class OutOfPocketController extends GetxController {
   getExpenseListForEmp() async {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(
+        () => Get.dialog(
             Center(
                 child: SpinKitWave(
-                  color: Color.fromRGBO(63, 51, 128, 1),
-                  size: 30.0,
-                )),
+              color: Color.fromRGBO(63, 51, 128, 1),
+              size: 30.0,
+            )),
             barrierDismissible: false));
     //fetch emp_id from GetX Storage
     var employee_id = box.read('emp_id');
-    await travelRequestService.getOutofPocketModel(employee_id,offset.toString()).then((data) {
+    await travelRequestService
+        .getOutofPocketModel(employee_id, offset.toString())
+        .then((data) {
       outofpocketExpenseList.value = data;
       update();
       Get.back();
@@ -279,16 +343,18 @@ class OutOfPocketController extends GetxController {
   getExpenseOutOfPocketForEmp() async {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(
+        () => Get.dialog(
             Center(
                 child: SpinKitWave(
-                  color: Color.fromRGBO(63, 51, 128, 1),
-                  size: 30.0,
-                )),
+              color: Color.fromRGBO(63, 51, 128, 1),
+              size: 30.0,
+            )),
             barrierDismissible: false));
     //fetch emp_id from GetX Storage
     var employee_id = box.read('emp_id');
-    await _travelRequestService.getOutofPocketModel(employee_id,offset.toString()).then((data) {
+    await _travelRequestService
+        .getOutofPocketModel(employee_id, offset.toString())
+        .then((data) {
       outofpocketExpenseList.value = data;
       update();
       Get.back();
@@ -302,30 +368,31 @@ class OutOfPocketController extends GetxController {
 
     var dateParse = DateTime.parse(date);
     var formattedDate = "${dateParse.year}-${dateParse.month}-${dateParse.day}";
+    
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(
+        () => Get.dialog(
             Center(
                 child: SpinKitWave(
-                  color: Color.fromRGBO(63, 51, 128, 1),
-                  size: 30.0,
-                )),
+              color: Color.fromRGBO(63, 51, 128, 1),
+              size: 30.0,
+            )),
             barrierDismissible: false));
 
     OutofPocketModel outRequest = OutofPocketModel(
         date: formattedDate,
-        mobile_user_id:employee_id,
+        mobile_user_id: employee_id,
         employee_id: employee_id,
         company_id: int.parse(employee_company.toString()),
         pocket_line: outofpocketList);
 
-    await travelRequestService.createOutofPocket(outRequest).then((data) async{
+    await travelRequestService.createOutofPocket(outRequest).then((data) async {
       Get.back();
       if (data != 0) {
         save_btn_show.value = false;
         outofpocketlistController.offset.value = 0;
         await outofpocketlistController.getExpenseListForEmp();
-        AppUtils.showConfirmDialog('Information', 'Successfully Saved!',(){
+        AppUtils.showConfirmDialog('Information', 'Successfully Saved!', () {
           Get.back();
           Get.back();
         });
@@ -336,6 +403,7 @@ class OutOfPocketController extends GetxController {
       //Get.back(result: 'success');
     });
   }
+
   @override
   void onClose() {
     // fromDateTextController?.dispose();
@@ -363,11 +431,9 @@ class OutOfPocketController extends GetxController {
     is_add_leavelist.value = true;
   }
 
-  void getTotalAmount(){
+  void getTotalAmount() {
     double totalAmount = 0.0;
-    outofpocketList.forEach((value) =>
-    totalAmount +=value.price_subtotal
-    );
+    outofpocketList.forEach((value) => totalAmount += value.price_subtotal);
     totalExpenseAmount.value = totalAmount;
   }
 
@@ -375,7 +441,7 @@ class OutOfPocketController extends GetxController {
     final fromdatetime = DateTime(
         selectedFromDate.year, selectedFromDate.month, selectedFromDate.day);
     final todatetime =
-    DateTime(selectedToDate.year, selectedToDate.month, selectedToDate.day);
+        DateTime(selectedToDate.year, selectedToDate.month, selectedToDate.day);
     final difference = todatetime.difference(fromdatetime).inDays + 1;
     durationController.text = difference.toString();
     updateState();
@@ -387,23 +453,21 @@ class OutOfPocketController extends GetxController {
     selectedImage.value = image;
   }
 
-  getFleetList(var empId) async{
+  getFleetList(var empId) async {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(
+        () => Get.dialog(
             Center(
                 child: SpinKitWave(
-                  color: Color.fromRGBO(63, 51, 128, 1),
-                  size: 30.0,
-                )),
+              color: Color.fromRGBO(63, 51, 128, 1),
+              size: 30.0,
+            )),
             barrierDismissible: false));
     fleetList.value = await fleetService.getFleetList(empId);
-    if(fleetList.value.length>0){
+    if (fleetList.value.length > 0) {
       selectedVehicle = fleetList[0];
-
     }
 
     Get.back();
   }
-
 }

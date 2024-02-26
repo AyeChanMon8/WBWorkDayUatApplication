@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:open_file/open_file.dart';
 import 'package:winbrother_hr_app/models/announcement.dart';
+import 'package:winbrother_hr_app/models/notification_msg.dart';
+import 'package:winbrother_hr_app/models/reminder.dart';
 import 'package:winbrother_hr_app/services/employee_service.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:winbrother_hr_app/utils/app_utils.dart';
@@ -17,6 +19,7 @@ class AnnouncementsController extends GetxController {
   EmployeeService employeeService;
   static AnnouncementsController to = Get.find();
   var announcementList = List<Announcement>().obs;
+  final RxList<Reminder> reminderList = List<Reminder>().obs;
   final box = GetStorage();
   var isLoading = false.obs;
   var offset = 0.obs;
@@ -25,6 +28,8 @@ class AnnouncementsController extends GetxController {
     super.onReady();
     this.employeeService = await EmployeeService().init();
     getAnnouncementsList();
+    getRemindersList();
+
   }
 
   @override
@@ -32,6 +37,79 @@ class AnnouncementsController extends GetxController {
     super.onInit();
 
   }
+
+  // void getRemindersList() async {
+  //   try {
+  //     if (this.employeeService == null) {
+  //       this.employeeService = await EmployeeService().init();
+  //     }
+  //     var employee_id = box.read('emp_id');
+  //     Future.delayed(
+  //         Duration.zero,
+  //             () => Get.dialog(
+  //             Center(
+  //                 child: SpinKitWave(
+  //                   color: Color.fromRGBO(63, 51, 128, 1),
+  //                   size: 30.0,
+  //                 )),
+  //             barrierDismissible: false));
+  //     // fetch emp_id from GetX Storage
+  //     await employeeService
+  //         .reminder(employee_id,offset.toString())
+  //         .then((data) {
+  //           if(offset!=0){
+  //             isLoading.value = false;
+  //             data.forEach((element) {
+  //               reminderList.add(element);
+  //             });
+  //           }else{
+  //             reminderList.value = data.reversed.toList();
+  //           }
+  //           update();
+  //           Get.back();
+  //     });
+  //   } catch (error) {
+  //     print(error);
+  //     Get.snackbar("Error ", "Error , $error");
+  //   }
+  // }
+
+  void getRemindersList() async {
+    try {
+      if (this.employeeService == null) {
+        this.employeeService = await EmployeeService().init();
+      }
+      var employee_id = box.read('emp_id');
+      Future.delayed(
+          Duration.zero,
+              () => Get.dialog(
+              Center(
+                  child: SpinKitWave(
+                    color: Color.fromRGBO(63, 51, 128, 1),
+                    size: 30.0,
+                  )),
+              barrierDismissible: false));
+      // fetch emp_id from GetX Storage
+      await employeeService
+          .reminder(employee_id,offset.toString())
+          .then((data) {
+            if(offset!=0){
+              isLoading.value = false;
+              data.forEach((element) {
+                reminderList.add(element);
+              });
+            }else{
+              reminderList.value = data.toList();
+            }
+            update();
+            Get.back();
+      });
+    } catch (error) {
+      print(error);
+      Get.snackbar("Error ", "Error , $error");
+    }
+  }
+
   void getAnnouncementsList() async {
     try {
       if (this.employeeService == null) {

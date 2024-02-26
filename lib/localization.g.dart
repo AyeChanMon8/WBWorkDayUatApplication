@@ -25,6 +25,8 @@ class AppLocalizations {
         approval: "Approval",
         organizationChart: "Organization Chart",
         announcements: "Announcements",
+        reminders: "Reminders",
+        allReminders: "All Reminders",
         allAnnouncements: "All Announcements",
         from: "From",
         notifications: "Notifications",
@@ -1056,6 +1058,8 @@ class AppLocalizations {
         organizationChart: "ဖွဲ့စည်းပုံဇယား",
         announcements: "ကြေငြာချက်များ",
         allAnnouncements: "ကြေငြာချက်အားလုံး",
+        reminders: "သတိပေးချက်များ",
+        allReminders: "သတိပေးချက်အားလုံး",
         from: "မှ",
         notifications: "အသိပေးချက်များ",
         allNotifications: "အသိပေးချက်အားလုံး",
@@ -2094,6 +2098,8 @@ class AppLocalizations_Labels {
     this.organizationChart,
     this.announcements,
     this.allAnnouncements,
+    this.reminders,
+    this.allReminders,
     this.from,
     this.notifications,
     this.allNotifications,
@@ -2631,6 +2637,10 @@ class AppLocalizations_Labels {
   final String announcements;
 
   final String allAnnouncements;
+
+  final String reminders;
+
+  final String allReminders;
 
   final String from;
 
@@ -3601,6 +3611,10 @@ class AppLocalizations_Labels {
         return announcements;
       case 'allAnnouncements':
         return allAnnouncements;
+      case 'allReminders':
+        return allReminders;
+      case 'reminders':
+        return reminders;
       case 'from':
         return from;
       case 'notifications':

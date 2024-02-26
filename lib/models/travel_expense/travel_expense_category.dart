@@ -8,13 +8,15 @@ class TravelExpenseCategory {
   bool travel_expense;
   bool trip_expense;
   bool is_vehicle_selected;
+  bool fuel;
   TravelExpenseCategory({
     this.id,
     this.display_name,
     this.out_of_pocket_expense,
     this.travel_expense,
     this.trip_expense,
-    this.is_vehicle_selected
+    this.is_vehicle_selected,
+    this.fuel
   });
 
   TravelExpenseCategory copyWith({
@@ -23,6 +25,7 @@ class TravelExpenseCategory {
     bool out_of_pocket_expense,
     bool travel_expense,
     bool trip_expense,
+    bool fuel
   }) {
     return TravelExpenseCategory(
       id: id ?? this.id,
@@ -31,6 +34,7 @@ class TravelExpenseCategory {
           out_of_pocket_expense ?? this.out_of_pocket_expense,
       travel_expense: travel_expense ?? this.travel_expense,
       trip_expense: trip_expense ?? this.trip_expense,
+      fuel: fuel ?? this.fuel
     );
   }
 
@@ -41,6 +45,7 @@ class TravelExpenseCategory {
       'out_of_pocket_expense': out_of_pocket_expense,
       'travel_expense': travel_expense,
       'trip_expense': trip_expense,
+      'fuel': fuel
     };
   }
 
@@ -54,6 +59,7 @@ class TravelExpenseCategory {
       travel_expense: map['travel_expense'],
       trip_expense: map['trip_expense'],
       is_vehicle_selected: map['is_vehicle_selected'],
+      fuel: map['fuel']
     );
   }
 
@@ -64,7 +70,7 @@ class TravelExpenseCategory {
 
   @override
   String toString() {
-    return 'TravelExpenseCategory(id: $id, display_name: $display_name, out_of_pocket_expense: $out_of_pocket_expense, travel_expense: $travel_expense, trip_expense: $trip_expense)';
+    return 'TravelExpenseCategory(id: $id, display_name: $display_name, out_of_pocket_expense: $out_of_pocket_expense, travel_expense: $travel_expense, trip_expense: $trip_expense, fuel: $fuel)';
   }
 
   @override
@@ -76,7 +82,8 @@ class TravelExpenseCategory {
         o.display_name == display_name &&
         o.out_of_pocket_expense == out_of_pocket_expense &&
         o.travel_expense == travel_expense &&
-        o.trip_expense == trip_expense;
+        o.trip_expense == trip_expense &&
+        o.fuel == fuel;
   }
 
   @override
@@ -85,6 +92,7 @@ class TravelExpenseCategory {
         display_name.hashCode ^
         out_of_pocket_expense.hashCode ^
         travel_expense.hashCode ^
-        trip_expense.hashCode;
+        trip_expense.hashCode ^
+        fuel.hashCode;
   }
 }

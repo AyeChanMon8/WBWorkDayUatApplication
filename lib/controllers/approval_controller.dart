@@ -707,9 +707,17 @@ class ApprovalController extends GetxController {
         Get.back();
         Get.back();
         getAnnouncementsList();
+        // approveAnnouncementNoti(id);
       });
     });
   }
+
+  approveAnnouncementNoti(int id) async {
+    await employeeService.approvalAnnouncementNoti(id).then((data) {
+      print("send all noti success");
+    });
+  }
+
   approveInsurance(int id) async {
     Future.delayed(
         Duration.zero,

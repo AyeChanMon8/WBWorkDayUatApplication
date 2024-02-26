@@ -102,7 +102,7 @@ class LeaveRequestUpdateController extends GetxController {
     );
     await leaveService.getLeaveLine(leave).then((value) {
       Get.back();
-      if (value != null) {
+      if (value != null && value.length>0) {
         if (value[0].message == null) {
           leavelLineList.value = value;
           var num = 0;
@@ -126,6 +126,7 @@ class LeaveRequestUpdateController extends GetxController {
           leavelLineList.clear();
         }
       } else {
+        durationController.text = "0.0";
         leavelLineList.clear();
       }
     });
@@ -187,7 +188,9 @@ class LeaveRequestUpdateController extends GetxController {
       } else {
         valid = true;
       }
-    } else if (description.isEmpty) {
+    }else if (leavelLineList.length ==0 ) {
+      AppUtils.showDialog('Information', 'Please Attach Leave Line!');
+    }else if (description.isEmpty) {
       AppUtils.showDialog('Information', 'Please Fill Description!');
     } else {
       if (selectedLeaveType.name == 'Sick Leaves') {

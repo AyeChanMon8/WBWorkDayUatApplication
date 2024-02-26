@@ -95,6 +95,34 @@ class MasterService extends OdooService {
     return states;
   }
 
+  Future<int> getVehicleProduct(int vehicleID, int id,String companyID) async {
+    String url = Globals.baseURL + "/hr.employee/1/get_vehicle_product";
+    Response response =
+        await dioClient.put(url, data: jsonEncode({'vehicle_id': vehicleID, 'id': id, 'company_id': companyID}));
+    int product_id = 0;
+    if (response.statusCode == 200) {
+      product_id = response.data;
+    }
+    return product_id;
+  }
+
+  Future<List<TravelExpenseProduct>> getOutOfPocketExpenseProduct(int id) async {
+    String url = Globals.baseURL +
+        "/product.product?filters=[('id','=',$id)]";
+
+    Response response = await dioClient.get(url);
+    List<TravelExpenseProduct> states = new List<TravelExpenseProduct>();
+    if (response.statusCode == 200) {
+      var list = response.data['results'];
+      if(response.data['count']!=0){
+        list.forEach((v) {
+          states.add(TravelExpenseProduct.fromMap(v));
+        });
+      }
+    }
+    return states;
+  }
+
   Future<List<TravelRequestListResponse>> getTravelApproveList(
       int empID) async {
     http://54.254.62.118:8069/api/travel.request?filters=%5B('state','in',('approve',in_progress','advance_request','advance_withdraw')),('employee_id','=',6029)%5D

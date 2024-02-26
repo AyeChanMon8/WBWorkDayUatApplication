@@ -130,6 +130,8 @@ import 'package:winbrother_hr_app/pages/profile_page.dart';
 import 'package:winbrother_hr_app/pages/purchase_order_detail.dart';
 import 'package:winbrother_hr_app/pages/purchase_order_list.dart';
 import 'package:winbrother_hr_app/pages/reminder_approve_tabbar.dart';
+import 'package:winbrother_hr_app/pages/reminders_details.dart';
+import 'package:winbrother_hr_app/pages/reminders_list.dart';
 import 'package:winbrother_hr_app/pages/request_list.dart';
 import 'package:winbrother_hr_app/pages/resignation_approval_tabar.dart';
 import 'package:winbrother_hr_app/pages/reward_approve_tabbar.dart';
@@ -171,6 +173,8 @@ class AppPages {
     GetPage(name: Routes.APPROVAL, page: () => ApprovalPage()),
     GetPage(
         name: Routes.ANNOUNCEMENTS_DETAILS, page: () => AnnouncementsDetails()),
+    GetPage(
+        name: Routes.REMINDERS_DETAILS, page: () => RemindersDetails()),
     GetPage(
         name: Routes.APPROVAL_ANNOUNCEMENTS_DETAILS,
         page: () => AnnouncementApprovalDetails()),
@@ -223,6 +227,7 @@ class AppPages {
     GetPage(name: Routes.EXPENSE_PAGE, page: () => CreateRequestPage()),
     GetPage(name: Routes.APPROVAL_REQUEST, page: () => ApprovalDetails()),
     GetPage(name: Routes.ANNOUNCEMENTS_LIST, page: () => AnnouncementsList()),
+    GetPage(name: Routes.REMINDERS_LIST, page: () => RemindersList()),
     GetPage(
         name: Routes.NOTIFICATION_LIST, page: () => NotificationMessageList()),
     GetPage(name: Routes.LEAVE_REQUEST, page: () => LeaveTripRequest()),

@@ -129,6 +129,7 @@ class LeaveRequestController extends GetxController {
           leavelLineList.clear();
         }
       } else {
+        durationController.text = "0.0";
         leavelLineList.clear();
       }
     });
@@ -251,7 +252,7 @@ class LeaveRequestController extends GetxController {
     var duration = durationController.text;
     print('request leave${durationController.text}');
     double durationValue = 0.0;
-    if (duration != null) {
+    if (duration != null && duration != "") {
       durationValue = double.parse(duration.toString());
       print("Duration Leave = $durationValue");
     }
@@ -274,9 +275,11 @@ class LeaveRequestController extends GetxController {
       } else {
         valid = true;
       }
-    } else if (description.isEmpty) {
+    }else if (leavelLineList.length ==0) {
+      AppUtils.showDialog('Information', 'Please Attach Leave Line!');
+    }else if (description.isEmpty) {
       AppUtils.showDialog('Information', 'Please Fill Description!');
-    } else {
+    }else {
       if (selectedLeaveType.name == 'Sick Leaves') {
         if (image_base64.isNotEmpty) {
           valid = true;

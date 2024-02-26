@@ -318,7 +318,7 @@ class _OutOfPocketUpdateState extends State<OutOfPocketUpdate> {
                           icon: Icon(Icons.keyboard_arrow_down),
                           iconSize: 30,
                           isExpanded: true,
-                          onChanged: (TravelExpenseProduct value) {
+                          onChanged: (controller.selectedExpenseCategory.fuel != null&&controller.selectedExpenseCategory.fuel) ? null :(TravelExpenseProduct value) {
                             controller.onChangeExpenseProductDropdown(value);
                           },
                           items: controller.travel_expense_product_list
@@ -485,13 +485,13 @@ class _OutOfPocketUpdateState extends State<OutOfPocketUpdate> {
                 ],
               ),
               expenseCategoryDropDown(),
-              Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: expenseProductDropDown()),
               Obx(()=> controller.selectedExpenseCategory.is_vehicle_selected == true ?
               Container(
                   margin: EdgeInsets.only(top: 20),
                   child: vehicleDropDown()) : SizedBox()),
+              Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: expenseProductDropDown()),
               Row(
                 children: [
                   Expanded(

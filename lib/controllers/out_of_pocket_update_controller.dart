@@ -124,6 +124,27 @@ class OutOfPocketUpdateController extends GetxController {
   void onChangeVehicleDropdown(
       Fleet_model fleet_model) async {
     this.selectedVehicle = fleet_model;
+    var company_id = box.read('emp_company');
+    if ((this.selectedExpenseCategory.fuel != null &&
+            this.selectedExpenseCategory.fuel) &&
+        (this.selectedVehicle != null || this.selectedVehicle != "")) {
+      await masterService
+          .getVehicleProduct(this.selectedVehicle.id, this.selectedExpenseCategory.id, company_id.toString())
+          .then((data) async {
+        if (data != 0) {
+          await masterService
+              .getOutOfPocketExpenseProduct(data)
+              .then((productID) async {
+            if (productID != 0) {
+              this.selectedExpenseProduct = productID[0];
+            }
+            travel_expense_product_list.value = productID;
+          });
+        } else {
+          this.selectedExpenseProduct = null;
+        }
+      });
+    }
     update();
   }
 
@@ -177,9 +198,18 @@ class OutOfPocketUpdateController extends GetxController {
 
   }
   addExpenseLine(int lineId) async{
-    if(priceController.text==0||totalAmountController.text==0){
+    bool valid = true;
+    if (selectedExpenseCategory.fuel != null && selectedExpenseCategory.fuel) {
+      if (selectedExpenseProduct == null) {
+        valid = false;
+        AppUtils.showDialog('Information', 'Please Attach Expense Title!');
+      }
+    }
+    else if(priceController.text==0||totalAmountController.text==0){
+      valid = false;
       AppUtils.showToast('Can not add zero value!');
-    }else{
+    }
+    if(valid){
       var attach_include = false;
       if(image_base64!=null&&image_base64.isNotEmpty){
          attach_include = true;
@@ -248,6 +278,7 @@ class OutOfPocketUpdateController extends GetxController {
      // fromDateTextController.text = "";
     }
 
+
   }
 
   void removeRow(int index,int id){
@@ -291,10 +322,32 @@ class OutOfPocketUpdateController extends GetxController {
 
   void onChangeExpenseCategoryDropdown(
       TravelExpenseCategory travelExpenseCategory) async {
+    var company_id = box.read('emp_company');
     this.selectedExpenseCategory = travelExpenseCategory;
     int id = selectedExpenseCategory.id;
     this.travel_expense_product_list.value.clear();
-    getTravelExpenseProduct(id);
+    if ((this.selectedExpenseCategory.fuel != null &&
+            this.selectedExpenseCategory.fuel) &&
+        (this.selectedVehicle != null || this.selectedVehicle != "")) {
+      await masterService
+          .getVehicleProduct(this.selectedVehicle.id, id, company_id.toString())
+          .then((data) async {
+        if (data != 0) {
+          await masterService
+              .getOutOfPocketExpenseProduct(data)
+              .then((productID) async {
+            if (productID != 0) {
+              this.selectedExpenseProduct = productID[0];
+            }
+            travel_expense_product_list.value = productID;
+          });
+        } else {
+          this.selectedExpenseProduct = null;
+        }
+      });
+    } else {
+      getTravelExpenseProduct(id);
+    }
     update();
   }
 

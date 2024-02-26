@@ -29,7 +29,9 @@ import 'package:winbrother_hr_app/models/leave.dart';
 import 'package:winbrother_hr_app/models/leave_list_response.dart';
 import 'package:winbrother_hr_app/models/leave_report.dart';
 import 'package:winbrother_hr_app/models/loan.dart';
+import 'package:winbrother_hr_app/models/notification_msg.dart';
 import 'package:winbrother_hr_app/models/payslip.dart';
+import 'package:winbrother_hr_app/models/reminder.dart';
 import 'package:winbrother_hr_app/models/resignation.dart';
 import 'package:winbrother_hr_app/models/reward.dart';
 import 'package:winbrother_hr_app/models/travel_request.dart';
@@ -415,6 +417,16 @@ class EmployeeService extends OdooService {
     return announcement_list;
   }
 
+  // Future<bool> approvalAnnouncementClick(int id) async {
+  //   bool result = true;
+  //   String url =
+  //       Globals.baseURL + "/hr.announcement/" + id.toString() + "/approve?announcement_from_mobile=true";
+  //   Response response = await dioClient.put(url);
+  //   if (response.statusCode == 200) {
+  //     result = response.data;
+  //   }
+  //   return result;
+  // }
   Future<bool> approvalAnnouncementClick(int id) async {
     bool result = true;
     String url =
@@ -425,6 +437,18 @@ class EmployeeService extends OdooService {
     }
     return result;
   }
+
+  Future<bool> approvalAnnouncementNoti(int id) async {
+    bool result = true;
+    String url =
+        Globals.baseURL + "/hr.announcement/" + id.toString() + "/process_announcement_mobile";
+    Response response = await dioClient.put(url);
+    if (response.statusCode == 200) {
+      result = response.data;
+    }
+    return result;
+  }
+
   Future<bool> approvalInsuranceClick(int id) async {
     bool result = true;
     String url =
@@ -479,6 +503,22 @@ class EmployeeService extends OdooService {
     return announcement_list;
   }
 
+  Future<List<Reminder>> reminder(String id, String offset) async {
+    String url = Globals.baseURL + "/hr.employee/1/get_reminder_ids";
+    Response response = await dioClient.put(url,
+        data: jsonEncode({'employee_id': int.parse(id)}));
+    List<Reminder> reminderList = new List<Reminder>();
+    if (response.statusCode == 200) {
+      var data = response.data;
+      if (response.data.length != 0) {
+        data.forEach((v) {
+          reminderList.add(Reminder.fromMap(v));
+        });
+      }
+    }
+    return reminderList;
+  }
+
   getAnnouncementIDsList(String empID) async {
     String url = Globals.baseURL + "/hr.employee/1/get_announcement_ids";
     Response response = await dioClient.put(url,
@@ -486,6 +526,15 @@ class EmployeeService extends OdooService {
     List<dynamic> announcement_ids = response.data;
     print('Announcement ID List${response.data}');
     return announcement_ids;
+  }
+
+  getReminderIDsList(String empID) async {
+    String url = Globals.baseURL + "/hr.employee/1/get_reminder_ids";
+    Response response = await dioClient.put(url,
+        data: jsonEncode({'employee_id': int.parse(empID)}));
+    List<dynamic> reminder_ids = response.data;
+    print('Reminder ID List${response.data}');
+    return reminder_ids;
   }
 
   getApprovalAnnouncementIDsList(String empID) async {

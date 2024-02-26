@@ -12,6 +12,7 @@ abstract class Routes {
   static const ATTENDANCE_REPORT = '/attendancereport';
   static const APPROVAL = '/approval';
   static const ANNOUNCEMENTS_DETAILS = '/announcementsdetails';
+  static const REMINDERS_DETAILS = '/remindersdetails';
   static const APPROVAL_ANNOUNCEMENTS_DETAILS = '/approvalannouncementsdetails';
   static const ANNOUNCEMENTS_APPROVAL_TAB_PAGE = '/announcement_approval_tab';
   static const NOTIFICATION_DETAILS = '/notificationdetails';
@@ -46,6 +47,7 @@ abstract class Routes {
   static const EXPENSE_PAGE = '/expense';
   static const APPROVAL_REQUEST = '/approvalrequest';
   static const ANNOUNCEMENTS_LIST = '/announcementlist';
+  static const REMINDERS_LIST = '/reminderlist';
   static const NOTIFICATION_LIST = '/notificationlist';
   static const LEAVE_REQUEST = '/leaverequest';
   static const TRAVEL_REQUEST = '/travelrequest';
