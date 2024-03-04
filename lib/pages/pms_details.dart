@@ -1589,11 +1589,7 @@ class _PmsDetailsState extends State<PmsDetails>
 
                 Container(
                     child: controller.detailModel.value.state !=
-                                'sent_to_employee' &&
-                            controller.detailModel.value.state !=
-                                'acknowledge' &&
-                            controller.detailModel.value.state !=
-                                'mid_year_self_assessment'
+                                'sent_to_employee'
                         ? Column(
                             children: [
                               Padding(

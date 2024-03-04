@@ -1634,7 +1634,7 @@ class _PmsDetailsState extends State<PmsManagerApprovalDetails>
                   ],
                 )),
                 Container(
-                    child: controller.detailModel.value.state!='sent_to_employee' && controller.detailModel.value.state!='acknowledge' && controller.detailModel.value.state!='mid_year_self_assessment' ?Column(
+                    child: controller.detailModel.value.state!='sent_to_employee'?Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10, top: 10),
