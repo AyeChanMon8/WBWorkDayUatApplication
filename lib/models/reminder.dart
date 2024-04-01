@@ -5,25 +5,49 @@ class Reminder {
   dynamic id;
   dynamic description;
   String contents;
+  dynamic name;
+  dynamic lastReminder;
   List<AttachmentID> attachment_ids;
+  String create_date;
+  bool selected;
+  bool has_read;
+  dynamic noti_id;
   Reminder({
     this.id,
     this.description,
     this.attachment_ids,
-    this.contents
+    this.contents,
+    this.name,
+    this.lastReminder,
+    this.create_date,
+    this.selected = false,
+    this.has_read,
+    this.noti_id
   });
 
   Reminder copyWith({
     dynamic id,
     dynamic description,
     List<AttachmentID> attachment_ids,
-    String contents
+    String contents,
+    dynamic name,
+    dynamic lastReminder,
+    String create_date,
+    bool selected,
+    bool has_read,
+    dynamic noti_id
   }) {
     return Reminder(
       id: id ?? this.id,
       description: description ?? this.description,
       attachment_ids: attachment_ids ?? this.attachment_ids,
-      contents: contents ?? this.contents
+      contents: contents ?? this.contents,
+      name: name ?? this.name,
+      lastReminder: lastReminder ?? this.lastReminder,
+      create_date: create_date ?? this.create_date,
+      selected: selected ?? this.selected,
+      has_read: has_read ?? this.has_read,
+      noti_id: noti_id ?? this.noti_id
     );
   }
 
@@ -32,7 +56,12 @@ class Reminder {
       'id': id,
       'description': description,
       'attachment_ids': attachment_ids?.map((x) => x?.toMap())?.toList(),
-      'contents': contents
+      'contents': contents,
+      'name': name,
+      'last_reminder': lastReminder,
+      'create_date': create_date,
+      'has_read': has_read,
+      'noti_id': noti_id
     };
   }
 
@@ -45,6 +74,11 @@ class Reminder {
       contents: map['contents'],
       attachment_ids: List<AttachmentID>.from(
           map['attachment_ids']?.map((x) => AttachmentID.fromMap(x))),
+      name: map['name'],
+      lastReminder: map['last_reminder'],
+      create_date: map['create_date'],
+      has_read: map['has_read'] ?? false,
+      noti_id: map['noti_id']
     );
   }
 
@@ -55,7 +89,7 @@ class Reminder {
 
   @override
   String toString() {
-    return 'Reminder(id: $id, description: $description, attachment_ids: $attachment_ids, contents: $contents)';
+    return 'Reminder(id: $id, description: $description, attachment_ids: $attachment_ids, contents: $contents, name: $name, lastReminder: $lastReminder,create_date: $create_date,has_read: $has_read,noti_id: $noti_id )';
   }
 
 
@@ -64,7 +98,10 @@ class Reminder {
     return id.hashCode ^
         description.hashCode ^
         attachment_ids.hashCode ^ 
-        contents.hashCode;
+        contents.hashCode ^ name.hashCode ^
+        lastReminder.hashCode ^
+        create_date.hashCode ^
+        noti_id.hashCode;
   }
 }
 

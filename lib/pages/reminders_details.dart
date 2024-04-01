@@ -10,10 +10,12 @@ import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:winbrother_hr_app/constants/globals.dart';
 import 'package:winbrother_hr_app/controllers/announcements_controller.dart';
+import 'package:winbrother_hr_app/controllers/reminder_noti_controller.dart';
 import 'package:winbrother_hr_app/localization.dart';
 import 'package:winbrother_hr_app/my_class/my_app_bar.dart';
 import 'package:winbrother_hr_app/my_class/my_style.dart';
@@ -21,7 +23,7 @@ import 'package:winbrother_hr_app/my_class/my_style.dart';
 import 'leave_detail.dart';
 
 class RemindersDetails extends StatelessWidget {
-  final AnnouncementsController controller = Get.put(AnnouncementsController());
+  final ReindersNotiController controller = Get.put(ReindersNotiController());
   final box = GetStorage();
   int index;
   String image;
@@ -53,8 +55,17 @@ class RemindersDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     index = Get.arguments;
+    var showAttachment = false;
+    var showDescription = false;
     final labels = AppLocalizations.of(context);
+    final now = DateTime.now();
     image = box.read('emp_image');
+    print(controller.reminderList.value[index].name);
+    if((controller.reminderList.value[index].lastReminder!=null && controller.reminderList.value[index].lastReminder)){
+      showAttachment = true;
+      showDescription = true;
+    }
+    print("ShowAttachment >>"+showAttachment.toString());
     // if(controller.reminderList.value[index].description.contains("src=\"/web/image/")){
     //   reminder = controller.reminderList.value[index].description.split('src=\"/web/image/');
     //   reminderText = reminder[0]+'src=\"'+Globals.baseURL.split('/api')[0]+'/web/image/'+reminder[1];
@@ -71,9 +82,11 @@ class RemindersDetails extends StatelessWidget {
             children: [
               Text(controller.reminderList.value[index].contents,style: TextStyle(fontWeight: FontWeight.w500),),
               SizedBox(height: 15,),
-              controller.reminderList.value[index].description != null && controller.reminderList.value[index].description != false ? Text(controller.reminderList.value[index].description): SizedBox(),
-              SizedBox(height: 20),
-              SizedBox(
+              showDescription ?
+              (controller.reminderList.value[index].description != null && controller.reminderList.value[index].description != false ? Text(controller.reminderList.value[index].description): SizedBox()):SizedBox(),
+              showDescription ? SizedBox(height: 20): SizedBox(),
+              
+              showAttachment ? SizedBox(
                 child: GridView.builder(
                     itemCount: controller.reminderList.value[index].attachment_ids.length,
                     shrinkWrap: true,
@@ -122,7 +135,7 @@ class RemindersDetails extends StatelessWidget {
                       );
                     }
                        ),
-              )
+              ): SizedBox()
             ],
           ),
         ),

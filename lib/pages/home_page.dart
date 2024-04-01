@@ -12,6 +12,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:winbrother_hr_app/controllers/announcements_controller.dart';
 import 'package:winbrother_hr_app/controllers/notification_controller.dart';
 import 'package:winbrother_hr_app/controllers/reminder_controller.dart';
+import 'package:winbrother_hr_app/controllers/reminder_noti_controller.dart';
 import 'package:winbrother_hr_app/controllers/user_profile_controller.dart';
 import 'package:winbrother_hr_app/localization.dart';
 import 'package:winbrother_hr_app/models/home_function.dart';
@@ -43,6 +44,9 @@ class _MainState extends State<HomePage> {
   final AnnouncementsController announcementsController = Get.put(
     AnnouncementsController(),
   );
+  final ReindersNotiController remindersNotiController = Get.put(
+    ReindersNotiController(),
+  );
   @override
   void initState(){
     //TODO one signal need to test.
@@ -50,6 +54,7 @@ class _MainState extends State<HomePage> {
     initPlatformState();
     notiController.retrieveMsgs();
     announcementsController.onReady();
+    remindersNotiController.onReady();
     //_handleSetExternalUserId();
   }
 
@@ -548,14 +553,8 @@ class _MainState extends State<HomePage> {
   
   Widget remindersWidget(BuildContext context) {
     final labels = AppLocalizations.of(context);
-    int reminderNo;
-    final AnnouncementsController controller =
-        Get.put(AnnouncementsController());
-    if (controller.reminderList.value.length < 3) {
-      reminderNo = controller.reminderList.value.length;
-    } else {
-      reminderNo = 3;
-    }
+    final ReindersNotiController controller =
+        Get.put(ReindersNotiController());
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: Card(
@@ -586,7 +585,7 @@ class _MainState extends State<HomePage> {
                       Row(
                         children: [
                           Container(
-                            child: Text(controller.reminderList.value.length
+                            child: Text(controller.unReadMsgCount.toString()
                                 .toString(),style: TextStyle(color: Colors.white),),
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(

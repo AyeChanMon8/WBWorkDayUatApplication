@@ -28,7 +28,7 @@ class AnnouncementsController extends GetxController {
     super.onReady();
     this.employeeService = await EmployeeService().init();
     getAnnouncementsList();
-    getRemindersList();
+    // getRemindersList();
 
   }
 
@@ -74,41 +74,41 @@ class AnnouncementsController extends GetxController {
   //   }
   // }
 
-  void getRemindersList() async {
-    try {
-      if (this.employeeService == null) {
-        this.employeeService = await EmployeeService().init();
-      }
-      var employee_id = box.read('emp_id');
-      Future.delayed(
-          Duration.zero,
-              () => Get.dialog(
-              Center(
-                  child: SpinKitWave(
-                    color: Color.fromRGBO(63, 51, 128, 1),
-                    size: 30.0,
-                  )),
-              barrierDismissible: false));
-      // fetch emp_id from GetX Storage
-      await employeeService
-          .reminder(employee_id,offset.toString())
-          .then((data) {
-            if(offset!=0){
-              isLoading.value = false;
-              data.forEach((element) {
-                reminderList.add(element);
-              });
-            }else{
-              reminderList.value = data.toList();
-            }
-            update();
-            Get.back();
-      });
-    } catch (error) {
-      print(error);
-      Get.snackbar("Error ", "Error , $error");
-    }
-  }
+  // void getRemindersList() async {
+  //   try {
+  //     if (this.employeeService == null) {
+  //       this.employeeService = await EmployeeService().init();
+  //     }
+  //     var employee_id = box.read('emp_id');
+  //     Future.delayed(
+  //         Duration.zero,
+  //             () => Get.dialog(
+  //             Center(
+  //                 child: SpinKitWave(
+  //                   color: Color.fromRGBO(63, 51, 128, 1),
+  //                   size: 30.0,
+  //                 )),
+  //             barrierDismissible: false));
+  //     // fetch emp_id from GetX Storage
+  //     await employeeService
+  //         .reminder(employee_id,offset.toString())
+  //         .then((data) {
+  //           if(offset!=0){
+  //             isLoading.value = false;
+  //             data.forEach((element) {
+  //               reminderList.add(element);
+  //             });
+  //           }else{
+  //             reminderList.value = data.toList();
+  //           }
+  //           update();
+  //           Get.back();
+  //     });
+  //   } catch (error) {
+  //     print(error);
+  //     Get.snackbar("Error ", "Error , $error");
+  //   }
+  // }
 
   void getAnnouncementsList() async {
     try {
@@ -156,7 +156,6 @@ class AnnouncementsController extends GetxController {
       }
     });
   }
-
 
   // getFile(int index, int fileid) async {
   //   Future.delayed(
