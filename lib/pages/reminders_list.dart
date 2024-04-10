@@ -1,5 +1,8 @@
 // @dart=2.9
 
+import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -9,6 +12,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:open_file/open_file.dart';
 import 'package:winbrother_hr_app/constants/globals.dart';
 import 'package:winbrother_hr_app/controllers/announcements_controller.dart';
 import 'package:winbrother_hr_app/controllers/reminder_noti_controller.dart';
@@ -18,6 +22,9 @@ import 'package:winbrother_hr_app/my_class/my_style.dart';
 import 'package:winbrother_hr_app/pages/announcements_details.dart';
 import 'package:winbrother_hr_app/routes/app_pages.dart';
 import 'package:winbrother_hr_app/utils/app_utils.dart';
+import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+
+import 'leave_detail.dart';
 
 class RemindersList extends StatefulWidget {
   @override
@@ -40,8 +47,8 @@ class _RemindersListState extends State<RemindersList> {
 
   @override
   void initState() {
-    initData();
     super.initState();
+    initData();
     controller.offset.value = 0;
     handleNotification();
   }
@@ -75,6 +82,31 @@ class _RemindersListState extends State<RemindersList> {
       });
       event.complete(event.notification);
     });
+  }
+
+  Future<String> _createFileFromString(String encodedStr) async {
+    //final encodedStr = "put base64 encoded string here";
+    Uint8List bytes = base64.decode(encodedStr);
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File file = File(
+        "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".pdf");
+    await file.writeAsBytes(bytes);
+    return file.path.toString();
+  }
+
+  Widget pdfView(String pathPDF) {
+    print("pdfView");
+    return PDFViewerScaffold(
+        appBar: AppBar(
+          title: Text("Document"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        path: pathPDF.toString());
   }
 
   @override
@@ -152,7 +184,6 @@ class _RemindersListState extends State<RemindersList> {
                             left: 2, right: 2, bottom: 2, top: 50),
                         child: Obx(
                           () => NotificationListener<ScrollNotification>(
-                              // ignore: missing_return
                               onNotification: (ScrollNotification scrollInfo) {
                                 if (!controller.isLoading.value &&
                                     scrollInfo.metrics.pixels ==
@@ -247,25 +278,32 @@ class _RemindersListState extends State<RemindersList> {
                                             Expanded(
                                               flex: 7,
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  AutoSizeText(
-                                                      controller
-                                                          .reminderList[index]
-                                                          .contents,
-                                                      style: controller
+                                                  (controller.reminderList[index]
+                                                          .lastReminder && controller.reminderList[index].name.toLowerCase().contains('birthday'))
+                                                      ? SizedBox()
+                                                      : AutoSizeText(
+                                                          controller
                                                               .reminderList[
                                                                   index]
-                                                              .has_read
-                                                          ? TextStyle(
-                                                              color: Colors
-                                                                  .grey[900])
-                                                          : TextStyle(
-                                                              // fontWeight:
-                                                              // FontWeight.bold,
-                                                              color: Colors
-                                                                  .black)),
-                                                  controller.reminderList[index].lastReminder
+                                                              .contents,
+                                                          style: controller
+                                                                  .reminderList[
+                                                                      index]
+                                                                  .has_read
+                                                              ? TextStyle(
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      900])
+                                                              : TextStyle(
+                                                                  // fontWeight:
+                                                                  // FontWeight.bold,
+                                                                  color: Colors
+                                                                      .black)),
+                                                  (controller.reminderList[index]
+                                                          .lastReminder && controller.reminderList[index].name.toLowerCase().contains('birthday'))
                                                       ? (controller
                                                                       .reminderList
                                                                       .value[
@@ -283,17 +321,87 @@ class _RemindersListState extends State<RemindersList> {
                                                                   .reminderList
                                                                   .value[index]
                                                                   .description,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0XFFB7B7B7),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
+                                                              // overflow:
+                                                              //     TextOverflow
+                                                              //         .ellipsis,
+                                                              style: controller
+                                                                  .reminderList[
+                                                                      index]
+                                                                  .has_read
+                                                              ? TextStyle(
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      900])
+                                                              : TextStyle(
+                                                                  // fontWeight:
+                                                                  // FontWeight.bold,
+                                                                  color: Colors
+                                                                      .black)
                                                             )
                                                           : SizedBox())
+                                                      : SizedBox(),
+                                                  (controller.reminderList[index]
+                                                          .lastReminder && controller.reminderList[index].name.toLowerCase().contains('birthday'))
+                                                      ? SizedBox(
+                                                          child:
+                                                              GridView.builder(
+                                                                  itemCount: controller
+                                                                      .reminderList
+                                                                      .value[
+                                                                          index]
+                                                                      .attachment_ids
+                                                                      .length,
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  physics:
+                                                                      NeverScrollableScrollPhysics(),
+                                                                  gridDelegate:
+                                                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                                                    childAspectRatio:
+                                                                        1,
+                                                                    crossAxisSpacing:
+                                                                        0.8,
+                                                                    mainAxisSpacing:
+                                                                        1,
+                                                                    crossAxisCount:
+                                                                        2,
+                                                                  ),
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          fileIndex) {
+                                                                    return InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        !controller.reminderList.value[index].attachment_ids[fileIndex].name.toString().contains('pdf')
+                                                                            ? await showDialog(
+                                                                                context: context,
+                                                                                builder: (_) {
+                                                                                  return ImageDialog(
+                                                                                    bytes: base64Decode(controller.reminderList.value[index].attachment_ids[fileIndex].attach_file),
+                                                                                  );
+                                                                                })
+                                                                            : _createFileFromString(controller.reminderList.value[index].attachment_ids[fileIndex].attach_file.toString()).then((path) async {
+                                                                                print("FilePath");
+                                                                                await OpenFile.open(path);
+                                                                                print(path.toString());
+                                                                              });
+                                                                      },
+                                                                      child:
+                                                                          !controller.reminderList.value[index].attachment_ids[fileIndex].name.toString().contains('pdf')
+                                                                            ? Container(
+                                                                              height: 30,
+                                                                              width: 30,
+                                                                              padding: EdgeInsets.all(10),
+                                                                              child: Image.memory(base64Decode(controller.reminderList.value[index].attachment_ids[fileIndex].attach_file),
+                                                                              fit: BoxFit.cover,),
+                                                                            )
+                                                                            : AutoSizeText(
+                                                                                controller.reminderList.value[index].attachment_ids[fileIndex].name.toString(),
+                                                                                style: TextStyle(fontWeight: FontWeight.normal, color: Colors.blueGrey, fontSize: 16),
+                                                                              ),
+                                                                    );
+                                                                  }),
+                                                        )
                                                       : SizedBox()
                                                 ],
                                               ),
@@ -315,18 +423,18 @@ class _RemindersListState extends State<RemindersList> {
                                                       .trash_can,
                                                   color: Colors.red,
                                                 )),
-                                            SizedBox(width: 3,),
-                                            GestureDetector(
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      Routes.REMINDERS_DETAILS,
-                                                      arguments: index);
-                                                },
-                                                child: Icon(
-                                                  MaterialCommunityIcons
-                                                      .information,
-                                                  color: Color.fromRGBO(60, 47, 126, 1),
-                                                )),
+                                            // SizedBox(width: 3,),
+                                            // GestureDetector(
+                                            //     onTap: () {
+                                            //       Get.toNamed(
+                                            //           Routes.REMINDERS_DETAILS,
+                                            //           arguments: index);
+                                            //     },
+                                            //     child: Icon(
+                                            //       MaterialCommunityIcons
+                                            //           .information,
+                                            //       color: Color.fromRGBO(60, 47, 126, 1),
+                                            //     )),
                                           ],
                                         ),
                                       ),
@@ -392,81 +500,6 @@ class _RemindersListState extends State<RemindersList> {
               ],
             ),
           ),
-          // Obx(
-          //   () => NotificationListener<ScrollNotification>(
-          //       // ignore: missing_return
-          //       onNotification: (ScrollNotification scrollInfo) {
-          //         if (!controller.isLoading.value &&
-          //             scrollInfo.metrics.pixels ==
-          //                 scrollInfo.metrics.maxScrollExtent) {
-          //           print("***bottomReach***");
-          //           if (controller.reminderList.value.length >= 10) {
-          //             controller.offset.value += Globals.pag_limit;
-          //             controller.isLoading.value = true;
-          //             _loadData();
-          //           }
-          //         }
-          //       },
-          //       child: ListView.builder(
-          //         itemCount: controller.reminderList.value.length,
-          //         itemBuilder: (BuildContext context, int index) {
-          //           return Card(
-          //             child: Container(
-          //               padding: EdgeInsets.all(8),
-          //               child: InkWell(
-          //                   onTap: () {
-          //                     Get.toNamed(Routes.REMINDERS_DETAILS,
-          //                         arguments: index);
-          //                   },
-          //                   child: Row(
-          //                     mainAxisAlignment: MainAxisAlignment.center,
-          //                     children: [
-          //                       Expanded(
-          //                         flex: 11,
-          //                         child: Column(
-          //                           mainAxisAlignment: MainAxisAlignment.start,
-          //                           crossAxisAlignment: CrossAxisAlignment.start,
-          //                           children: [
-          //                             controller.reminderList.value[index].contents !=
-          //                                     null
-          //                                 ? Text(
-          //                                     controller
-          //                                         .reminderList.value[index].contents,
-          //                                     overflow: TextOverflow.ellipsis,
-          //                                     style: TextStyle(fontWeight: FontWeight.w500),
-          //                                   )
-          //                                 : Text('-',
-          //                                 style: TextStyle(fontWeight: FontWeight.w500)),
-          //                             SizedBox(height: 5,),
-          //                             controller.reminderList.value[index].lastReminder ? (controller.reminderList.value[index]
-          //                                         .description !=
-          //                                     null && controller.reminderList.value[index]
-          //                                         .description != false
-
-          //                                 ? Text(
-          //                                     controller.reminderList.value[index]
-          //                                         .description,
-          //                                     overflow: TextOverflow.ellipsis,
-          //                                     style: TextStyle(color: Color(0XFFB7B7B7),
-          //                                     fontWeight: FontWeight.w500),
-          //                                   )
-          //                                 : Text("-",
-          //                                 style: TextStyle(color: Color(0XFFB7B7B7),
-          //                                 fontWeight: FontWeight.w500))) : Text('-',style: TextStyle(color: Color(0XFFB7B7B7),
-          //                                 fontWeight: FontWeight.w500))
-          //                           ],
-          //                         ),
-          //                       ),
-          //                       Expanded(
-          //                         flex: 1,
-          //                         child: Icon(Icons.arrow_forward_ios))
-          //                     ],
-          //                   )),
-          //             ),
-          //           );
-          //         },
-          //       )),
-          // ),
         ],
       ),
     );

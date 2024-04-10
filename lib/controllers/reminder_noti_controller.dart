@@ -12,7 +12,7 @@ import 'package:winbrother_hr_app/utils/app_utils.dart';
 class ReindersNotiController extends GetxController {
 final ScrollController scrollController = ScrollController();
 ReminderNotiService reminderNotiService;
-final RxList<Reminder> reminderList = List<Reminder>().obs;
+var reminderList = List<Reminder>().obs;
 final box = GetStorage();
 var isLoading = false.obs;
 var offset = 0.obs;
@@ -51,13 +51,12 @@ var unReadMsgCount = 0.obs;
               reminderList.add(element);
             });
           }else{
-            this.reminderList.value = data;
+            reminderList.value = data;
           }
-
+          update();
+          print("reminder List >>>"+this.reminderList.length.toString());
         });
       });
-
-
     } catch (error) {
       Get.snackbar('Alert', 'Network connection fail ${error.response?.statusCode}!\nPlease, try again');
     }
@@ -126,14 +125,24 @@ var unReadMsgCount = 0.obs;
                    )),
                barrierDismissible: false));
        String partnerId = store.read('emp_id');
-       for(int index = 0 ; index< reminderList.length;index++){
-         print(reminderList[index].selected);
-         if(reminderList[index].selected)
-           deleteMsg(
-               reminderList[index],
-               index);
-       }
-       Get.back();
+      //  for(int index = 0 ; index< reminderList.length;index++){
+      //    print(reminderList[index].selected);
+      //    if(reminderList[index].selected)
+      //      deleteMsg(
+      //          reminderList[index],
+      //          index);
+      //  }
+      List<dynamic> deleteData = [];
+      for(int index = 0 ; index< reminderList.length;index++){
+        if(reminderList[index].selected)
+           deleteData.add(reminderList[index].noti_id);
+        }
+      List<int> notiList = deleteData.cast<int>();
+      if(notiList.length > 0){
+        deleteReminderListMsg(notiList);
+      }
+      
+      Get.back();
 
      },() async{
        // notificationList.forEach((element) {
@@ -159,9 +168,25 @@ var unReadMsgCount = 0.obs;
   //   }
   // }
 
+  void deleteReminderListMsg(List<int> deleteData) async{
+    String partnerId = store.read('emp_id');
+    bool status = await this.reminderNotiService.deleteReminderNotificationMsg(deleteData);
+    if (status) {
+      // reminderList.removeAt(index);
+      for(var i=0;i<deleteData.length;i++){
+        reminderList.removeWhere((item) => item.noti_id == deleteData[i]);
+      }
+      countMsg.value = reminderList.length;
+      this.reminderNotiService.retrieveAllReminders(partnerId).then((data){
+        Get.back();
+        unReadMsgCount.value = data;
+      });
+      update();
+    }
+  }
+
   void deleteMsg(Reminder msg, int index) async {
     String partnerId = store.read('emp_id');
-
     bool status = await this.reminderNotiService.deleteNotificationMsg(msg);
     if (status) {
       // reminderList.removeAt(index);

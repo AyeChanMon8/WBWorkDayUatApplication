@@ -88,4 +88,16 @@ class ReminderNotiService extends OdooService {
     }
     return status;
   }
+
+  deleteReminderNotificationMsg(List<int> deleteData) async {
+    bool status = false;
+    String url = Globals.baseURL + "/hr.employee/1/delete_reminder_noti_ids";
+    
+    Response response = await dioClient.put(url,
+        data: jsonEncode({'notiIds': deleteData}));
+    if (response.statusCode == 200) {
+      status = true;
+    }
+    return status;
+  }
 }
